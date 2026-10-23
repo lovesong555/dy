@@ -1,0 +1,65 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="lib.js"></script><script src="heros.js"></script>
+<style>
+.bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:saturate(.9) brightness(.55)}
+.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,10,22,.92) 0%,rgba(6,10,22,.35) 38%,rgba(6,10,22,.55) 62%,rgba(6,10,22,.96) 100%)}
+.frame{z-index:2}
+.cards{position:absolute;left:0;right:0;display:flex;gap:28px;align-items:stretch}
+.v .cards{flex-direction:column;top:7%;gap:0}
+.v.noruler .cards{top:16%}.h.noruler .cards{top:16%}
+.h .cards{top:8%}
+.c{flex:1;border-radius:28px;padding:30px 34px;background:rgba(12,18,38,.72);border:1.5px solid rgba(255,255,255,.14);backdrop-filter:blur(8px);position:relative;overflow:hidden}
+.c.hot{border-color:#ffc233;background:linear-gradient(160deg,rgba(255,122,61,.28),rgba(12,18,38,.78))}
+.c .who{display:flex;align-items:center;gap:14px;font-size:30px;font-weight:700;color:#d6dcea}
+.c .who i{font-style:normal;font-size:22px;font-weight:900;padding:4px 12px;border-radius:8px;background:#26314f;color:#b9c2d8;letter-spacing:1px}
+.c.hot .who i{background:#ffc233;color:#0a0f1e}
+.c .num{font-weight:900;line-height:1;margin-top:18px;font-variant-numeric:tabular-nums;letter-spacing:-1px}
+.v .c .num{font-size:150px}.h .c .num{font-size:120px}
+.c .num small{font-size:.38em;font-weight:700;margin-left:8px;letter-spacing:0}
+.c.hot .num{color:#ffc233;text-shadow:0 0 40px rgba(255,194,51,.35)}
+.c .cap{font-size:24px;color:#9aa5c2;margin-top:14px;line-height:1.45}
+.vs{display:flex;align-items:center;justify-content:center}
+.v .vs{height:190px}.h .vs{width:200px;flex:none}
+.stamp{font-weight:900;color:#0a0f1e;background:#ffc233;border-radius:999px;padding:14px 34px;font-size:56px;box-shadow:0 10px 40px rgba(255,194,51,.45);white-space:nowrap}
+.stamp.red{background:#ff5b5b;color:#fff;box-shadow:0 10px 40px rgba(255,91,91,.45)}
+.ruler{position:absolute;left:0;right:0}
+.v .ruler{bottom:7%}.h .ruler{bottom:4%}
+.ruler .row{display:flex;align-items:center;gap:16px;margin-top:14px}
+.ruler .lab{width:190px;font-size:24px;color:#b9c2d8;text-align:right;flex:none}
+.ruler .track{flex:1;height:22px;border-radius:11px;background:rgba(255,255,255,.08);position:relative;overflow:hidden}
+.ruler .fill{position:absolute;left:0;top:0;bottom:0;border-radius:11px}
+.ruler .ticks{display:flex;justify-content:space-between;margin-left:206px;color:#7d88a6;font-size:20px;margin-top:8px}
+.credit{position:absolute;right:0;bottom:-30px;font-size:18px;color:#7d88a6}
+.cross{position:absolute;left:30px;right:30px;top:50%;height:8px;background:#ff5b5b;border-radius:4px;transform-origin:left;box-shadow:0 0 16px rgba(255,91,91,.6)}
+</style></head>
+<body><div class="bg" id="bg"></div><div class="shade"></div>
+<div class="frame">
+<h1 id="t"></h1><div class="sub" id="sub"></div>
+<div class="stage" id="st"></div>
+<div class="foot"><div id="src"></div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+const H=HEROS[Q.get('id')]; window.__animSec=H.sec||4;
+document.getElementById('t').innerHTML=H.title; document.getElementById('sub').textContent=H.sub; document.getElementById('src').innerHTML=H.src;
+document.getElementById('bg').style.backgroundImage=`url(photos/${H.photo})`; if(!H.ruler) document.documentElement.classList.add('noruler');
+const nf=(v,d)=>v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+chart(t=>{
+  document.getElementById('bg').style.transform=`scale(${1.06+0.08*t}) translate(${-1.5*t}%,0)`;
+  const st=document.getElementById('st'); st.innerHTML='';
+  const cards=document.createElement('div');cards.className='cards';st.appendChild(cards);
+  H.cards.forEach((c,i)=>{
+    const p=easeOut(seg(t,i*.32,i*.32+.25)); const pc=ease(seg(t,i*.32+.05,i*.32+.4));
+    const el=document.createElement('div');el.className='c'+(c.hot?' hot':'');el.style.opacity=p;el.style.transform=`translateY(${(1-p)*40}px)`;
+    const val=c.text?c.text:(c.pre||'')+nf(c.v*pc,c.d||0);
+    el.innerHTML=`<div class="who"><i>${c.tag}</i>${c.who}</div><div class="num">${val}<small>${c.unit||''}</small></div><div class="cap">${c.cap||''}</div>`;
+    if(c.cross){const x=document.createElement('div');x.className='cross';x.style.transform=`scaleX(${ease(seg(t,.78,.9))})`;el.appendChild(x);}
+    cards.appendChild(el);
+    if(i<H.cards.length-1){const vs=document.createElement('div');vs.className='vs';const sp=seg(t,.62,.78);
+      const s=document.createElement('div');s.className='stamp'+(H.stampRed?' red':'');s.textContent=H.stamp;
+      const k=sp<=0?0:(sp<.6?sp/.6*1.25:1.25-(sp-.6)/.4*.25);s.style.transform=`scale(${k}) rotate(${(1-sp)*-12}deg)`;s.style.opacity=sp>0?1:0;vs.appendChild(s);cards.appendChild(vs);}
+  });
+  if(H.ruler){const r=document.createElement('div');r.className='ruler';const pr=ease(seg(t,.35,.95));
+    r.innerHTML=H.ruler.rows.map(x=>`<div class="row"><div class="lab">${x[0]}</div><div class="track"><div class="fill" style="width:${x[1]/H.ruler.max*100*pr}%;background:${x[2]}"></div></div></div>`).join('')+`<div class="ticks">${H.ruler.ticks.map(k=>`<span>${k}</span>`).join('')}</div><div class="credit">${H.credit}</div>`;
+    r.style.opacity=seg(t,.3,.45);st.appendChild(r);}
+});
+</script></body></html>

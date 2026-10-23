@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i></div>
+<h1>小牛今年前三季度，<em>已经超过去年全年</em></h1>
+<div class="sub">小牛电动销量（万辆）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>小牛电动 SEC 6-K：2026-03-16（2025年报）、2026-10-05（2026年三季度销量）</b>｜2025全年为按季度累加</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  columns(svg,w,h*.78,t,{max:140,dec:1,vfs:V?48:48,kfs:V?28:28,top:80,bottom:100,pad:.4,
+   data:[{k:'2025 全年',v:119.2,color:C.muted,note:'营收43.1亿元 · +31%'},{k:'2026 前三季度',v:123.4,color:C.orange,note:'三个季度就超过去年全年'}]});
+  if(t>.85){const p=seg(t,.85,1);const gg=svg.append('g').attr('opacity',p);const y0=h*.84;
+    txt(gg,0,y0,'海外：2026年三季度卖了4.7万辆，去年同期1.4万辆（×3.3）',{fs:V?26:30,fw:900,fill:C.yellow});
+    txt(gg,0,y0+(V?44:48),'但仍在亏损：2026年二季度净亏损1.02亿元',{fs:V?24:28,fill:C.t2});}
+});
+</script></body></html>

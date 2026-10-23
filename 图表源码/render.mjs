@@ -19,7 +19,7 @@ for(const f of files){
     await page.waitForFunction('window.__ready===true',{timeout:20000});
     await page.screenshot({path:path.join(out,dir,`${base}_${dir}.png`)});
     if(anim&&(o==='v'||GS)){
-      const tmp=fs.mkdtempSync(require('os').tmpdir()+'/fr-');
+      const tmp=fs.mkdtempSync('/tmp/claude-0/-home-user-dy/12422577-561d-516a-aacf-b65a94764a7f/scratchpad/fr-');
       const sec=await page.evaluate(()=>window.__animSec||2.5); const N=Math.round(sec*30), HOLD=45; let k=0;
       for(let i=0;i<=N;i++){await page.evaluate(t=>window.setProgress(t),i/N);await page.screenshot({path:`${tmp}/f${String(k++).padStart(4,'0')}.png`});}
       for(let i=0;i<HOLD;i++){fs.copyFileSync(`${tmp}/f${String(N).padStart(4,'0')}.png`,`${tmp}/f${String(k++).padStart(4,'0')}.png`);}

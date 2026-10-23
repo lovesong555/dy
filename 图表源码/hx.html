@@ -1,0 +1,86 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- 档案馆版式（学虎嗅七上八下的“纸张底＋竖排标签＋复古电视框＋大数字”，配色和文案是自有的） -->
+<style>
+@font-face{font-family:Serif;src:local('Noto Serif CJK SC'),local('Source Han Serif SC'),local('Noto Serif SC')}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#EFE9DD}
+body{font-family:'Noto Sans CJK SC','Source Han Sans SC',sans-serif;color:#1d1a16}
+.paper{position:absolute;inset:0;background:
+ radial-gradient(ellipse at center,rgba(255,255,255,.0) 55%,rgba(90,60,30,.22) 100%),
+ radial-gradient(#d9cdb6 1.2px,transparent 1.3px) 0 0/14px 14px,#EFE9DD}
+.grain{position:absolute;inset:0;opacity:.18;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>")}
+.top{position:absolute;left:0;right:0;top:0;height:7%;display:flex;align-items:center;gap:18px;padding:0 5%;border-bottom:3px solid #1d1a16}
+.top b{font-family:Serif;font-weight:900;font-size:min(4.2vw,46px);letter-spacing:4px}
+.top b:before{content:'';display:inline-block;width:12px;height:.9em;background:#C8372D;margin-right:14px;vertical-align:-2px}
+.top span{font-size:min(2.2vw,24px);letter-spacing:3px;color:#6b5f50}
+.wm{position:absolute;bottom:1.5%;left:0;right:0;text-align:center;font-weight:900;font-size:min(14vw,190px);letter-spacing:10px;color:rgba(29,26,22,.06);font-family:Serif}
+.src{position:absolute;right:5%;bottom:4%;font-size:min(2vw,22px);color:#6b5f50}
+.stage{position:absolute;left:0;right:0;top:9%;bottom:12%}
+/* label card */
+.who{position:absolute;font-family:Serif;font-weight:900;color:#1d1a16}
+.sil{position:absolute;filter:drop-shadow(0 0 0 #fff)}
+.tags{position:absolute;display:flex;gap:22px;flex-direction:row-reverse}
+.tag{font-family:Serif;font-weight:900;background:#fff;border:3px solid #1d1a16;padding:16px 0 20px;line-height:1.12;text-align:center;box-shadow:6px 6px 0 #1d1a16;position:relative;flex:0 0 auto}
+.tag small{display:block;font-family:'DejaVu Sans Mono',monospace;font-weight:700;font-size:.55em;color:#C8372D;letter-spacing:0;margin-bottom:12px;text-align:center}
+.tag.red{background:#C8372D;color:#fff}.tag.red small{color:#fff}
+/* tv */
+.tv{position:absolute;background:linear-gradient(#5b4f43,#3a322a);border-radius:36px;padding:4% 22% 4% 4%;box-shadow:0 30px 60px rgba(0,0,0,.35)}
+.tv .scr{position:relative;width:100%;height:100%;border-radius:28px/40px;overflow:hidden;background:#000}
+.tv .scr img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;filter:sepia(.25) contrast(1.05)}
+.tv .scr:after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 4px),radial-gradient(ellipse,transparent 60%,rgba(0,0,0,.55))}
+.tv .knob{position:absolute;right:6%;width:10%;aspect-ratio:1;border-radius:50%;background:radial-gradient(#9c8d7c,#3d342b);border:4px solid #2a231d}
+.tv .grill{position:absolute;right:5%;bottom:10%;width:12%;height:28%;background:repeating-linear-gradient(0deg,#2a231d 0 6px,#6c5e50 6px 10px);border-radius:8px}
+.cap{position:absolute;left:0;right:0;text-align:center;font-family:Serif;font-weight:900;color:#1d1a16}
+.cap em{font-style:normal;color:#C8372D}
+/* big number */
+.big{position:absolute;left:0;right:0;text-align:center;font-weight:900;font-family:'DejaVu Sans',sans-serif;color:#C8372D;letter-spacing:-4px;line-height:1}
+.big i{display:inline-block;width:.16em;height:.9em;background:#1d1a16;transform:skewX(-18deg);margin:0 .08em;vertical-align:-.05em}
+.lab{position:absolute;left:8%;right:8%;text-align:center;font-family:Serif;font-weight:900}
+.bar{position:absolute;height:44px;border:3px solid #1d1a16;background:#fff}
+.bar>div{height:100%;background:#C8372D}
+</style></head><body>
+<div class="paper"></div><div class="grain"></div>
+<div class="top"><b>商业档案 No.07</b><span id="topsub">CASE FILE</span></div>
+<div class="stage" id="st"></div>
+<div class="wm">CASE FILE</div><div class="src" id="src"></div>
+<script>
+const q=new URLSearchParams(location.search),O=q.get('o')||'v',ID=q.get('id')||'07_L1',V=O==='v';
+const W=innerWidth,H=innerHeight,st=document.getElementById('st');
+const E=(h)=>{const d=document.createElement('div');d.innerHTML=h;return d.firstElementChild};
+const ease=t=>t<0?0:t>1?1:1-Math.pow(1-t,3), seg=(t,a,b)=>ease((t-a)/(b-a));
+let anim=[];
+const SIL=`<svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg"><path d="M100 18c30 0 50 24 50 56s-20 60-50 60-50-28-50-60 20-56 50-56zM20 260c0-62 32-104 80-104s80 42 80 104z" fill="#2b2620" stroke="#fff" stroke-width="7"/><text x="100" y="215" font-size="17" fill="#8a7d6c" text-anchor="middle" font-family="sans-serif">人物抠像位</text></svg>`;
+const CFG={
+ '07_L1':{src:'来源：《中国企业家》2006-07；钛媒体 2017-01；IT之家 2022-12；小牛电动 SEC 13D/A 2026-07',
+  build(){
+   const tags=[['1985','少年班'],['1995','华为副总裁'],['2000','港湾创始人'],['2014','小牛联合创始人'],['2022','造车退款'],['2026','信托大股东']];
+   const fs=V?50:46;
+   const sil=E(`<div class="sil" style="${V?`left:6%;top:4%;width:46%`:`left:7%;top:2%;width:19%`}">${SIL}</div>`);st.append(sil);
+   const who=E(`<div class="who" style="${V?`left:6%;top:${0.42*H}px;font-size:92px`:`left:30%;top:30%;font-size:110px`}">李一男<div style="font-size:.32em;color:#6b5f50;font-weight:700;letter-spacing:4px;margin-top:10px">从华为少帅，到小牛背后的人</div></div>`);st.append(who);
+   const box=E(`<div class="tags" style="${V?`left:6%;right:6%;top:${0.56*H}px;justify-content:space-between;flex-direction:row`:`right:5%;top:4%;flex-direction:row;gap:26px;align-items:flex-start`}"></div>`);st.append(box);
+   const els=tags.map(([y,t],i)=>{const e=E(`<div class="tag${i>=4?' red':''}" style="font-size:${fs}px;width:${fs*1.9}px"><small>${y}</small>${[...t].join('<br>')}</div>`);box.append(e);return e});
+   anim.push(t=>{sil.style.opacity=seg(t,0,.2);sil.style.transform=`translateY(${40*(1-seg(t,0,.25))}px) scale(${.96+.04*seg(t,0,1)})`;who.style.opacity=seg(t,.1,.3);
+     els.forEach((e,i)=>{const k=seg(t,.25+i*.1,.35+i*.1);e.style.opacity=k;e.style.transform=`translateY(${-30*(1-k)}px)`;});});
+  }},
+ '07_L2':{src:'截图来源：虎嗅转载《中国企业家》2006-07-21《别了，港湾》',
+  build(){
+   const tv=E(`<div class="tv" style="${V?`left:5%;right:5%;top:12%;height:38%`:`left:24%;right:24%;top:6%;height:68%`}"><div class="scr"><img src="evidence/07_证据1_中国企业家2006.png"></div><div class="knob" style="top:14%"></div><div class="knob" style="top:40%"></div><div class="grill"></div></div>`);st.append(tv);
+   const cap=E(`<div class="cap" style="${V?`top:56%;font-size:64px;line-height:1.5`:`bottom:4%;font-size:56px`}">2006年的杂志写道：<br${V?'':' style="display:none"'}><em>“27岁上就做到了副总裁”</em></div>`);st.append(cap);
+   const img=tv.querySelector('img');
+   anim.push(t=>{tv.style.opacity=seg(t,0,.15);tv.style.transform=`scale(${.92+.08*seg(t,0,.3)})`;img.style.transform=`scale(${1+.25*seg(t,.3,1)})`;img.style.transformOrigin='30% 40%';cap.style.opacity=seg(t,.45,.65);});
+  }},
+ '07_L3':{src:'来源：小牛电动 SEC Schedule 13D/A（第8号修正，2026-07-24）',
+  build(){
+   const lab=E(`<div class="lab" style="top:${V?'18%':'4%'};font-size:${V?56:52}px">他不在小牛任职，<br>但他是受益人的信托持有小牛A类股</div>`);st.append(lab);
+   const big=E(`<div class="big" style="top:${V?'36%':'30%'};font-size:${V?230:300}px"><span id="n">0.0</span><i></i>%</div>`);st.append(big);
+   const bar=E(`<div class="bar" style="left:12%;right:12%;top:${V?'58%':'70%'}"><div></div></div>`);st.append(bar);
+   const note=E(`<div class="lab" style="top:${V?'64%':'80%'};font-size:${V?40:36}px;color:#6b5f50">第一大股东 · 2026年6–7月又增持约210万美元</div>`);st.append(note);
+   const n=big.querySelector('#n'),f=bar.firstElementChild;
+   anim.push(t=>{lab.style.opacity=seg(t,0,.15);const k=seg(t,.15,.7);n.textContent=(41.9*k).toFixed(1);big.style.opacity=seg(t,.1,.2);f.style.width=(41.9*k)+'%';note.style.opacity=seg(t,.75,.9);});
+  }}
+};
+const C=CFG[ID];document.getElementById('src').textContent=C.src;C.build();
+window.__animSec=ID==='07_L1'?4:3;
+window.setProgress=t=>anim.forEach(f=>f(t));
+const im=[...document.images];Promise.all(im.map(i=>i.complete?1:new Promise(r=>{i.onload=i.onerror=r}))).then(()=>{setProgress(1);window.__ready=true});
+</script></body></html>

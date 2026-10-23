@@ -1,0 +1,46 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i></div>
+<h1>从华为少帅到小牛大股东，<em>三十年起落</em></h1>
+<div class="sub">李一男公开履历时间线（纵向位置为叙事示意，非量化数据）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>《中国企业家》2006；新浪2006-06-08；钛媒体2017-01-24、2018-10-20；IT之家2022-12-08；SEC 13D/A 2026-07-24</b></div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+window.__animSec=6;
+chart(t=>{const {svg,w,h}=S();const g=svg.append('g');
+  // [年, 位置0-1, 年份, 事件, H标签: dx,dy,anchor]
+  const E=[[1993,.55,'1993','硕士毕业入职华为',[0,48,'middle']],[1997,.92,'1997','27岁升任副总裁',[-10,-40,'end']],[2000,.85,'2000','创办港湾网络',[14,-40,'start']],[2006,.38,'2006','港湾卖给华为',[0,52,'middle']],[2008,.7,'2008','百度CTO',[0,-40,'middle']],[2011,.62,'2011','金沙江创投合伙人',[0,52,'middle']],[2014,.82,'2014','联合创办小牛电动',[0,-40,'middle']],[2015,.25,'2015','内幕交易案被带走',[-18,6,'end']],[2017,.08,'2017','一审：有期徒刑2年6个月',[0,52,'middle']],[2018,.5,'2018','小牛纳斯达克上市',[-6,-38,'end']],[2022,.3,'2022','造车项目向2.4万人退款',[0,52,'middle']],[2026,.68,'2026','名下信托持小牛41.9%',[-10,-40,'end']]];
+  const id='lc'+Math.random().toString(36).slice(2,6); const gr=defsGrad(svg,'lg'+id,'#3d8bff','#ffc233',V);
+  let X,Y,pt;
+  if(V){const m={l:200,r:40,t:30,b:30};
+    const yy=d3.scaleLinear().domain([-0.6,E.length-0.4]).range([m.t+30,h-m.b]); const IX=new Map(E.map((e,i)=>[e[0],i])); const xx=d3.scaleLinear().domain([0,1]).range([m.l+60,w-m.r-260]);
+    X=d=>xx(d[1]);Y=d=>yy(IX.get(d[0]));
+    g.append('line').attr('x1',xx(.5)).attr('x2',xx(.5)).attr('y1',m.t).attr('y2',h-m.b).attr('stroke','#26314f').attr('stroke-width',2).attr('stroke-dasharray','6 8');
+    txt(g,xx(.05),m.t+4,'← 低谷',{fs:22,fill:C.t3,anchor:'middle'});txt(g,xx(.95),m.t+4,'高光 →',{fs:22,fill:C.t3,anchor:'middle'});
+    svg.select('defs').append('clipPath').attr('id',id).append('rect').attr('x',0).attr('y',0).attr('width',w).attr('height',m.t+(h-m.t-m.b)*ease(t)+6);
+    const line=d3.line().x(X).y(Y).curve(d3.curveMonotoneY);
+    g.append('path').attr('d',line(E)).attr('fill','none').attr('stroke',gr).attr('stroke-width',7).attr('clip-path',`url(#${id})`).attr('stroke-linecap','round');
+    const ymax=yy.invert(m.t+(h-m.t-m.b)*ease(t));
+    E.forEach(e=>{if(IX.get(e[0])>ymax+.01)return;const col=e[1]<.4?C.red:(e[1]>.8?C.yellow:C.blue);
+      g.append('circle').attr('cx',X(e)).attr('cy',Y(e)).attr('r',12).attr('fill',C.bg).attr('stroke',col).attr('stroke-width',5);
+      txt(g,m.l-24,Y(e),e[2],{anchor:'end',base:'middle',fs:28,fw:900,fill:col});
+      g.append('line').attr('x1',m.l-14).attr('x2',X(e)-16).attr('y1',Y(e)).attr('y2',Y(e)).attr('stroke',col).attr('stroke-opacity',.25).attr('stroke-width',1.5);
+      txt(g,X(e)+24,Y(e),e[3],{base:'middle',fs:23,fill:C.t1});});
+  } else {const m={l:90,r:90,t:80,b:90};
+    const xx=d3.scaleLinear().domain([1992,2027]).range([m.l,w-m.r]); const yy=d3.scaleLinear().domain([0,1]).range([h-m.b,m.t]);
+    X=d=>xx(d[0]);Y=d=>yy(d[1]);
+    g.append('line').attr('x1',m.l).attr('x2',w-m.r).attr('y1',yy(.5)).attr('y2',yy(.5)).attr('stroke','#26314f').attr('stroke-width',2).attr('stroke-dasharray','6 8');
+    txt(g,m.l-60,yy(.95),'高光',{fs:22,fill:C.t3});txt(g,m.l-60,yy(.05),'低谷',{fs:22,fill:C.t3});
+    svg.select('defs').append('clipPath').attr('id',id).append('rect').attr('x',0).attr('y',0).attr('height',h).attr('width',m.l+(w-m.l-m.r)*ease(t)+6);
+    const line=d3.line().x(X).y(Y).curve(d3.curveMonotoneX);
+    g.append('path').attr('d',line(E)).attr('fill','none').attr('stroke',gr).attr('stroke-width',7).attr('clip-path',`url(#${id})`).attr('stroke-linecap','round');
+    const xmax=xx.invert(m.l+(w-m.l-m.r)*ease(t));
+    E.forEach(e=>{if(e[0]>xmax+.01)return;const col=e[1]<.4?C.red:(e[1]>.8?C.yellow:C.blue);const [dx,dy,an]=e[4];
+      g.append('circle').attr('cx',X(e)).attr('cy',Y(e)).attr('r',13).attr('fill',C.bg).attr('stroke',col).attr('stroke-width',5);
+      txt(g,X(e)+dx,Y(e)+dy-(dy<0?26:0),e[2],{anchor:an,fs:26,fw:900,fill:col});
+      txt(g,X(e)+dx,Y(e)+dy+(dy<0?4:28),e[3],{anchor:an,fs:22,fill:C.t1});});
+  }
+});
+</script></body></html>
