@@ -1,0 +1,20 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第06期 · AI与变压器</div>
+<h1>中国变压器卖给谁？<em>美国只占一成</em></h1>
+<div class="sub">2026年1–8月中国变压器出口去向（亿美元，合计79.5）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>海关数据，财信证券 2026-09-23</b>｜“其他”= 合计减去三项，含美洲其他、非洲、大洋洲</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  const parts=[{k:'亚洲',v:36.14,color:C.blue},{k:'欧洲',v:17.01,color:C.aqua},{k:'美国',v:8.66,color:C.orange},{k:'其他',v:17.69,color:C.muted}];
+  const D=donut(svg,w,h,t,{parts,scale:V?.78:.8,cx:V?w/2:w*.32,cy:V?h*.36:h/2,center:['79.5','亿美元 +28.5%'],cfs:80});
+  const lx=V?60:w*.62, ly0=V?h*.72:h*.2; parts.forEach((p,i)=>{if(t<.3+i*.12)return;const y=ly0+i*(V?80:110);
+    svg.append('rect').attr('x',lx).attr('y',y-26).attr('width',28).attr('height',28).attr('rx',6).attr('fill',p.color);
+    txt(svg,lx+48,y,p.k,{fs:34,fw:700});txt(svg,lx+(V?220:200),y,fmt(p.v,2)+'亿',{fs:34,fw:900});
+    txt(svg,lx+(V?440:420),y,fmt(p.v/79.5*100,1)+'%',{fs:30,fill:C.t2});});
+  if(t>.95) txt(svg,V?60:w*.62,V?h-10:h*.2+470,'美国：单一国家第一，增量+2.94亿美元',{fs:30,fw:900,fill:C.yellow});
+});
+</script></body></html>

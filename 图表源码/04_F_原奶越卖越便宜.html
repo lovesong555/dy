@@ -1,0 +1,17 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第04期 · 牛奶与巴西大豆</div>
+<h1>奶价跌了三年，<em>只能从饲料里抠成本</em></h1>
+<div class="sub">现代牧业原奶平均售价与公斤奶饲料成本（元/公斤）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>现代牧业2024年报、2026中期报告（港交所）；第一财经 2026-04-15（2025年数据）</b></div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  lines(svg,w,h,t,{left:80,right:V?50:160,top:80,bottom:80,ydom:[0,4.5],xdom:[-.2,3.2],xticks:[0,1,2,3],xfmt:v=>['2023','2024','2025','2026上半年'][v],yfmt:v=>v.toFixed(1),
+   series:[{name:V?'':'原奶售价',color:C.blue,pts:[[0,4.03],[1,3.61],[2,3.335],[3,3.21]],labels:['4.03','3.61','3.34','3.21'],w:6},
+           {name:V?'':'饲料成本',color:C.orange,pts:[[0,2.34],[1,1.95],[3,1.76]],labels:['2.34','1.95','1.76'],w:6}]});
+  if(t>.95){txt(svg,90,h-110,V?'蓝：原奶售价  橙：饲料成本':'',{fs:26,fill:C.t2});txt(svg,w-10,40,'2024年亏14.2亿 → 2026上半年扭亏0.42亿',{anchor:'end',fs:V?28:30,fw:900,fill:C.yellow});}
+});
+</script></body></html>

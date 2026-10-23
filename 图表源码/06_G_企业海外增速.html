@@ -1,0 +1,15 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第06期 · AI与变压器</div>
+<h1>谁在吃这波订单</h1>
+<div class="sub">A股电力设备公司海外/相关业务增速（各公司口径不同，不可横向直接比）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>特变电工2025年报；界面新闻；中信建投（格隆汇）</b></div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  hbars(svg,w,h,t,{labelW:V?260:300,valueW:V?150:170,tfs:V?24:22,max:100,unit:'%',kfs:V?30:32,vfs:V?34:36,dec:1,
+   data:[{k:'思源电气',v:88.9,color:C.blue,tag:'2025上半年 海外收入28.6亿元'},{k:'金盘科技',v:68.3,color:C.blue,tag:'2026上半年 海外收入14.8亿元 占42%'},{k:'特变电工',v:68,color:C.blue,tag:'2025 国际产品签约20亿美元'},{k:'伊戈尔',v:58.8,color:C.aqua,tag:'2025 数据中心产品收入'},{k:'华明装备',v:47.4,color:C.blue,tag:'2025 直接+间接出口7.14亿元'}]});
+});
+</script></body></html>

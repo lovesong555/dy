@@ -1,0 +1,20 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第06期 · AI与变压器</div>
+<h1>美国数据中心用电，<em>5年最多翻3倍</em></h1>
+<div class="sub">美国数据中心年用电量（太瓦时 TWh）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>美国能源部/劳伦斯伯克利国家实验室（LBNL）2024-12-20</b>｜2028为预测区间</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  const r=lines(svg,w,h,t,{left:90,right:V?60:200,top:90,bottom:80,ydom:[0,620],xdom:[2014,2028],xticks:[2014,2018,2023,2028],
+    series:[{color:C.blue,pts:[[2014,58],[2018,76],[2023,176]],area:true,w:6,labels:['58','','176'],lfs:34},
+            {color:C.orange,pts:[[2023,176],[2028,580]],w:5,dash:'12 10',dots:false},{color:C.orange,pts:[[2023,176],[2028,325]],w:5,dash:'12 10',dots:false}]});
+  if(t>.85){const g=svg.append('g').attr('opacity',seg(t,.85,1));const {x,y}=r;
+    g.append('path').attr('d',`M${x(2023)},${y(176)} L${x(2028)},${y(580)} L${x(2028)},${y(325)} Z`).attr('fill','#ff7a3d22');
+    txt(g,x(2028)-10,y(580)-24,'580',{anchor:'end',fs:36,fw:900,fill:C.orange});txt(g,x(2028)-10,y(325)+44,'325',{anchor:'end',fs:36,fw:900,fill:C.orange});
+    txt(g,x(2014),y(560),'占全美用电：2023年4.4% → 2028年6.7–12%',{fs:V?28:30,fw:900,fill:C.yellow});}
+});
+</script></body></html>

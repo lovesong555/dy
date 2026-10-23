@@ -1,0 +1,20 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第03期 · 现代冰轮</div>
+<h1>厂房刚建好，<em>订单已经排满两年</em></h1>
+<div class="sub">现代冰轮蓬莱工厂相关订单与交付节点</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>现代冰轮官网新闻 2024-08 至 2026-10；韩媒 2025-03-28</b></div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();const g=svg.append('g');
+  const E=[['2024-08','沙特 Taiba 2：3台HRSG，45个模块',C.blue],['2025-01','沙特 Qurayyah：36个HRSG模块，蓬莱组装',C.blue],['2025-03-21','蓬莱新工厂竣工投产',C.yellow],['2025-04','沙特 Rumah 2 / Nairah 2：蓬莱制造组装',C.blue],['2025-09-19','阿联酋 TA\'ZIZ：工业锅炉 + 明火加热器',C.orange],['2026-02','土耳其浮动电站：50台直流蒸汽发生器',C.blue],['2026-09底','TA\'ZIZ 工业锅炉计划交付',C.orange],['2026-10','卡塔尔 NFW LNG：6台HRSG',C.blue]];
+  const n=E.length; const x0=V?40:200; const gap=(h-40)/n;
+  g.append('line').attr('x1',x0).attr('x2',x0).attr('y1',20).attr('y2',20+(h-60)*ease(t)).attr('stroke','#33406a').attr('stroke-width',4);
+  E.forEach((e,i)=>{const p=seg(t,i/n*.8,i/n*.8+.2); if(p<=0)return; const y=30+i*gap; const gg=g.append('g').attr('opacity',p).attr('transform',`translate(${(1-p)*30},0)`);
+    gg.append('circle').attr('cx',x0).attr('cy',y).attr('r',14).attr('fill',e[2]).attr('stroke','#0a0f1e').attr('stroke-width',4);
+    if(V){txt(gg,x0+36,y-4,e[0],{fs:30,fw:900,fill:e[2],base:'middle'});txt(gg,x0+36,y+40,e[1],{fs:28,fill:C.t1,base:'middle'});}
+    else{txt(gg,x0-30,y,e[0],{anchor:'end',fs:28,fw:900,fill:e[2],base:'middle'});txt(gg,x0+36,y,e[1],{fs:30,fill:C.t1,base:'middle'});}});
+});
+</script></body></html>

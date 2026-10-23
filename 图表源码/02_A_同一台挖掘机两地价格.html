@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第02期 · 挖掘机去南美</div>
+<h1>同一款三一SY215C，<em>巴西挂牌贵近一倍</em></h1>
+<div class="sub">二手挂牌价（万元人民币）：同为2022年、3400–3700小时</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>铁甲二手机 tiebaobei.com；巴西 maquinalista.com</b>（2026-10-23抓取）｜挂牌价非成交价；1雷亚尔≈1.329元</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();const g=svg.append('g');
+  const x=d3.scaleLinear().domain([0,125]).range([V?40:260,w-40]);
+  const rows=[{k:'中国',c:C.blue,pts:[[35,'2022·3400h',1],[27.8,'2022·6568h'],[28.5,'2020·4000h'],[26.8,'2020·8400h'],[22.5,'2019·6500h']]},
+              {k:'巴西',c:C.orange,pts:[[65.1,'2022·3700h',1],[69.1,'2022·3022h'],[49.2,'2022·7000h'],[79.7,'2023·1300h'],[110.2,'2024·3100h'],[119.5,'2024·准新']]}];
+  const y0=V?260:130, gap=V?420:300;
+  [0,25,50,75,100,125].forEach(v=>{g.append('line').attr('x1',x(v)).attr('x2',x(v)).attr('y1',y0-120).attr('y2',y0+gap+80).attr('stroke',C.grid).attr('stroke-width',1.5);txt(g,x(v),y0+gap+120,v+'万',{anchor:'middle',fs:24,fill:C.t3});});
+  rows.forEach((r,i)=>{const y=y0+i*gap; txt(g,V?40:0,V?y-90:y,r.k,{fs:V?40:44,fw:900,fill:r.c,base:'middle'});
+    g.append('line').attr('x1',x(0)).attr('x2',x(125)).attr('y1',y).attr('y2',y).attr('stroke','#26314f').attr('stroke-width',2);
+    r.pts.forEach((p,j)=>{const pr=seg(t,i*.3+j*.04,i*.3+j*.04+.2); if(pr<=0)return;
+      g.append('circle').attr('cx',x(p[0])).attr('cy',y).attr('r',(p[2]?22:13)*easeOut(pr)).attr('fill',p[2]?r.c:r.c+'77').attr('stroke',p[2]?'#fff':'none').attr('stroke-width',3);
+      if(p[2]) {txt(g,x(p[0]),y-40,p[0]+'万',{anchor:'middle',fs:V?40:40,fw:900});txt(g,x(p[0]),y+56,p[1],{anchor:'middle',fs:24,fill:C.t2});}});});
+  if(t>.75){const p=seg(t,.75,.9);const a=x(35),b=x(65.1),ym=y0+gap/2; g.append('path').attr('d',`M${a},${y0+30} C${a},${ym} ${b},${ym} ${b},${y0+gap-30}`).attr('fill','none').attr('stroke',C.yellow).attr('stroke-width',4).attr('stroke-dasharray','10 8').attr('opacity',p);
+    txt(g,(a+b)/2+30,ym+10,'≈ 1.9 倍',{fs:V?52:52,fw:900,fill:C.yellow}).attr('opacity',p);}
+});
+</script></body></html>

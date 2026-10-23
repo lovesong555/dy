@@ -1,0 +1,28 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第04期 · 牛奶与巴西大豆</div>
+<h1>一盒牛奶的上游，<em>在地球另一边</em></h1>
+<div class="sub">2025-05-29：6.9万吨可持续大豆，“山东福义”号从桑托斯STS11码头启航，交付蒙牛旗下现代牧业</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>中粮集团官网 2025-05-29</b>｜航线为示意，非实际航迹</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+let W;window.__init=async()=>{W=await loadWorld('110m');};
+chart(t=>{const {w,h}=stageBox();const svg=d3.select('#s').attr('width',w).attr('height',h);svg.selectAll('*').remove();
+  const proj=d3.geoNaturalEarth1().rotate([-40,0]).fitExtent([[V?50:0,0],[V?w-60:w,h]],{type:'MultiPoint',coordinates:V?[[-62,-42],[132,42]]:[[-75,-42],[140,48]]});
+  baseMap(svg,W,proj,{'Brazil':'#163f3a','China':'#1c2a52'});
+  const g=svg.append('g');
+  const route=[[-46.3,-23.95],[-38,-27],[-15,-33],[18.5,-36.5],[45,-30],[78,-8],[95,5],[103.8,1.3],[110,10],[118,25],[121.5,31.2]];
+  drawRoute(g,proj,route,ease(seg(t,.1,.9)),{color:'#1fc7a0',w:7,dash:'2 14'});
+  cityDot(g,proj([-46.3,-23.95]),'巴西 桑托斯港',{color:'#1fc7a0',dy:56,anchor:'start',dx:-30,sub:'中粮国际 STS11 码头'});
+  if(t>.4) cityDot(g,proj([18.5,-34.6]),'好望角',{color:'#7d88a6',r:14,dy:46,fs:24});
+  if(t>.7) cityDot(g,proj([103.8,1.3]),'马六甲',{color:'#7d88a6',r:14,dy:44,fs:24});
+  if(t>.88) cityDot(g,proj([121.5,31.2]),'中国港口',{color:'#3d8bff',dy:-36,anchor:V?'end':'middle',dx:V?20:0,sub:'压榨 → 豆粕 → 奶牛饲料'});
+  const lab=(n,ll,c)=>svg.append('text').attr('x',proj(ll)[0]).attr('y',proj(ll)[1]).attr('text-anchor','middle').attr('fill',c).attr('font-size',40).attr('font-weight',900).attr('opacity',.6).text(n);
+  lab('巴西',[-52,-10],'#5fe0c0');lab('中国',[100,43],'#7fa8ff');
+  const card=svg.append('g').attr('opacity',seg(t,.85,1)).attr('transform',`translate(${V?20:w-520},${V?h-210:h-220})`);
+  card.append('rect').attr('width',V?w-40:500).attr('height',190).attr('rx',20).attr('fill','#141d38').attr('stroke','#26314f');
+  txt(card,28,60,'一船 6.9 万吨',{fs:44,fw:900,fill:C.yellow});txt(card,28,110,'协议总量 150 万吨（2025–2030）',{fs:28,fw:700});txt(card,28,155,'= 约 22 船的量（自算）',{fs:26,fill:C.t2});
+});
+</script></body></html>

@@ -1,0 +1,16 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第04期 · 牛奶与巴西大豆</div>
+<h1>卖一公斤奶，<em>四分之三的成本是饲料</em></h1>
+<div class="sub">现代牧业2024年：每公斤原奶售价、成本与饲料（元/公斤）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>现代牧业2024年年度业绩公告（港交所 2025-03-25）</b>｜毛差为自算，未计折旧外其他费用</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  waterfall(svg,w,h,t,{max:4.2,dec:2,vfs:V?40:40,kfs:V?28:28,bottom:V?120:100,
+   steps:[{k:'原奶售价',v:3.61,total:1,color:C.blue,label:'3.61'},{k:'饲料成本',v:-1.95,color:C.orange,label:'−1.95'},{k:'其他养殖成本',v:-0.58,color:C.muted,label:'−0.58'},{k:'每公斤毛差',v:1.08,total:1,color:C.aqua,label:'1.08'}]});
+  if(t>.9) txt(svg,w/2,40,'饲料 1.95 ÷ 成本 2.53 ≈ 77%',{anchor:'middle',fs:V?40:40,fw:900,fill:C.yellow});
+});
+</script></body></html>
