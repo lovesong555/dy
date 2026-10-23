@@ -62,3 +62,13 @@ svg text{font-family:NS,sans-serif}
 .v .lvl .node{width:100%;max-width:none}
 .h .tree .node{max-width:720px}
 .v .tree .node h3{font-size:36px}.v .tree .node p{font-size:27px}
+/* v2: 不显示左上角期数标签 */
+.tag{display:none!important}
+h1{margin-top:0!important}
+/* 绿幕叠加版：?gs=1 只保留路线与点位 */
+html.gs body{background:#00ff00!important}
+html.gs body::before{display:none}
+html.gs .frame>*:not(.stage){visibility:hidden}
+html.gs .basemap,html.gs .cn-label,html.gs .legend,html.gs .card-note{display:none}
+html.gs .glow{display:none}
+html.gs .inset{display:none}

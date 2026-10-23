@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="lib.js"></script>
+<style>
+.win{position:absolute;left:50%;top:50%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6);background:#fff;border:2px solid #2b375a}
+.bar{height:46px;background:#1b2440;display:flex;align-items:center;gap:10px;padding:0 16px;color:#b9c2d8;font-size:20px}
+.bar i{width:13px;height:13px;border-radius:50%;display:inline-block}
+.bar .url{margin-left:10px;background:#0f1630;border-radius:8px;padding:4px 14px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:18px}
+.view{position:relative;overflow:hidden}
+.view img{position:absolute;left:0;top:0;transform-origin:0 0}
+.hl{position:absolute;background:rgba(255,194,51,.55);mix-blend-mode:multiply;border-radius:4px}
+.box{position:absolute;border:4px solid #ff5b5b;border-radius:10px}
+.srctag{position:absolute;left:24px;top:62px;background:#ffc233;color:#0a0f1e;font-weight:900;padding:6px 16px;border-radius:8px;font-size:24px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.cap{position:absolute;left:0;right:0;text-align:center;font-weight:900;color:#fff;text-shadow:0 4px 18px rgba(0,0,0,.8)}
+</style></head>
+<body><div class="frame"><div class="stage" id="st" style="margin-top:0"></div></div>
+<script>
+const NAME=Q.get('n');
+let M,IMG;
+window.__animSec=3.5;
+window.__init=async()=>{const all=await (await fetch('evidence/meta.json')).json();M=all[NAME];
+  IMG=new Image();IMG.src='evidence/'+encodeURIComponent(NAME)+'.png';await IMG.decode();};
+chart(t=>{const st=document.getElementById('st');st.innerHTML='';const {w,h}=stageBox();
+  const r=(M.rects&&M.rects.length)?M.rects:[{x:200,y:400,w:600,h:30}];
+  const minx=Math.min(...r.map(a=>a.x)),miny=Math.min(...r.map(a=>a.y)),maxx=Math.max(...r.map(a=>a.x+a.w)),maxy=Math.max(...r.map(a=>a.y+a.h));
+  const ww=V?w*.96:w*.78; const vh=Math.min(V?h*.5:h*.78, 900*ww/1280); // window size
+  const pIn=easeOut(seg(t,0,.25)), pHl=ease(seg(t,.3,.7)), pZoom=ease(seg(t,.72,1));
+  const baseS=ww/1280; const zmax=Math.max(1,Math.min(1.9,0.86*ww/((maxx-minx)*baseS))); const zoom=1+(zmax-1)*pZoom; const s=baseS*zoom;
+  const cx=(minx+maxx)/2, cy=(miny+maxy)/2;
+  let ox=ww/2-cx*s, oy=(vh)/2-cy*s; ox=Math.min(0,Math.max(ww-1280*s,ox)); oy=Math.min(0,Math.max(vh-900*s,oy));
+  const win=document.createElement('div');win.className='win';win.style.width=ww+'px';
+  win.style.transform=`translate(-50%,-50%) scale(${.85+.15*pIn})`;win.style.opacity=pIn;
+  const dom=(M.url.split('/')[2]||'');
+  win.innerHTML=`<div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><div class="url">🔒 ${dom}</div></div><div class="view" style="width:${ww}px;height:${vh}px"></div>`;
+  const view=win.querySelector('.view'); const im=IMG.cloneNode();im.style.width='1280px';im.style.transform=`translate(${ox}px,${oy}px) scale(${s})`;view.appendChild(im);
+  // highlighter sweep across rects in order
+  const total=r.reduce((a,b)=>a+b.w,0); let acc=0;
+  r.forEach(a=>{const done=Math.max(0,Math.min(a.w,pHl*total-acc)); acc+=a.w; if(done<=0) return;
+    const d=document.createElement('div');d.className='hl';d.style.left=(ox+a.x*s-4)+'px';d.style.top=(oy+a.y*s-3)+'px';d.style.width=(done*s+8)+'px';d.style.height=(a.h*s+6)+'px';view.appendChild(d);});
+  if(pHl>.98){const b=document.createElement('div');b.className='box';b.style.left=(ox+minx*s-14)+'px';b.style.top=(oy+miny*s-12)+'px';b.style.width=((maxx-minx)*s+28)+'px';b.style.height=((maxy-miny)*s+24)+'px';b.style.opacity=seg(t,.7,.8);view.appendChild(b);}
+  st.appendChild(win);
+  const tag=document.createElement('div');tag.className='srctag';tag.textContent='来源：'+M.src;tag.style.opacity=seg(t,.15,.3);
+  tag.style.left=(V?(w-ww)/2+20:(w-ww)/2+20)+'px';tag.style.top=((h-vh-46)/2+60)+'px';st.appendChild(tag);
+});
+</script></body></html>

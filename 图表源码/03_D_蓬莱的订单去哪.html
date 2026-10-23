@@ -5,13 +5,13 @@
 <h1>蓬莱造的锅炉，<em>没有一台留在国内</em></h1>
 <div class="sub">现代冰轮近两年公开订单的目的地（官网新闻）</div>
 <div class="stage"><svg id="s"></svg></div>
-<div class="foot"><div>来源：<b>现代冰轮官网新闻中心 2024–2026</b>｜点位为国家示意，不代表项目精确位置</div><div class="brand">DATA / 产业链</div></div>
+<div class="foot"><div>来源：<b>现代冰轮官网新闻中心 2024–2026</b>｜底图：NASA Black Marble｜点位为国家示意，不代表项目精确位置</div><div class="brand">DATA / 产业链</div></div>
 </div>
-<script>
+<script>window.__animSec=5;
 let W;window.__init=async()=>{W=await loadWorld('110m');};
 chart(t=>{const {w,h}=stageBox();const svg=d3.select('#s').attr('width',w).attr('height',h);svg.selectAll('*').remove();
-  const proj=d3.geoNaturalEarth1().rotate([-60,0]).fitExtent([[V?20:0,20],[V?w-90:w-60,h]],{type:'MultiPoint',coordinates:V?[[5,-10],[128,55]]:[[-100,-10],[135,60]]});
-  baseMap(svg,W,proj,{'China':'#1c2a52'});
+  const proj=d3.geoEquirectangular().rotate([-60,0]).fitExtent([[V?20:0,20],[V?w-90:w-60,h]],{type:'MultiPoint',coordinates:V?[[5,-10],[128,55]]:[[-100,-10],[135,60]]});
+  nightMap(svg,W,proj,{'China':'#3d6bd6'});
   const src=[120.8,37.8]; const g=svg.append('g');
   const D=[['沙特',[46.7,24.7],'Qurayyah 36模块等'],['阿联酋',[52.7,24.1],'TA\'ZIZ 锅炉'],['卡塔尔',[51.5,25.3],'NFW LNG 6台HRSG'],['土耳其',[32.8,39.9],'浮动电站 50台OTSG'],['以色列',[34.8,32]],['捷克',[14.4,50.1]],['新加坡',[103.8,1.35]],['印尼',[106.8,-6.2]],['美国得州',[-97.7,30.3]]];
   const fits=D.filter(d=>{const p=proj(d[1]);return p[0]>0&&p[0]<w&&p[1]>0&&p[1]<h;});

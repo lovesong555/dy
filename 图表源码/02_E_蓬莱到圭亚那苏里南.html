@@ -1,0 +1,42 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i></div>
+<h1>从蓬莱港区，<em>一路开到加勒比海边</em></h1>
+<div class="sub">蓬莱港区件杂货航线 → 圭亚那、苏里南；同一片海岸上，是紫金矿业的两座金矿</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>半岛网2024-08-01；中国水运网（新浪转载）2024-12-06；紫金黄金国际2025年报</b>｜底图：NASA Black Marble（公有领域）｜航线为示意，非实际航迹</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+window.__animSec=6;
+let W;window.__init=async()=>{W=await loadWorld('110m');};
+chart(t=>{const {w,h}=stageBox();const svg=d3.select('#s').attr('width',w).attr('height',h);svg.selectAll('*').remove();
+  const proj=d3.geoEquirectangular().rotate([150,0]).fitExtent([[10,V?60:10],[V?w-10:w*.58,V?h*.6:h-10]],{type:'MultiPoint',coordinates:V?[[112,42],[-50,-8]]:[[105,48],[-45,-12]]});
+  nightMap(svg,W,proj,{'China':'#3d6bd6','Guyana':'#ffc233','Suriname':'#ffc233'});
+  const g=svg.append('g'); const pl=[120.8,37.8];
+  drawRoute(g,proj,[[117.7,39.0],[121,38.6],pl],ease(seg(t,0,.12)),{color:C.t2,w:4,dash:'2 10'});
+  drawRoute(g,proj,[[118.8,32.0],[122,34],pl],ease(seg(t,0,.12)),{color:C.t2,w:4,dash:'2 10'});
+  drawRoute(g,proj,[pl,[150,28],[-160,18],[-115,10],[-79.6,9],[-68,13],[-58.2,6.8]],ease(seg(t,.12,.7)),{color:C.yellow,w:7,dash:'2 12'});
+  drawRoute(g,proj,[[-58.2,6.8],[-55.2,5.9]],ease(seg(t,.7,.78)),{color:C.yellow,w:7,dash:'2 12'});
+  if(t>.05){cityDot(g,proj([117.7,39.0]),'天津',{color:C.t2,r:10,fs:22,dy:-18,anchor:'end',dx:-6});cityDot(g,proj([118.8,32.0]),'南京',{color:C.t2,r:10,fs:22,dy:28,anchor:'end',dx:-6});}
+  cityDot(g,proj(pl),'蓬莱港区',{color:C.yellow,r:22,fs:30,dy:-34,anchor:'start',dx:-10});
+  if(t>.68) cityDot(g,proj([-58.2,6.8]),'圭亚那',{color:C.yellow,r:16,fs:26,dy:-26,anchor:'end',dx:-6});
+  if(t>.76) cityDot(g,proj([-55.2,5.9]),'苏里南',{color:C.yellow,r:16,fs:26,dy:40,anchor:'end',dx:0});
+  // 放大镜：圭亚那—苏里南
+  if(t>.8){const p=seg(t,.8,.95);const iw=V?w*.92:w*.40, ih=V?h*.36:h*.62, ix=V?(w-iw)/2:w-iw-10, iy=V?h-ih-10:h-ih-10;
+    const ig=svg.append('g').attr('class','inset').attr('opacity',p).attr('transform',`translate(${ix},${iy})`);
+    ig.append('rect').attr('width',iw).attr('height',ih).attr('rx',18).attr('fill','#0d1430').attr('stroke',C.yellow).attr('stroke-width',3);
+    const ip=d3.geoEquirectangular().fitExtent([[10,10],[iw-10,ih-10]],{type:'MultiPoint',coordinates:[[-61.5,1.5],[-53.5,8.6]]});
+    const cp=ig.append('clipPath').attr('id','ic');cp.append('rect').attr('width',iw).attr('height',ih).attr('rx',18);
+    const mg=ig.append('g').attr('clip-path','url(#ic)');
+    nightMap(mg,W,ip,{'Guyana':'#ffc233','Suriname':'#ffc233'});
+    txt(mg,ip([-59,3.2])[0],ip([-59,3.2])[1],'圭亚那',{anchor:'middle',fs:V?34:30,fw:900,fill:'#e8e08a'});
+    txt(mg,ip([-55.9,2.9])[0],ip([-55.9,2.9])[1],'苏里南',{anchor:'middle',fs:V?34:30,fw:900,fill:'#e8e08a'});
+    const M=[[[-59.85,6.75],'Aurora 金矿','紫金2020年收购 · 目标年产约6吨',-1],[[-55.2,5.13],'Rosebel 金矿','紫金2023年收购 · 扩建约14.7亿美元',1]];
+    M.forEach(m=>{const q=ip(m[0]);mg.append('circle').attr('cx',q[0]).attr('cy',q[1]).attr('r',14).attr('fill',C.orange).attr('stroke','#fff').attr('stroke-width',3);
+      const up=m[3]<0; txt(mg,q[0],up?q[1]-50:q[1]+48,m[1],{anchor:'middle',fs:V?30:28,fw:900,fill:C.orange,});
+      txt(mg,q[0],up?q[1]-22:q[1]+76,m[2],{anchor:'middle',fs:V?22:20,fill:C.t1});});
+    txt(ig,16,30,'放大：同一片海岸',{fs:22,fw:700,fill:C.yellow});}
+  if(t>.95){const nt=svg.append('g').attr('class','card-note');txt(nt,20,V?h*.06:h*.08,'2024-07 首航：218台工程车 + 5000吨水泥 + 1369件钢结构',{fs:V?24:26,fw:700,fill:C.yellow});txt(nt,20,V?h*.06+40:h*.08+42,'2024-11 天津、南京、上海的货在蓬莱拼船，发往圭亚那和苏里南',{fs:V?24:26,fw:700,fill:C.yellow});}
+});
+</script></body></html>

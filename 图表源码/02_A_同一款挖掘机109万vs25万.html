@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i></div>
+<h1>同一款徐工XE215DA，<em>南美挂到109万</em></h1>
+<div class="sub">挂牌价（万元人民币）｜1美元≈6.69元（2026-10-23）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>阿根廷 Mercado Libre（徐工XE215DA 2026新机 US$163,000）；铁甲二手机（XE215DA 2022年/3814小时）；界面新闻2021（国内中型新机50–60万）</b>｜挂牌价≠成交价</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  columns(svg,w,h,t,{max:120,dec:1,vfs:V?52:52,kfs:V?28:28,top:120,bottom:V?150:130,pad:.28,
+   data:[{k:'国内 同款二手',v:24.9,color:C.muted,note:'2022年 · 3814小时',fmt:v=>v.toFixed(1)+'万'},
+         {k:'国内 中型新机',v:55,color:'#5a6fa0',note:'50–60万区间（2021）',fmt:v=>'50–60万'},
+         {k:'南美 同款新机',v:109,color:C.orange,vcolor:C.yellow,note:'阿根廷 · 2026新机',fmt:v=>v.toFixed(0)+'万'}]});
+  if(t>.92) txt(svg,w/2,56,'差了 4 倍多（新机对二手）',{anchor:'middle',fs:V?40:40,fw:900,fill:C.yellow});
+});
+</script></body></html>

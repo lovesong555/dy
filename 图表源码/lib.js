@@ -1,6 +1,7 @@
 const Q=new URLSearchParams(location.search);
 const O=Q.get('o')||'v';
 document.documentElement.classList.add(O);
+if(Q.get('gs')==='1') document.documentElement.classList.add('gs');
 const ANIM=Q.get('anim')==='1';
 const V=O==='v';
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
