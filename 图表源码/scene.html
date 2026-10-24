@@ -288,11 +288,11 @@ S.proof=(o)=>{const p=PROOF[o.key];const iw=p.W,ih=p.H;
  const tape2=E(`<div class="abs" style="left:${(W+fw)/2-110}px;top:${(V?H*.06:0)-14}px;width:130px;height:38px;background:rgba(205,176,138,.75);transform:rotate(7deg)"></div>`);
  const tag=E(`<div class="abs" style="left:${(W-fw)/2}px;top:${(V?H*.06:0)+ch*sc+18}px;background:var(--ink);color:#fff;font-weight:900;font-size:${V?30:26}px;padding:8px 18px">${o.tag||'原文截图'} · ${p.src}</div>`);
  const cap=o.cap?E(`<div class="abs serif" style="left:${(W-fw)/2}px;right:${(W-fw)/2}px;top:${(V?H*.06:0)+ch*sc+(V?90:70)}px;font-size:${V?46:40}px;line-height:1.3">${o.cap}</div>`):null;
- const mks=[...card.querySelectorAll('.mk')],bxs=[...card.querySelectorAll('.bx')],pin=card.querySelector('.pin');
+ S._ready=card.querySelector('img').decode().catch(()=>{});const mks=[...card.querySelectorAll('.mk')],bxs=[...card.querySelectorAll('.bx')],pin=card.querySelector('.pin');
  const fr=p.rects[o.focus||0];const fx=(fr.x-cx+fr.w/2)*sc,fy=(fr.y-cy+fr.h/2)*sc;
  return t=>{card.style.opacity=seg(t,0,.08);tape1.style.opacity=tape2.style.opacity=seg(t,.05,.12);tag.style.opacity=seg(t,.1,.2);
   mks.forEach((m,i)=>{const k=eo(seg(t,.22+i*.18,.42+i*.18));m.style.width=((p.rects[i].w*sc+12)*k)+'px'});bxs.forEach((b,i)=>b.style.opacity=seg(t,.45+i*.18,.5+i*.18));
-  const z=1+((V?o.zoomV:o.zoom)||o.zoom||.35)*eio(seg(t,.5,.85));pin.style.transform=`translate(${fx*(1-z)}px,${fy*(1-z)}px) scale(${z})`;if(cap) cap.style.opacity=seg(t,.6,.72)}};
+  const zz=(V?o.zoomV:o.zoom);const z=1+(zz==null?.35:zz)*eio(seg(t,.5,.85));pin.style.transform=`translate(${fx*(1-z)}px,${fy*(1-z)}px) scale(${z})`;if(cap) cap.style.opacity=seg(t,.6,.72)}};
 // 27 原子分子拆解：一个东西由哪些部分组成（多条来源 → 汇成一个产品），每一格是一个简笔画
 S.compose=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?50:46}px;padding:0 4%;line-height:1.3">${o.label}</div>`);
  const rows=o.rows,nr=rows.length,maxC=Math.max(...rows.map(r=>r.length));const els=[];
@@ -333,6 +333,21 @@ S.pie=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?50:46}
     s.path.setAttribute('transform',`translate(${Math.cos(m)*pop} ${Math.sin(m)*pop})`);
     s.path.setAttribute('d',b>s.a0+.001?q.arc(RI,R0,s.a0,b):'');s.lab.style.opacity=seg(t,d0+.3,d0+.4)});
    q.ctr.style.opacity=seg(t,d0+.32,d0+.42);q.tt.style.opacity=seg(t,d0,d0+.1)});if(note) note.style.opacity=seg(t,.75,.85)}};
+// 29 真实视频片段（来源标注）：一帧一帧按时间寻址，渲染时逐帧截图
+S.clip=(o)=>{const fw=V?W:W*.80,ar=o.ar||(852/480),fh=fw/ar,top=V?H*.06:Math.max(0,(H*.86-fh)/2-10);
+ const base=o.src_v.replace(/\.mp4$/,''),nf=o.nf||Math.round((o.len||5)*30);
+ const card=E(`<div class="abs" style="left:${(W-fw)/2}px;top:${top}px;width:${fw}px;height:${fh}px;background:#000;border:3px solid var(--ink);box-shadow:8px 8px 0 var(--ink);overflow:hidden"><img style="width:100%;height:100%;object-fit:cover;display:block"></div>`);
+ const tag=E(`<div class="abs" style="left:${(W-fw)/2}px;top:${top+fh+18}px;background:var(--ink);color:#fff;font-weight:900;font-size:${V?28:24}px;padding:8px 18px;max-width:${fw}px">${o.tag||'视频'} · ${o.credit}</div>`);
+ const cap=o.cap?E(`<div class="abs serif" style="left:${(W-fw)/2}px;width:${fw}px;top:${top+fh+18+tag.offsetHeight+14}px;font-size:${V?46:40}px;line-height:1.3">${o.cap}</div>`):null;
+ const im=card.querySelector('img');let cur=-1;
+ return t=>{card.style.opacity=seg(t,0,.04);tag.style.opacity=seg(t,.04,.1);if(cap)cap.style.opacity=seg(t,.1,.18);
+  const k=Math.min(nf,1+Math.floor(t*(o.d||5)*30));if(k===cur)return;cur=k;im.src=`${base}/${String(k).padStart(4,'0')}.jpg`;return im.decode().catch(()=>{})}};
+// 30 真实照片（来源标注），静止展示
+S.photo=(o)=>{const ar=o.ar||1.5;let fw=V?W:W*.80,fh=fw/ar;const maxH=V?H*.62:H*.80;if(fh>maxH){fh=maxH;fw=fh*ar}const top=V?H*.04:0;
+ const card=E(`<div class="abs" style="left:${(W-fw)/2}px;top:${top}px;width:${fw}px;height:${fh}px;border:3px solid var(--ink);box-shadow:8px 8px 0 var(--ink);background:url('${o.img}') center/cover"></div>`);
+ const tag=E(`<div class="abs" style="left:${(W-fw)/2}px;top:${top+fh+16}px;background:var(--ink);color:#fff;font-weight:900;font-size:${V?26:22}px;padding:8px 18px;max-width:${Math.max(fw,W*.6)}px">${o.tag||'图'} · ${o.credit}</div>`);
+ const cap=o.cap?E(`<div class="abs serif" style="left:${(W-fw)/2}px;width:${Math.max(fw,W*.6)}px;top:${top+fh+16+tag.offsetHeight+14}px;font-size:${V?46:40}px;line-height:1.3">${o.cap}</div>`):null;
+ return t=>{card.style.opacity=seg(t,0,.06);tag.style.opacity=seg(t,.04,.12);if(cap)cap.style.opacity=seg(t,.1,.2)}};
 // ---------- 入口 ----------
 (async()=>{await document.fonts.ready;await Promise.all(['900 40px Serif','700 40px Serif','900 40px NS','400 40px NS','700 40px NS'].map(f=>document.fonts.load(f)));
  const all=await (await fetch(`scenes/${EP}.json`)).json();const sc=all.scenes[I-1];
@@ -342,6 +357,7 @@ S.pie=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?50:46}
  if(sc.type==='proof') PROOF=await (await fetch(`evidence/proof${EP.replace('seg','')}.json`)).json();
  const upd=S[sc.type](sc);const cam=document.getElementById('cam');
  window.__animSec=sc.d||3.6;
- window.setProgress=t=>{upd(t);cam.style.transform=`scale(${1+.04*t})`};
- window.setProgress(1);window.__ready=true;})();
+ window.setProgress=async t=>{await upd(t);cam.style.transform=`scale(${1+(sc.still?0:.04)*t})`};
+ if(S._ready) await S._ready;
+ await window.setProgress(1);window.__ready=true;})();
 </script></body></html>

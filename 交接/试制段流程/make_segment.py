@@ -17,11 +17,11 @@ for i, c in enumerate(C, 1):
     mp3, srt = f'{out}/vo{i:02d}.mp3', f'{out}/vo{i:02d}.srt'
     txt_cache = f'{out}/vo{i:02d}.txt'
     # 口播改了就重新生成配音和字幕：用缓存的文字比对，避免“新字幕 + 旧声音”
-    if os.path.exists(mp3) and (not os.path.exists(txt_cache) or open(txt_cache).read() != c['vo']):
+    if os.path.exists(mp3) and (not os.path.exists(txt_cache) or open(txt_cache).read() != c.get('tts', c['vo'])):
         os.remove(mp3)
     if not os.path.exists(mp3):
-        open(txt_cache, 'w').write(c['vo'])
-        subprocess.run(['edge-tts','--voice',VOICE,f'--rate={RATE}','--text',c['vo'],'--write-media',mp3,'--write-subtitles',srt],check=True)
+        open(txt_cache, 'w').write(c.get('tts', c['vo']))
+        subprocess.run(['edge-tts','--voice',VOICE,f'--rate={RATE}','--text',c.get('tts', c['vo']),'--write-media',mp3,'--write-subtitles',srt],check=True)
     c['dur'] = dur(mp3)
 # 镜头时长 = 这句配音 + 停顿
 scenes = []
@@ -38,7 +38,11 @@ for i, c in enumerate(C, 1):
     d = round((c['dur'] + GAP) * 30) / 30
     subprocess.run(['ffmpeg','-y','-loglevel','error','-i',f'{out}/vo{i:02d}.mp3','-af',f'apad=whole_dur={d}','-ar','48000','-ac','2',f'{out}/pad{i:02d}.wav'],check=True)
     parts.append(f"file 'pad{i:02d}.wav'")
-    for blk in open(f'{out}/vo{i:02d}.srt').read().strip().split('\n\n'):
+    blks = open(f'{out}/vo{i:02d}.srt').read().strip().split('\n\n')
+    if 'tts' in c:  # 读音改写过（如 18650 → 一八六五零）：字幕仍用原文，按整句时长分配
+        a0, b0 = blks[0].split('\n')[1].split(' --> ')[0], blks[-1].split('\n')[1].split(' --> ')[1]
+        blks = [f"0\n{a0} --> {b0}\n{c['vo']}"]
+    for blk in blks:
         L = blk.split('\n'); a, b = L[1].split(' --> '); txt = ''.join(L[2:])
         f = lambda z: int(z[:2])*3600 + int(z[3:5])*60 + float(z[6:].replace(',','.'))
         sa, sb = f(a), f(b); merged, cur = [], ''
