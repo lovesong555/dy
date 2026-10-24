@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i></div>
+<h1>公司越做越大，<em>家族公司的订单却缩了</em></h1>
+<div class="sub">玖龙向张茵家族公司（美国中南等）的采购额（亿元，公告口径）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>玖龙纸业港交所关连交易公告 2017-05-08、2020-06-02、2023-05-25、2026-05-18</b>｜口径逐年扩大：2020起含天津中南，2023起含海南中南及浆，2026起含木片；最后一根是半年</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  columns(svg,w,h*.8,t,{max:360,dec:1,vfs:V?36:40,kfs:V?24:26,top:70,bottom:100,pad:.3,
+   data:[{k:'FY2016',v:90.1,color:C.muted},{k:'FY2019',v:228.7,color:C.blue},{k:'FY2022',v:328.2,color:C.blue,note:'峰值'},{k:'FY2024',v:204.4,color:C.orange},{k:'FY2025',v:79.8,color:C.orange},{k:'FY2026上半年',v:22.7,color:C.orange,note:'半年'}]});
+  if(t>.85){const p=seg(t,.85,1);const g=svg.append('g').attr('opacity',p);
+    txt(g,0,h*.88,'328亿 → 80亿：三年少了四分之三',{fs:V?32:34,fw:900,fill:C.yellow});
+    txt(g,0,h*.88+(V?46:48),'同期玖龙净利润 +83.8%（FY2026）',{fs:V?24:28,fill:C.t2});}
+});
+</script></body></html>

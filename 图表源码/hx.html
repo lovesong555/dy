@@ -1,10 +1,15 @@
 <!doctype html><html><head><meta charset="utf-8">
 <!-- 档案馆版式（学虎嗅七上八下的“纸张底＋竖排标签＋复古电视框＋大数字”，配色和文案是自有的） -->
 <style>
-@font-face{font-family:Serif;src:local('Noto Serif CJK SC'),local('Source Han Serif SC'),local('Noto Serif SC')}
+/* 字体全部为 SIL OFL 开源授权（思源宋体 / 思源黑体 = Noto Serif/Sans CJK），可免费商用，文件随源码附带 */
+@font-face{font-family:Serif;src:url(NotoSerifCJKsc-Bold.otf);font-weight:700}
+@font-face{font-family:Serif;src:url(NotoSerifCJKsc-Black.otf);font-weight:900}
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Bold.otf);font-weight:700}
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Black.otf);font-weight:900}
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Regular.otf);font-weight:400}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;height:100%;overflow:hidden;background:#EFE9DD}
-body{font-family:'Noto Sans CJK SC','Source Han Sans SC',sans-serif;color:#1d1a16}
+body{font-family:NS;color:#1d1a16}
 .paper{position:absolute;inset:0;background:
  radial-gradient(ellipse at center,rgba(255,255,255,.0) 55%,rgba(90,60,30,.22) 100%),
  radial-gradient(#d9cdb6 1.2px,transparent 1.3px) 0 0/14px 14px,#EFE9DD}
@@ -21,7 +26,7 @@ body{font-family:'Noto Sans CJK SC','Source Han Sans SC',sans-serif;color:#1d1a1
 .sil{position:absolute;filter:drop-shadow(0 0 0 #fff)}
 .tags{position:absolute;display:flex;gap:22px;flex-direction:row-reverse}
 .tag{font-family:Serif;font-weight:900;background:#fff;border:3px solid #1d1a16;padding:16px 0 20px;line-height:1.12;text-align:center;box-shadow:6px 6px 0 #1d1a16;position:relative;flex:0 0 auto}
-.tag small{display:block;font-family:'DejaVu Sans Mono',monospace;font-weight:700;font-size:.55em;color:#C8372D;letter-spacing:0;margin-bottom:12px;text-align:center}
+.tag small{display:block;font-family:NS;font-weight:700;font-size:.55em;color:#C8372D;letter-spacing:0;margin-bottom:12px;text-align:center}
 .tag.red{background:#C8372D;color:#fff}.tag.red small{color:#fff}
 /* tv */
 .tv{position:absolute;background:linear-gradient(#5b4f43,#3a322a);border-radius:36px;padding:4% 22% 4% 4%;box-shadow:0 30px 60px rgba(0,0,0,.35)}
@@ -33,7 +38,7 @@ body{font-family:'Noto Sans CJK SC','Source Han Sans SC',sans-serif;color:#1d1a1
 .cap{position:absolute;left:0;right:0;text-align:center;font-family:Serif;font-weight:900;color:#1d1a16}
 .cap em{font-style:normal;color:#C8372D}
 /* big number */
-.big{position:absolute;left:0;right:0;text-align:center;font-weight:900;font-family:'DejaVu Sans',sans-serif;color:#C8372D;letter-spacing:-4px;line-height:1}
+.big{position:absolute;left:0;right:0;text-align:center;font-weight:900;font-family:NS;color:#C8372D;letter-spacing:-4px;line-height:1}
 .big i{display:inline-block;width:.16em;height:.9em;background:#1d1a16;transform:skewX(-18deg);margin:0 .08em;vertical-align:-.05em}
 .lab{position:absolute;left:8%;right:8%;text-align:center;font-family:Serif;font-weight:900}
 .bar{position:absolute;height:44px;border:3px solid #1d1a16;background:#fff}
@@ -49,7 +54,7 @@ const W=innerWidth,H=innerHeight,st=document.getElementById('st');
 const E=(h)=>{const d=document.createElement('div');d.innerHTML=h;return d.firstElementChild};
 const ease=t=>t<0?0:t>1?1:1-Math.pow(1-t,3), seg=(t,a,b)=>ease((t-a)/(b-a));
 let anim=[];
-const SIL=`<svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg"><path d="M100 18c30 0 50 24 50 56s-20 60-50 60-50-28-50-60 20-56 50-56zM20 260c0-62 32-104 80-104s80 42 80 104z" fill="#2b2620" stroke="#fff" stroke-width="7"/><text x="100" y="215" font-size="17" fill="#8a7d6c" text-anchor="middle" font-family="sans-serif">人物抠像位</text></svg>`;
+const SIL=`<svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg"><path d="M100 18c30 0 50 24 50 56s-20 60-50 60-50-28-50-60 20-56 50-56zM20 260c0-62 32-104 80-104s80 42 80 104z" fill="#2b2620" stroke="#fff" stroke-width="7"/><text x="100" y="215" font-size="17" fill="#8a7d6c" text-anchor="middle" font-family="NS">人物抠像位</text></svg>`;
 const CFG={
  '07_L1':{src:'来源：《中国企业家》2006-07；钛媒体 2017-01；IT之家 2022-12；小牛电动 SEC 13D/A 2026-07',
   build(){
@@ -72,7 +77,7 @@ const CFG={
  '07_L3':{src:'来源：小牛电动 SEC Schedule 13D/A（第8号修正，2026-07-24）',
   build(){
    const lab=E(`<div class="lab" style="top:${V?'18%':'4%'};font-size:${V?56:52}px">他不在小牛任职，<br>但他是受益人的信托持有小牛A类股</div>`);st.append(lab);
-   const big=E(`<div class="big" style="top:${V?'36%':'30%'};font-size:${V?230:300}px"><span id="n">0.0</span><i></i>%</div>`);st.append(big);
+   const big=E(`<div class="big" style="top:${V?'36%':'30%'};font-size:${V?230:300}px"><span id="n">0.0</span>%</div>`);st.append(big);
    const bar=E(`<div class="bar" style="left:12%;right:12%;top:${V?'58%':'70%'}"><div></div></div>`);st.append(bar);
    const note=E(`<div class="lab" style="top:${V?'64%':'80%'};font-size:${V?40:36}px;color:#6b5f50">第一大股东 · 2026年6–7月又增持约210万美元</div>`);st.append(note);
    const n=big.querySelector('#n'),f=bar.firstElementChild;
@@ -82,5 +87,5 @@ const CFG={
 const C=CFG[ID];document.getElementById('src').textContent=C.src;C.build();
 window.__animSec=ID==='07_L1'?4:3;
 window.setProgress=t=>anim.forEach(f=>f(t));
-const im=[...document.images];Promise.all(im.map(i=>i.complete?1:new Promise(r=>{i.onload=i.onerror=r}))).then(()=>{setProgress(1);window.__ready=true});
+const im=[...document.images];document.fonts.load('900 40px Serif').then(()=>document.fonts.load('900 40px NS')).then(()=>document.fonts.ready).then(()=>Promise.all(im.map(i=>i.complete?1:new Promise(r=>{i.onload=i.onerror=r})))).then(()=>{setProgress(1);window.__ready=true});
 </script></body></html>
