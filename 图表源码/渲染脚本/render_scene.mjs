@@ -16,9 +16,9 @@ for(const [o,w,h,dir] of [['h',1920,1080,'横版'],['v',1080,1920,'竖版']]){ i
   await p.screenshot({path:path.join(od,'静帧',`${name}.png`)});
   const sec=await p.evaluate(()=>window.__animSec); const N=Math.round(sec*30);
   const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'sf-'));
-  for(let k=0;k<N;k++){await p.evaluate(t=>window.setProgress(t),k/(N-1)); await p.screenshot({path:`${tmp}/f${String(k).padStart(4,'0')}.png`});}
-  fs.copyFileSync(`${tmp}/f0000.png`,path.join(od,'首尾帧',`${name}_首帧.png`)); fs.copyFileSync(`${tmp}/f${String(N-1).padStart(4,'0')}.png`,path.join(od,'首尾帧',`${name}_尾帧.png`));
-  execFileSync('ffmpeg',['-y','-loglevel','error','-framerate','30','-i',`${tmp}/f%04d.png`,'-c:v','libx264','-pix_fmt','yuv420p','-crf','18','-r','30',path.join(od,'镜头MP4',`${name}.mp4`)]);
+  for(let k=0;k<N;k++){await p.evaluate(t=>window.setProgress(t),k/(N-1)); await p.screenshot({path:`${tmp}/f${String(k).padStart(4,'0')}.jpg`,type:'jpeg',quality:92});}
+  fs.copyFileSync(`${tmp}/f0000.jpg`,path.join(od,'首尾帧',`${name}_首帧.jpg`)); fs.copyFileSync(`${tmp}/f${String(N-1).padStart(4,'0')}.jpg`,path.join(od,'首尾帧',`${name}_尾帧.jpg`));
+  execFileSync('ffmpeg',['-y','-loglevel','error','-framerate','30','-i',`${tmp}/f%04d.jpg`,'-c:v','libx264','-pix_fmt','yuv420p','-crf','18','-r','30',path.join(od,'镜头MP4',`${name}.mp4`)]);
   fs.rmSync(tmp,{recursive:true}); await p.close(); list.push(name); console.log('done',o,name,sec+'s');
  }
  fs.writeFileSync(path.join(od,'concat.txt'),list.map(n=>`file '镜头MP4/${n}.mp4'`).join('\n'));
