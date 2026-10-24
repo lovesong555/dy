@@ -29,7 +29,8 @@ for c in C:
     s = dict(c['scene']); s['d'] = round(c['dur'] + GAP, 2); scenes.append(s)
 name = f'{ep}seg'
 json.dump({"brand": f"商业档案 No.{ep}", "scenes": scenes}, open(f'src/scenes/{name}.json','w'), ensure_ascii=False, indent=0)
-subprocess.run(['node','图表源码/渲染脚本/render_scene.mjs',name,out,'hv'],check=True)
+if not os.environ.get('SKIP_RENDER'):  # 已经单独渲染过镜头时跳过（例如横竖并行渲染）
+    subprocess.run(['node','图表源码/渲染脚本/render_scene.mjs',name,out,'hv'],check=True)
 # 音轨 + 字幕
 def ts(x): return f"{int(x//3600)}:{int(x%3600//60):02d}:{x%60:05.2f}"
 parts, events, t0 = [], [], 0.0

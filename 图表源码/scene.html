@@ -88,8 +88,10 @@ S.stack=(o)=>{const it=o.items,per=o.per,N=Math.max(...it.map(d=>Math.round(d.v/
   if(note) note.style.opacity=seg(t,.7,.82)}};
 // 4 一句话卡（疑问 / 引语）
 S.quote=(o)=>{const q=E(`<div class="cc serif" style="top:${V?30:30}%;font-size:${V?78:80}px;line-height:1.35;padding:0 6%">${o.text}</div>`);
- const sub=o.sub?E(`<div class="cc" style="top:${V?62:66}%;font-size:${V?38:34}px;color:var(--mute)">${o.sub}</div>`):null;
- return t=>{const s=o.text.length;q.style.opacity=1;q.style.clipPath=`inset(0 ${100-100*eo(seg(t,.02,.45))}% 0 0)`;if(sub) sub.style.opacity=seg(t,.5,.65)}};
+ const sub=o.sub?E(`<div class="cc" style="top:${o.stamp?(V?66:74):(V?62:66)}%;font-size:${V?38:34}px;color:var(--mute)">${o.sub}</div>`):null;
+ const stp=o.stamp?E(`<div class="stamp" style="left:50%;top:${V?46:50}%;font-size:${V?84:96}px;transform:translateX(-50%) rotate(-8deg)">${o.stamp}</div>`):null;
+ return t=>{const s=o.text.length;q.style.opacity=1;q.style.clipPath=`inset(0 ${100-100*eo(seg(t,.02,.45))}% 0 0)`;if(sub) sub.style.opacity=seg(t,.5,.65);
+  if(stp){const k=seg(t,.4,.5);stp.style.opacity=k;stp.style.transform=`translateX(-50%) rotate(-8deg) scale(${k<1?2.2-1.2*eo(k):1})`}}};
 // 5 词条演变（一个词逐步变长）
 S.terms=(o)=>{const lab=E(`<div class="cc serif" style="top:${V?10:6}%;font-size:${V?48:44}px;padding:0 6%">${o.label}</div>`);
  const rows=o.rows.map((r,i)=>E(`<div class="abs" style="left:${V?0:12}%;right:${V?0:12}%;top:${(V?26:24)+i*(V?20:22)}%;display:flex;align-items:center;gap:24px">
@@ -102,9 +104,9 @@ S.chapter=(o)=>{const n=E(`<div class="cc" style="top:${V?26:18}%;font-weight:90
  const ln=E(`<div class="abs" style="left:50%;top:${V?64:76}%;height:4px;background:var(--ink);transform:translateX(-50%);width:0"></div>`);
  return t=>{n.style.opacity=seg(t,0,.15);n.style.transform=`scale(${1.3-.3*eo(seg(t,0,.3))})`;tx.style.opacity=seg(t,.15,.3);tx.style.letterSpacing=((V?6:12)+20*(1-eo(seg(t,.15,.5))))+'px';ln.style.width=40*eo(seg(t,.3,.6))+'%'}};
 // 7 人物标签卡
-S.person=(o)=>{const sil=E(`<div class="abs" style="${V?'left:0;top:0;width:52%':'left:2%;top:0;width:24%'}">${o.img?`<img src="${o.img}" style="width:100%;display:block">`:ICON.person()}${o.credit?`<div style="font-size:${V?18:15}px;color:var(--mute);margin-top:4px">${o.credit}</div>`:''}</div>`);
- const nm=E(`<div class="abs serif" style="${V?`left:52%;top:10%;font-size:110px`:`left:28%;top:16%;font-size:120px`}">${o.name}<div style="font-family:NS;font-weight:500;font-size:.3em;color:var(--mute);margin-top:12px;letter-spacing:2px">${o.sub}</div></div>`);
- const box=E(`<div class="abs" style="${V?'left:0;right:0;top:46%;display:flex;justify-content:space-between':'left:28%;right:0;top:56%;display:flex;gap:26px'}"></div>`);
+S.person=(o)=>{const WD=!!o.wide;const sil=E(`<div class="abs" style="${V?(WD?'left:0;top:0;width:100%':'left:0;top:0;width:52%'):(WD?'left:0;top:2%;width:50%':'left:2%;top:0;width:24%')}">${o.img?`<img src="${o.img}" style="width:100%;display:block">`:ICON.person()}${o.credit?`<div style="font-size:${V?18:15}px;color:var(--mute);margin-top:4px">${o.credit}</div>`:''}</div>`);
+ const nm=E(`<div class="abs serif" style="${V?(WD?`left:0;top:44%;font-size:100px`:`left:52%;top:10%;font-size:110px`):(WD?`left:54%;top:4%;font-size:110px`:`left:28%;top:16%;font-size:120px`)}">${o.name}<div style="font-family:NS;font-weight:500;font-size:.3em;color:var(--mute);margin-top:12px;letter-spacing:2px">${o.sub}</div></div>`);
+ const box=E(`<div class="abs" style="${V?(WD?'left:0;right:0;top:64%;display:flex;gap:30px':'left:0;right:0;top:46%;display:flex;justify-content:space-between'):(WD?'left:54%;right:0;top:40%;display:flex;gap:26px':'left:28%;right:0;top:56%;display:flex;gap:26px')}"></div>`);
  const fs=V?44:44;const tg=o.tags.map(([y,x],i)=>E(`<div class="tag ${i>=o.tags.length-(o.hl||1)?'on':''}" style="font-size:${fs}px;width:${fs*1.9}px;padding:14px 0 18px"><small>${y}</small>${[...x].join('<br>')}</div>`,box));
  return t=>{sil.style.opacity=seg(t,0,.15);nm.style.opacity=seg(t,.08,.22);tg.forEach((e,i)=>{const k=seg(t,.22+i*.09,.32+i*.09);e.style.opacity=k;e.style.transform=`translateY(${-36*(1-back(k))}px)`})}};
 // 8 航线图（纸面地图，船沿航线移动）
@@ -166,7 +168,7 @@ S.split=(o)=>{const mk=(s,side)=>E(`<div class="abs card" style="${V?(side?'left
   <div style="font-weight:900;font-size:${V?80:96}px;color:${side?'var(--red)':'var(--ink2)'};line-height:1">${s.y}</div>
   <div class="serif" style="font-size:${V?50:50}px;line-height:1.35;margin-top:${V?22:34}px">${s.text}</div>
   <div style="font-size:${V?26:24}px;color:var(--mute);margin-top:${V?18:28}px">${s.src}</div></div>`);
- const a=mk(o.a,0),b=mk(o.b,1);const vs=E(`<div class="abs" style="${V?'left:50%;top:47%':'left:50%;top:45%'};transform:translate(-50%,-50%);width:${V?96:110}px;height:${V?96:110}px;border-radius:50%;background:var(--ink);color:#fff;font-weight:900;font-size:${V?40:44}px;display:flex;align-items:center;justify-content:center">→</div>`);
+ const a=mk(o.a,0),b=mk(o.b,1);const vs=E(`<div class="abs" style="${V?'left:50%;top:47%':'left:50%;top:45%'};transform:translate(-50%,-50%);width:${V?96:110}px;height:${V?96:110}px;border-radius:50%;background:var(--ink);color:#fff;font-weight:900;font-size:${V?40:44}px;display:flex;align-items:center;justify-content:center">${o.mid||'→'}</div>`);
  return t=>{a.style.opacity=seg(t,0,.15);a.style.transform=`translate${V?'Y':'X'}(${-40*(1-eo(seg(t,0,.25)))}px)`;vs.style.opacity=seg(t,.3,.4);b.style.opacity=seg(t,.38,.52);b.style.transform=`translate${V?'Y':'X'}(${40*(1-eo(seg(t,.38,.6)))}px)`}};
 // 14 金币堆：利息一年多少
 S.coins=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?48:44}px;padding:0 4%;line-height:1.35">${o.label}</div>`);
@@ -307,6 +309,30 @@ S.compose=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?50
  const total=els.length;
  return t=>{lab.style.opacity=seg(t,0,.08);els.forEach((x,i)=>{const a=.08+(x.ci*.14)+x.ri*.04;const k=seg(t,a,a+.1);x.e.style.opacity=k;x.e.style.transform=`translateY(${20*(1-eo(k))}px) scale(${.8+.2*back(k)})`;x.ar.style.opacity=seg(t,a+.08,a+.14)});
   const kf=seg(t,.08+maxC*.14,.18+maxC*.14);fin.style.opacity=kf;fin.style.transform=`scale(${.6+.4*back(kf)})`;if(note) note.style.opacity=seg(t,.82,.9)}};
+// 28 圆环占比图：一个或两个圆环，重点块（hl）向外弹出并标红；每块写名称和百分比
+S.pie=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?50:46}px;padding:0 4%;line-height:1.3">${o.label}</div>`);
+ const P=o.pies,n=P.length,ns='http://www.w3.org/2000/svg';
+ const R0=V?Math.min(W*(n>1?.30:.25),H*(n>1?.15:.24)):Math.min(H*.30,W/(n*2)*.62),RI=R0*.56;
+ const C=['#C8372D','#8A8073','#cfc4b0','#5E8C83','#CDB08A'];
+ const parts=P.map((pp,pi)=>{const cx=V?W/2:W*(pi+.5)/n,cy=V?H*(n>1?(.30+pi*.40):.48):H*.52;
+  const svg=document.createElementNS(ns,'svg');svg.setAttribute('width',W);svg.setAttribute('height',H);svg.style.cssText='position:absolute;left:0;top:0;overflow:visible';st.append(svg);
+  const tot=pp.items.reduce((s,d)=>s+d.v,0);let a0=-Math.PI/2;
+  let oi=0;const segs=pp.items.map((d,i)=>{const a=d.v/tot*Math.PI*2;const s={d,a0,a1:a0+a,col:d.hl?C[0]:C[1+(oi++%4)]};a0+=a;
+   s.path=document.createElementNS(ns,'path');s.path.setAttribute('fill',s.col);s.path.setAttribute('stroke','#1d1a16');s.path.setAttribute('stroke-width',3);svg.append(s.path);
+   const m=d.la!=null?d.la*Math.PI/180:(s.a0+s.a1)/2,lr=R0+(V?64:70),lx=cx+Math.cos(m)*lr,ly=cy+Math.sin(m)*lr;
+   s.lab=E(`<div class="abs" style="left:${lx}px;top:${ly}px;transform:translate(${Math.cos(m)<-.2?'-100%':Math.cos(m)>.2?'0':'-50%'},-50%);white-space:nowrap;text-align:${Math.cos(m)<-.2?'right':'left'};font-size:${V?32:30}px;font-weight:700;color:${d.hl?'var(--red)':'var(--ink2)'}">${d.k}<br><span style="font-size:1.35em;font-weight:900">${d.t||d.v+'%'}</span></div>`);
+   {const wl=s.lab.offsetWidth,c=Math.cos(m);if(c<-.2&&lx-wl<4)s.lab.style.left=(wl+4)+'px';if(c>.2&&lx+wl>W-4)s.lab.style.left=(W-wl-4)+'px'}return s});
+  const arc=(r0,r1,a,b)=>{const L=b-a>Math.PI?1:0,p=(r,x)=>[cx+Math.cos(x)*r,cy+Math.sin(x)*r];const [x0,y0]=p(r1,a),[x1,y1]=p(r1,b),[x2,y2]=p(r0,b),[x3,y3]=p(r0,a);
+   return `M${x0} ${y0}A${r1} ${r1} 0 ${L} 1 ${x1} ${y1}L${x2} ${y2}A${r0} ${r0} 0 ${L} 0 ${x3} ${y3}Z`};
+  const ctr=E(`<div class="abs" style="left:${cx}px;top:${cy}px;transform:translate(-50%,-50%);text-align:center"><div style="font-weight:900;font-size:${V?64:68}px;color:var(--red);line-height:1">${pp.center||''}</div><div class="serif" style="font-size:${V?28:26}px;margin-top:6px">${pp.sub||''}</div></div>`);
+  const tt=E(`<div class="abs serif" style="left:${cx}px;top:${cy+R0+(V?28:34)}px;transform:translateX(-50%);white-space:nowrap;font-size:${V?34:34}px">${pp.title||''}</div>`);
+  return {segs,arc,ctr,tt,cx,cy,pi}});
+ const note=o.note?E(`<div class="cc" style="top:${V?94:93}%;font-size:${V?30:28}px;color:var(--ink2);padding:0 4%">${o.note}</div>`):null;
+ return t=>{lab.style.opacity=seg(t,0,.08);parts.forEach(q=>{const d0=.06+q.pi*.22,sw=eio(seg(t,d0,d0+.3));const end=-Math.PI/2+sw*Math.PI*2;
+   q.segs.forEach(s=>{const b=Math.min(s.a1,end);const pop=s.d.hl?R0*.10*back(seg(t,d0+.3,d0+.42)):0;const m=(s.a0+s.a1)/2;
+    s.path.setAttribute('transform',`translate(${Math.cos(m)*pop} ${Math.sin(m)*pop})`);
+    s.path.setAttribute('d',b>s.a0+.001?q.arc(RI,R0,s.a0,b):'');s.lab.style.opacity=seg(t,d0+.3,d0+.4)});
+   q.ctr.style.opacity=seg(t,d0+.32,d0+.42);q.tt.style.opacity=seg(t,d0,d0+.1)});if(note) note.style.opacity=seg(t,.75,.85)}};
 // ---------- 入口 ----------
 (async()=>{await document.fonts.ready;await Promise.all(['900 40px Serif','700 40px Serif','900 40px NS','400 40px NS','700 40px NS'].map(f=>document.fonts.load(f)));
  const all=await (await fetch(`scenes/${EP}.json`)).json();const sc=all.scenes[I-1];
