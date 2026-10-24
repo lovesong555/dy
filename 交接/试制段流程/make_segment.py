@@ -15,7 +15,12 @@ VOICE = os.environ.get('TTS_VOICE', 'zh-CN-YunyangNeural'); RATE = os.environ.ge
 def dur(f): return float(subprocess.run(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',f],capture_output=True,text=True).stdout)
 for i, c in enumerate(C, 1):
     mp3, srt = f'{out}/vo{i:02d}.mp3', f'{out}/vo{i:02d}.srt'
+    txt_cache = f'{out}/vo{i:02d}.txt'
+    # 口播改了就重新生成配音和字幕：用缓存的文字比对，避免“新字幕 + 旧声音”
+    if os.path.exists(mp3) and (not os.path.exists(txt_cache) or open(txt_cache).read() != c['vo']):
+        os.remove(mp3)
     if not os.path.exists(mp3):
+        open(txt_cache, 'w').write(c['vo'])
         subprocess.run(['edge-tts','--voice',VOICE,f'--rate={RATE}','--text',c['vo'],'--write-media',mp3,'--write-subtitles',srt],check=True)
     c['dur'] = dur(mp3)
 # 镜头时长 = 这句配音 + 停顿
