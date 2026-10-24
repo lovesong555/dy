@@ -1,0 +1,17 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:Serif;src:url(NotoSerifCJKsc-Black.otf);font-weight:900}
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Bold.otf);font-weight:700}
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Regular.otf);font-weight:400}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;font-family:NS;color:#1d1a16}
+.paper{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(255,255,255,.35) 0%,rgba(255,255,255,0) 60%,rgba(90,60,30,.16) 100%),radial-gradient(#d8ccb6 1.1px,transparent 1.2px) 0 0/16px 16px,#EFE9DD}
+.brand{position:absolute;left:64px;top:150px;font-family:Serif;font-weight:900;font-size:34px;letter-spacing:6px}
+.brand:before{content:'';display:inline-block;width:12px;height:.9em;background:#C8372D;margin-right:14px;vertical-align:-3px}
+.t{position:absolute;left:64px;right:64px;top:225px;font-family:Serif;font-weight:900;font-size:76px;line-height:1.28}
+.t em{font-style:normal;color:#C8372D}
+.hole{position:absolute;left:0;top:640px;width:1080px;height:608px;background:#000}
+.line{position:absolute;left:64px;right:64px;top:1300px;height:3px;background:#1d1a16}
+.sub{position:absolute;left:64px;right:64px;top:1330px;font-size:26px;color:#8a7d6c;letter-spacing:2px}
+</style></head><body><div class="paper"></div>
+<div class="brand" id="b"></div><div class="t" id="t"></div><div class="hole"></div><div class="line"></div><div class="sub">↓ 字幕区（剪映识别字幕，白字黑描边，放在这条线下面）</div>
+<script>const q=new URLSearchParams(location.search);document.getElementById('b').textContent=q.get('b');document.getElementById('t').innerHTML=q.get('t');
+document.fonts.ready.then(()=>window.__ready=true)</script></body></html>

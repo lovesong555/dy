@@ -1,0 +1,223 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- 分镜动画引擎（档案纸版式）。scene.html?o=h|v&ep=08&i=1 读取 scenes/08.json 第 i 个镜头。
+     字体均为 SIL OFL（思源宋体 / 思源黑体），图形全部为原创 SVG，无第三方版权素材。 -->
+<script src="d3.min.js"></script><script src="topojson.min.js"></script>
+<style>
+@font-face{font-family:Serif;src:url(NotoSerifCJKsc-Bold.otf);font-weight:700}
+@font-face{font-family:Serif;src:url(NotoSerifCJKsc-Black.otf);font-weight:900}
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Regular.otf);font-weight:400}
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Medium.otf);font-weight:500}
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Bold.otf);font-weight:700}
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Black.otf);font-weight:900}
+:root{--paper:#EFE9DD;--paper2:#E6DECF;--ink:#1d1a16;--ink2:#4a4237;--mute:#8a7d6c;--red:#C8372D;--red2:#e0a196;--blue:#2f5f7a;--line:#cfc4b0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--paper);font-family:NS;color:var(--ink)}
+.paper{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(255,255,255,.35) 0%,rgba(255,255,255,0) 60%,rgba(90,60,30,.16) 100%),radial-gradient(#d8ccb6 1.1px,transparent 1.2px) 0 0/16px 16px,var(--paper)}
+.grain{position:absolute;inset:0;opacity:.16;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>")}
+.top{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;gap:16px;padding:0 4.2%;border-bottom:2.5px solid var(--ink);z-index:5}
+.h .top{height:70px}.v .top{height:96px;padding:0 6%}
+.top b{font-family:Serif;font-weight:900;letter-spacing:4px}.h .top b{font-size:30px}.v .top b{font-size:36px}
+.top b:before{content:'';display:inline-block;width:10px;height:.9em;background:var(--red);margin-right:12px;vertical-align:-2px}
+.top span{letter-spacing:3px;color:var(--mute)}.h .top span{font-size:18px}.v .top span{font-size:22px}
+.top .ch{margin-left:auto;font-family:Serif;font-weight:700;color:var(--ink2)}.h .top .ch{font-size:22px}.v .top .ch{font-size:26px}
+.src{position:absolute;z-index:5;color:var(--mute);line-height:1.4}.h .src{right:4.2%;bottom:22px;font-size:17px;max-width:70%;text-align:right}.v .src{left:6%;right:6%;bottom:70px;font-size:20px}
+#cam{position:absolute;inset:0;transform-origin:50% 50%}
+#st{position:absolute}.h #st{left:4.2%;right:4.2%;top:110px;bottom:70px}.v #st{left:6%;right:6%;top:150px;bottom:150px}
+.serif{font-family:Serif;font-weight:900}
+.red{color:var(--red)}.mute{color:var(--mute)}
+.abs{position:absolute}
+.cc{position:absolute;left:0;right:0;text-align:center}
+.card{background:#fbf8f2;border:2.5px solid var(--ink);box-shadow:8px 8px 0 var(--ink)}
+.tag{display:inline-block;font-family:Serif;font-weight:900;background:#fff;border:2.5px solid var(--ink);box-shadow:5px 5px 0 var(--ink);text-align:center;line-height:1.12}
+.tag small{display:block;font-family:NS;font-weight:700;color:var(--red);font-size:.55em;margin-bottom:8px}
+.tag.on{background:var(--red);color:#fff}.tag.on small{color:#fff}
+.stamp{position:absolute;border:6px solid var(--red);color:var(--red);font-family:Serif;font-weight:900;border-radius:10px;padding:6px 22px;transform:rotate(-8deg);letter-spacing:6px;background:rgba(239,233,221,.4)}
+svg text{font-family:NS}
+</style></head><body>
+<div class="paper"></div><div class="grain"></div>
+<div class="top"><b>商业档案 No.08</b><span>CASE FILE</span><div class="ch" id="ch"></div></div>
+<div id="cam"><div id="st"></div></div>
+<div class="src" id="src"></div>
+<script>
+const Q=new URLSearchParams(location.search),O=Q.get('o')||'h',V=O==='v',EP=Q.get('ep')||'08',I=+(Q.get('i')||1);
+document.documentElement.classList.add(O);document.body.classList.add(O);
+const st=document.getElementById('st');let W,H;
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),seg=(t,a,b)=>clamp((t-a)/(b-a)),eo=t=>1-Math.pow(1-t,3),eio=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,back=t=>{const c=1.6;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
+const E=(h,p=st)=>{const d=document.createElement('div');d.innerHTML=h.trim();const e=d.firstElementChild;p.append(e);return e};
+const fmt=(x,d=0)=>x.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+let rnd=1;const R=()=>{rnd=(rnd*16807)%2147483647;return (rnd-1)/2147483646};
+// ---------- 原创图标（SVG） ----------
+const ICON={
+ sheet:(c='#fbf8f2')=>`<svg viewBox="0 0 100 14"><rect x="1" y="1" width="98" height="12" rx="1.5" fill="${c}" stroke="#1d1a16" stroke-width="2"/></svg>`,
+ ream:(c='#fbf8f2')=>`<svg viewBox="0 0 200 64" preserveAspectRatio="none"><path d="M20 4h176l-18 18H2z" fill="#fffdf8" stroke="#1d1a16" stroke-width="3"/><path d="M2 22h176v38H2z" fill="${c}" stroke="#1d1a16" stroke-width="3"/><path d="M178 22l18-18v38l-18 18z" fill="#d8cdb8" stroke="#1d1a16" stroke-width="3"/><path d="M2 32h176M2 41h176M2 50h176" stroke="#1d1a16" stroke-width="1" opacity=".35"/><rect x="60" y="30" width="60" height="22" fill="#C8372D" opacity=".85"/></svg>`,
+ bale:(c='#c9b48f')=>`<svg viewBox="0 0 100 70"><rect x="3" y="3" width="94" height="64" rx="4" fill="${c}" stroke="#1d1a16" stroke-width="3"/><path d="M3 22h94M3 46h94" stroke="#1d1a16" stroke-width="2" opacity=".5"/><path d="M30 3v64M70 3v64" stroke="#1d1a16" stroke-width="4"/></svg>`,
+ log:(c='#b58b5a')=>`<svg viewBox="0 0 120 60"><rect x="18" y="8" width="96" height="44" rx="4" fill="${c}" stroke="#1d1a16" stroke-width="3"/><ellipse cx="18" cy="30" rx="14" ry="22" fill="#e2c495" stroke="#1d1a16" stroke-width="3"/><ellipse cx="18" cy="30" rx="7" ry="11" fill="none" stroke="#1d1a16" stroke-width="2"/></svg>`,
+ pulp:(c='#f7f3ea')=>`<svg viewBox="0 0 100 70" preserveAspectRatio="none"><rect x="3" y="3" width="94" height="64" rx="3" fill="${c}" stroke="#1d1a16" stroke-width="3"/><path d="M3 18h94M3 34h94M3 50h94" stroke="#1d1a16" stroke-width="1.5" opacity=".35"/><path d="M50 3v64" stroke="#C8372D" stroke-width="4"/></svg>`,
+ coin:()=>`<svg viewBox="0 0 100 30" preserveAspectRatio="none" style="width:100%;height:100%"><ellipse cx="50" cy="18" rx="46" ry="11" fill="#b8892b" stroke="#1d1a16" stroke-width="3"/><ellipse cx="50" cy="12" rx="46" ry="11" fill="#e3b54a" stroke="#1d1a16" stroke-width="3"/><text x="50" y="16" font-size="11" font-weight="900" text-anchor="middle" fill="#1d1a16">$</text></svg>`,
+ ship:()=>`<svg viewBox="0 0 120 60"><path d="M6 34h108l-14 20H20z" fill="#1d1a16"/><rect x="22" y="16" width="16" height="18" fill="#C8372D" stroke="#1d1a16" stroke-width="2"/><rect x="40" y="16" width="16" height="18" fill="#2f5f7a" stroke="#1d1a16" stroke-width="2"/><rect x="58" y="16" width="16" height="18" fill="#c9b48f" stroke="#1d1a16" stroke-width="2"/><rect x="82" y="6" width="14" height="28" fill="#fbf8f2" stroke="#1d1a16" stroke-width="2"/></svg>`,
+ person:()=>`<svg viewBox="0 0 200 260"><path d="M100 18c30 0 50 24 50 56s-20 60-50 60-50-28-50-60 20-56 50-56zM20 260c0-62 32-104 80-104s80 42 80 104z" fill="#2b2620" stroke="#fff" stroke-width="7"/></svg>`
+};
+// ---------- 镜头类型 ----------
+const S={};
+// 1 大标题
+S.title=(o)=>{const fs=V?96:96;
+ const l1=E(`<div class="cc serif" style="top:${V?28:26}%;font-size:${fs*.62}px;color:var(--ink2)">${o.kicker||''}</div>`);
+ const l2=E(`<div class="cc serif" style="top:${V?38:40}%;font-size:${fs}px;line-height:1.25;padding:0 4%">${o.text}</div>`);
+ const bar=E(`<div class="abs" style="left:50%;top:${V?66:72}%;height:8px;background:var(--red);width:0;transform:translateX(-50%)"></div>`);
+ return t=>{l1.style.opacity=seg(t,0,.15);l2.style.opacity=seg(t,.08,.25);l2.style.transform=`translateY(${30*(1-eo(seg(t,.08,.3)))}px)`;bar.style.width=(V?60:36)*eo(seg(t,.25,.5))+'%'}};
+// 2 大数字计数
+S.bignum=(o)=>{const lab=E(`<div class="cc serif" style="top:${V?22:14}%;font-size:${V?56:52}px;padding:0 6%;line-height:1.35">${o.label}</div>`);
+ const num=E(`<div class="cc" style="top:${V?36:32}%;font-weight:900;font-size:${V?240:300}px;color:var(--red);letter-spacing:-6px;line-height:1"><span id="n">0</span><span style="font-size:.45em;letter-spacing:0">${o.unit||''}</span></div>`);
+ const note=E(`<div class="cc" style="top:${V?60:74}%;font-size:${V?38:36}px;color:var(--ink2)">${o.note||''}</div>`);const n=num.querySelector('#n');
+ return t=>{lab.style.opacity=seg(t,0,.12);num.style.opacity=seg(t,.06,.14);n.textContent=(o.prefix||'')+fmt(o.value*eo(seg(t,.1,.6)),o.dec||0);note.style.opacity=seg(t,.62,.75)}};
+// 3 纸张叠高对比（一令纸 = 固定金额，数值越大纸越高）
+S.stack=(o)=>{const it=o.items,per=o.per,N=Math.max(...it.map(d=>Math.round(d.v/per)));
+ const lab=E(`<div class="cc serif" style="top:0;font-size:${V?50:46}px;padding:0 4%">${o.label}</div>`);
+ const colW=V?W*.40:W*.24, gap=V?W*.08:W*.14, x0=(W-(it.length*colW+(it.length-1)*gap))/2, base=H*(V?.80:.83), rh=Math.min((H*(V?.58:.66))/N,colW*.32);
+ const cols=it.map((d,i)=>{const n=Math.max(1,Math.round(d.v/per));const g=E(`<div class="abs" style="left:${x0+i*(colW+gap)}px;top:0;width:${colW}px;height:${H}px"></div>`);
+  const sheets=[];for(let k=0;k<n;k++){rnd=(i+1)*977+k*31;const dx=(R()-.5)*colW*.05;
+   const s=E(`<div class="abs" style="left:${dx}px;width:${colW}px;height:${rh}px;top:${base-(k+1)*rh}px">${ICON.ream(d.hl?'#f4d9d4':'#fbf8f2')}</div>`,g);s.firstChild.style.width='100%';s.firstChild.style.height='100%';sheets.push(s)}
+  const val=E(`<div class="abs" style="left:-20%;width:140%;text-align:center;top:${base-n*rh-(V?110:124)}px;font-weight:900;font-size:${V?64:76}px;color:${d.hl?'var(--red)':'var(--ink)'}">0</div>`,g);
+  const k=E(`<div class="abs" style="left:-20%;width:140%;text-align:center;top:${base+16}px;font-size:${V?34:32}px;font-family:Serif;font-weight:900">${d.k}</div>`,g);
+  return {sheets,val,k,d}});
+ const note=o.note?E(`<div class="cc" style="top:${V?89:93}%;font-size:${V?32:28}px;color:var(--ink2)">${o.note}</div>`):null;
+ return t=>{lab.style.opacity=seg(t,0,.1);cols.forEach((c,i)=>{const p=seg(t,.08+i*.05,.62+i*.05);const m=c.sheets.length;
+   c.sheets.forEach((s,k)=>{const q=clamp(p*m-k);s.style.opacity=q;s.style.marginTop=(-60*(1-eo(q)))+'px'});
+   c.val.style.opacity=seg(t,.1,.2);c.val.textContent=fmt(c.d.v*eo(p),c.d.dec||0)+(c.d.u||'');c.k.style.opacity=seg(t,.05,.15)});
+  if(note) note.style.opacity=seg(t,.7,.82)}};
+// 4 一句话卡（疑问 / 引语）
+S.quote=(o)=>{const q=E(`<div class="cc serif" style="top:${V?30:30}%;font-size:${V?78:80}px;line-height:1.35;padding:0 6%">${o.text}</div>`);
+ const sub=o.sub?E(`<div class="cc" style="top:${V?62:66}%;font-size:${V?38:34}px;color:var(--mute)">${o.sub}</div>`):null;
+ return t=>{const s=o.text.length;q.style.opacity=1;q.style.clipPath=`inset(0 ${100-100*eo(seg(t,.02,.45))}% 0 0)`;if(sub) sub.style.opacity=seg(t,.5,.65)}};
+// 5 词条演变（一个词逐步变长）
+S.terms=(o)=>{const lab=E(`<div class="cc serif" style="top:${V?10:6}%;font-size:${V?48:44}px;padding:0 6%">${o.label}</div>`);
+ const rows=o.rows.map((r,i)=>E(`<div class="abs" style="left:${V?0:12}%;right:${V?0:12}%;top:${(V?26:24)+i*(V?20:22)}%;display:flex;align-items:center;gap:24px">
+  <div style="font-weight:900;font-size:${V?34:32}px;color:var(--mute);width:${V?160:200}px">${r.y}</div>
+  <div style="display:flex;gap:14px;flex-wrap:wrap">${r.items.map((x,j)=>`<span class="tag ${r.new&&r.new.includes(j)?'on':''}" style="font-size:${V?40:42}px;padding:10px 22px">${x}</span>`).join('')}</div></div>`));
+ return t=>{lab.style.opacity=seg(t,0,.1);rows.forEach((r,i)=>{const p=seg(t,.12+i*.2,.3+i*.2);r.style.opacity=p;r.style.transform=`translateX(${-40*(1-eo(p))}px)`})}};
+// 6 章节卡
+S.chapter=(o)=>{const n=E(`<div class="cc" style="top:${V?26:18}%;font-weight:900;font-size:${V?220:240}px;color:var(--red);line-height:1">${o.n}</div>`);
+ const tx=E(`<div class="cc serif" style="top:${V?50:58}%;font-size:${V?78:80}px;letter-spacing:${V?6:12}px">${o.text}</div>`);
+ const ln=E(`<div class="abs" style="left:50%;top:${V?64:76}%;height:4px;background:var(--ink);transform:translateX(-50%);width:0"></div>`);
+ return t=>{n.style.opacity=seg(t,0,.15);n.style.transform=`scale(${1.3-.3*eo(seg(t,0,.3))})`;tx.style.opacity=seg(t,.15,.3);tx.style.letterSpacing=((V?6:12)+20*(1-eo(seg(t,.15,.5))))+'px';ln.style.width=40*eo(seg(t,.3,.6))+'%'}};
+// 7 人物标签卡
+S.person=(o)=>{const sil=E(`<div class="abs" style="${V?'left:4%;top:0;width:44%':'left:3%;top:4%;width:22%'}">${ICON.person()}</div>`);
+ const nm=E(`<div class="abs serif" style="${V?`left:52%;top:10%;font-size:110px`:`left:28%;top:16%;font-size:120px`}">${o.name}<div style="font-family:NS;font-weight:500;font-size:.3em;color:var(--mute);margin-top:12px;letter-spacing:2px">${o.sub}</div></div>`);
+ const box=E(`<div class="abs" style="${V?'left:0;right:0;top:46%;display:flex;justify-content:space-between':'left:28%;right:0;top:56%;display:flex;gap:26px'}"></div>`);
+ const fs=V?44:44;const tg=o.tags.map(([y,x],i)=>E(`<div class="tag ${i>=o.tags.length-(o.hl||1)?'on':''}" style="font-size:${fs}px;width:${fs*1.9}px;padding:14px 0 18px"><small>${y}</small>${[...x].join('<br>')}</div>`,box));
+ return t=>{sil.style.opacity=seg(t,0,.15);nm.style.opacity=seg(t,.08,.22);tg.forEach((e,i)=>{const k=seg(t,.22+i*.09,.32+i*.09);e.style.opacity=k;e.style.transform=`translateY(${-36*(1-back(k))}px)`})}};
+// 8 航线图（纸面地图，船沿航线移动）
+let WORLD=null;
+S.route=(o)=>{const svg=d3.select(st).append('svg').attr('width',W).attr('height',H).style('position','absolute');
+ const proj=d3.geoMercator().rotate([-o.rot||-170,0]).fitExtent([[W*.1,H*.18],[W*.9,H*.86]],{type:'MultiPoint',coordinates:o.fit});
+ let path=d3.geoPath(proj);{const bb=path.bounds({type:'MultiPoint',coordinates:o.fit});const cy=(bb[0][1]+bb[1][1])/2,cx=(bb[0][0]+bb[1][0])/2;const tr=proj.translate();proj.translate([tr[0]+W/2-cx,tr[1]+H*(V?.45:.52)-cy]);path=d3.geoPath(proj);}svg.append('path').datum({type:'Sphere'}).attr('d',path).attr('fill','#e3dccd');
+ svg.append('path').datum(topojson.feature(WORLD,WORLD.objects.countries)).attr('d',path).attr('fill','#d3c6ad').attr('stroke','#8a7d6c').attr('stroke-width',1);
+ const line={type:'LineString',coordinates:o.path};const rp=svg.append('path').datum(line).attr('d',path).attr('fill','none').attr('stroke','#C8372D').attr('stroke-width',V?7:6).attr('stroke-linecap','round');
+ const L=rp.node().getTotalLength();rp.attr('stroke-dasharray',L).attr('stroke-dashoffset',L);
+ const pts=o.points.map(p=>{const [x,y]=proj(p.c);const g=svg.append('g').attr('opacity',0);
+  g.append('circle').attr('cx',x).attr('cy',y).attr('r',V?13:12).attr('fill','#C8372D').attr('stroke','#1d1a16').attr('stroke-width',3);
+  const lw=p.t.length*(V?34:32)+30,lx=Math.min(Math.max(x+(p.dx||0)-lw/2,6),W-lw-6),ly=y+(p.dy||-70);
+  g.append('rect').attr('x',lx).attr('y',ly-(V?40:38)).attr('width',lw).attr('height',V?56:52).attr('fill','#fbf8f2').attr('stroke','#1d1a16').attr('stroke-width',2.5);
+  g.append('text').attr('x',lx+lw/2).attr('y',ly-(V?3:4)).attr('text-anchor','middle').attr('font-size',V?32:30).attr('font-weight',900).attr('fill','#1d1a16').text(p.t);
+  if(p.s) g.append('text').attr('x',lx+lw/2).attr('y',ly+(V?36:34)).attr('text-anchor','middle').attr('font-size',V?24:22).attr('fill','#4a4237').attr('stroke','#EFE9DD').attr('stroke-width',6).attr('paint-order','stroke').text(p.s);return g});
+ const ship=E(`<div class="abs" style="width:${V?120:110}px;opacity:0">${ICON.ship()}</div>`);
+ const lab=E(`<div class="abs card serif" style="left:${V?'4%':'2%'};top:${V?'2%':'2%'};font-size:${V?40:36}px;padding:12px 22px">${o.label}</div>`);
+ return t=>{lab.style.opacity=seg(t,0,.1);pts[0].attr('opacity',seg(t,.05,.15));const p=eio(seg(t,.12,.75));rp.attr('stroke-dashoffset',L*(1-p));
+  if(p>0&&p<1){const pt=rp.node().getPointAtLength(L*p);ship.style.opacity=1;ship.style.left=(pt.x-55)+'px';ship.style.top=(pt.y-60)+'px'}else ship.style.opacity=p>=1?0:0;
+  pts.slice(1).forEach((g,i)=>g.attr('opacity',seg(t,.7+i*.05,.8+i*.05)))}};
+// 9 象形图（N 个图标里 k 个高亮）
+S.picto=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?50:46}px;padding:0 4%;line-height:1.3">${o.label}</div>`);
+ const cols=V?(o.colsV||4):(o.cols||10),n=o.n,rows=Math.ceil(n/cols),cw=V?W*.92/cols:Math.min(W*.86/cols,H*.42/(rows*.75)),ix=(W-cw*cols)/2,iy=H*(V?.22:.16);
+ const ic=[];for(let i=0;i<n;i++){const r=Math.floor(i/cols),c=i%cols;const e=E(`<div class="abs" style="left:${ix+c*cw+cw*.08}px;top:${iy+r*cw*.85}px;width:${cw*.84}px">${ICON[o.icon](i<o.k?(o.hlColor||'#e09a8f'):'#e6dccb')}</div>`);ic.push(e)}
+ const big=E(`<div class="cc" style="top:${V?72:76}%;font-size:${V?54:56}px;font-weight:900"><span class="red">${o.big}</span> <span style="font-size:.6em;color:var(--ink2);font-weight:500">${o.bigNote||''}</span></div>`);
+ return t=>{lab.style.opacity=seg(t,0,.1);ic.forEach((e,i)=>{const k=seg(t,.1+i*.025,.18+i*.025);e.style.opacity=k;e.style.transform=`scale(${.6+.4*back(k)})`});big.style.opacity=seg(t,.62,.74)}};
+// 10 盖章（政策文件）
+S.decree=(o)=>{const doc=E(`<div class="abs card" style="${V?'left:4%;right:4%;top:6%;height:62%':'left:18%;right:18%;top:2%;height:84%'};padding:${V?'48px 40px':'44px 60px'}">
+  <div class="serif" style="font-size:${V?34:32}px;color:var(--mute);letter-spacing:4px">${o.org}</div>
+  <div class="serif" style="font-size:${V?52:50}px;margin-top:24px;line-height:1.35">${o.title}</div>
+  <div style="height:3px;background:var(--ink);margin:26px 0"></div>
+  ${o.lines.map(l=>`<div class="ln" style="font-size:${V?36:34}px;line-height:1.6;margin-top:10px">${l}</div>`).join('')}</div>`);
+ const lns=[...doc.querySelectorAll('.ln')];const sp=E(`<div class="stamp" style="font-size:${V?96:110}px;${V?'right:8%;top:56%':'right:20%;top:52%'}">${o.stamp}</div>`);
+ const date=E(`<div class="cc" style="top:${V?74:90}%;font-size:${V?40:34}px;font-weight:900">${o.date||''}</div>`);
+ return t=>{doc.style.opacity=seg(t,0,.12);doc.style.transform=`translateY(${40*(1-eo(seg(t,0,.25)))}px)`;lns.forEach((l,i)=>{l.style.opacity=seg(t,.18+i*.12,.28+i*.12)});
+  const s=seg(t,.55,.68);sp.style.opacity=s>0?1:0;sp.style.transform=`rotate(-8deg) scale(${s<1?2.4-1.4*eo(s):1})`;date.style.opacity=seg(t,.7,.8)}};
+// 11 一堆东西逐年减少（年份跳动）
+S.pile=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?50:46}px;padding:0 4%">${o.label}</div>`);
+ const mx=Math.max(...o.steps.map(s=>s.v)),N=o.max||26,cols=V?6:9,bw=V?W*.15:W*.085,x0=(W-cols*bw)/2,base=H*(V?.66:.70);
+ const bales=[];for(let i=0;i<N;i++){const r=Math.floor(i/cols),c=i%cols;bales.push(E(`<div class="abs" style="left:${x0+c*bw}px;top:${base-(r+1)*bw*.72}px;width:${bw*.96}px">${ICON[o.icon||'bale']()}</div>`))}
+ const yr=E(`<div class="cc" style="top:${V?72:76}%;font-size:${V?58:54}px;font-weight:900"><span id="y"></span>　<span class="red" id="v"></span><span style="font-size:.55em;color:var(--ink2)"> ${o.unit}</span><div id="nt" style="font-size:.5em;color:var(--mute);font-weight:500;margin-top:6px"></div></div>`);
+ const Y=yr.querySelector('#y'),Vv=yr.querySelector('#v'),NT=yr.querySelector('#nt');
+ return t=>{lab.style.opacity=seg(t,0,.1);const k=o.steps.length;const pos=clamp(seg(t,.1,.85)*(k-1));const i0=Math.floor(pos),f=eio(pos-i0),a=o.steps[i0],b=o.steps[Math.min(k-1,i0+1)];
+  const v=a.v+(b.v-a.v)*f;const show=v/mx*N;bales.forEach((e,i)=>{e.style.opacity=clamp(show-i);e.style.transform=`translateY(${-20*(1-clamp(show-i))}px)`});
+  const cur=f>.5?b:a;Y.textContent=cur.y;Vv.textContent=fmt(v,0);NT.textContent=cur.n||''}};
+// 12 增长：原木/纸浆越堆越高
+S.grow=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?50:46}px;padding:0 4%">${o.label}</div>`);
+ const it=o.items,mx=Math.max(...it.map(d=>d.v)),N=o.unitsMax||10,colW=V?W*.27:W*.2,gap=V?W*.06:W*.09,x0=(W-(it.length*colW+(it.length-1)*gap))/2,base=H*(V?.78:.84),uh=Math.min((H*(V?.52:.58))/N,colW*.36);
+ const cols=it.map((d,i)=>{const n=Math.round(d.v/mx*N);const g=E(`<div class="abs" style="left:${x0+i*(colW+gap)}px;top:0;width:${colW}px;height:${H}px"></div>`);const us=[];
+  for(let k=0;k<n;k++) us.push(E(`<div class="abs" style="left:0;width:${colW}px;height:${uh*1.02}px;top:${base-(k+1)*uh}px">${ICON[o.icon||'pulp'](d.hl?'#f4d9d4':'#f7f3ea')}</div>`,g));
+  us.forEach(u=>{u.firstChild.style.width='100%';u.firstChild.style.height='100%'});
+  const val=E(`<div class="abs" style="left:-30%;width:160%;text-align:center;top:${base-n*uh-(V?100:110)}px;font-weight:900;font-size:${V?58:64}px;color:${d.hl?'var(--red)':'var(--ink)'}">0</div>`,g);
+  const k=E(`<div class="abs" style="left:-30%;width:160%;text-align:center;top:${base+14}px;font-size:${V?30:30}px;font-family:Serif;font-weight:900">${d.k}${d.s?`<div style="font-family:NS;font-weight:500;font-size:.75em;color:var(--mute)">${d.s}</div>`:''}</div>`,g);return {us,val,k,d}});
+ return t=>{lab.style.opacity=seg(t,0,.1);cols.forEach((c,i)=>{const p=seg(t,.1+i*.18,.4+i*.18);c.us.forEach((u,k)=>{const q=clamp(p*c.us.length-k);u.style.opacity=q;u.style.marginTop=(-30*(1-eo(q)))+'px'});
+  c.val.style.opacity=seg(t,.1+i*.18,.16+i*.18);c.val.textContent=(c.d.pre||'')+fmt(c.d.v*eo(p),0);c.k.style.opacity=seg(t,.05+i*.18,.12+i*.18)})}};
+// 13 左右分屏：当年 vs 现在
+S.split=(o)=>{const mk=(s,side)=>E(`<div class="abs card" style="${V?(side?'left:0;right:0;top:52%;height:44%':'left:0;right:0;top:2%;height:44%'):(side?'left:52%;right:0;top:4%;height:86%':'left:0;right:52%;top:4%;height:86%')};padding:${V?'36px 40px':'48px 50px'};${side?'':'background:#ece4d4'}">
+  <div style="font-weight:900;font-size:${V?80:96}px;color:${side?'var(--red)':'var(--ink2)'};line-height:1">${s.y}</div>
+  <div class="serif" style="font-size:${V?50:50}px;line-height:1.35;margin-top:${V?22:34}px">${s.text}</div>
+  <div style="font-size:${V?26:24}px;color:var(--mute);margin-top:${V?18:28}px">${s.src}</div></div>`);
+ const a=mk(o.a,0),b=mk(o.b,1);const vs=E(`<div class="abs" style="${V?'left:50%;top:47%':'left:50%;top:45%'};transform:translate(-50%,-50%);width:${V?96:110}px;height:${V?96:110}px;border-radius:50%;background:var(--ink);color:#fff;font-weight:900;font-size:${V?40:44}px;display:flex;align-items:center;justify-content:center">→</div>`);
+ return t=>{a.style.opacity=seg(t,0,.15);a.style.transform=`translate${V?'Y':'X'}(${-40*(1-eo(seg(t,0,.25)))}px)`;vs.style.opacity=seg(t,.3,.4);b.style.opacity=seg(t,.38,.52);b.style.transform=`translate${V?'Y':'X'}(${40*(1-eo(seg(t,.38,.6)))}px)`}};
+// 14 金币堆：利息一年多少
+S.coins=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?48:44}px;padding:0 4%;line-height:1.35">${o.label}</div>`);
+ const N=o.n||14,cw=V?W*.38:W*.18,cx=(W-cw)/2,base=H*(V?.72:.80),ch=cw*.13;const cs=[];
+ for(let i=0;i<N;i++){rnd=i*131+7;cs.push(E(`<div class="abs" style="left:${cx+(R()-.5)*cw*.08}px;top:${base-(i+1)*ch}px;width:${cw}px;height:${ch*2.2}px">${ICON.coin()}</div>`))}
+ const big=E(`<div class="cc" style="top:${V?76:84}%;font-size:${V?64:60}px;font-weight:900"><span class="red" id="n">0</span> <span style="font-size:.55em;color:var(--ink2);font-weight:500">${o.unit}</span></div>`);const n=big.querySelector('#n');
+ const side=o.side?E(`<div class="abs card" style="${V?'left:0;right:0;top:9%':'left:2%;top:22%;width:30%'};padding:22px 28px;font-size:${V?34:32}px;line-height:1.55">${o.side}</div>`):null;
+ return t=>{lab.style.opacity=seg(t,0,.1);if(side) side.style.opacity=seg(t,.08,.2);cs.forEach((c,i)=>{const k=seg(t,.15+i*.035,.22+i*.035);c.style.opacity=k;c.style.transform=`translateY(${-200*(1-eo(k))}px)`});n.textContent=fmt(o.value*eo(seg(t,.15,.7)),0)}};
+// 15 收尾：成立条件
+S.conditions=(o)=>{const lab=E(`<div class="cc serif" style="top:${V?4:2}%;font-size:${V?52:50}px;padding:0 4%">${o.label}</div>`);
+ const cs=o.items.map((x,i)=>E(`<div class="abs card" style="${V?`left:0;right:0;top:${18+i*20}%`:`left:${8+i*44}%;width:40%;top:22%`};padding:${V?'28px 34px':'34px 40px'};min-height:${V?0:46}%">
+  <div style="font-weight:900;font-size:${V?64:84}px;color:var(--red);line-height:1">${i+1}</div><div class="serif" style="font-size:${V?44:46}px;line-height:1.4;margin-top:14px">${x}</div></div>`));
+ const q=E(`<div class="cc serif" style="top:${V?62:80}%;font-size:${V?48:46}px;padding:0 4%;line-height:1.4">${o.q}</div>`);
+ return t=>{lab.style.opacity=seg(t,0,.1);cs.forEach((c,i)=>{const k=seg(t,.12+i*.15,.26+i*.15);c.style.opacity=k;c.style.transform=`translateY(${30*(1-eo(k))}px)`});q.style.opacity=seg(t,.55,.7)}};
+// 16 实物照片链：A 变成 B 变成 C（照片逐张推入、放大、交叉溶解，箭头连起来）
+S.morph=(o)=>{const it=o.items,n=it.length;const lab=E(`<div class="cc serif" style="top:0;font-size:${V?50:46}px;padding:0 4%">${o.label}</div>`);
+ const sz=V?Math.min(W*.62,H*.22):Math.min(W/(n+.6),H*.62),gap=V?0:(W-n*sz)/(n+1);
+ const cards=it.map((d,i)=>{const x=V?(W-sz)/2:gap+i*(sz+gap),y=V?H*.1+i*(sz+H*.06):H*.16;
+  const c=E(`<div class="abs card" style="left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;padding:10px;background:#fff"><div style="width:100%;height:100%;background:url(photos/${d.img}) center/cover"></div>
+   <div class="serif" style="position:absolute;left:0;right:0;${V?`left:${sz+24}px;width:${W*.3}px;top:${sz*.3}px;text-align:left`:`top:${sz+20}px;text-align:center`};font-size:${V?44:40}px">${d.k}<div style="font-family:NS;font-weight:500;font-size:.6em;color:var(--mute);margin-top:6px">${d.s||''}</div></div></div>`);
+  const ar=i<n-1?E(`<div class="abs" style="${V?`left:${W/2-24}px;top:${y+sz+H*.008}px;font-size:56px`:`left:${x+sz+gap/2-28}px;top:${y+sz/2-40}px;font-size:64px`};font-weight:900;color:var(--red)">${V?'↓':'→'}</div>`):null;return {c,ar,img:c.firstElementChild}});
+ const cr=o.credit?E(`<div class="abs" style="left:0;bottom:-6px;font-size:${V?20:16}px;color:var(--mute)">${o.credit}</div>`):null;
+ return t=>{lab.style.opacity=seg(t,0,.1);cards.forEach((d,i)=>{const a=.08+i*.24,k=seg(t,a,a+.16);d.c.style.opacity=k;d.c.style.transform=`scale(${.85+.15*eo(k)})`;d.img.style.transform=`scale(${1.15-.15*seg(t,a,a+.6)})`;
+  if(d.ar){d.ar.style.opacity=seg(t,a+.14,a+.2)}});if(cr) cr.style.opacity=seg(t,.1,.2)}};
+// 17 豆子点阵：很多颗里只有几颗是红的
+S.beans=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?48:44}px;padding:0 4%;line-height:1.35">${o.label}</div>`);
+ const cols=V?20:40,n=o.n||500,rows=Math.ceil(n/cols),cw=V?W*.94/cols:Math.min(W*.9/cols,H*.6/rows),x0=(W-cw*cols)/2,y0=H*(V?.2:.16);
+ const svg=d3.select(st).append('svg').attr('width',W).attr('height',H).style('position','absolute').style('left',0).style('top',0);
+ const bs=[];for(let i=0;i<n;i++){rnd=i*53+11;const r=Math.floor(i/cols),c=i%cols,hl=i>=n-o.k;const g=svg.append('g').attr('transform',`translate(${x0+c*cw+cw/2},${y0+r*cw+cw/2}) rotate(${(R()-.5)*60})`).attr('opacity',0);
+  g.append('ellipse').attr('rx',cw*.42).attr('ry',cw*.33).attr('fill',hl?'#C8372D':'#e2c98f').attr('stroke','#1d1a16').attr('stroke-width',Math.max(1,cw*.06));
+  g.append('path').attr('d',`M${-cw*.12},0 q${cw*.12},${-cw*.08} ${cw*.24},0`).attr('stroke','#1d1a16').attr('stroke-width',Math.max(1,cw*.05)).attr('fill','none').attr('opacity',.6);bs.push({g,hl})}
+ const big=E(`<div class="cc" style="top:${V?(20+rows*cw/H*100+4):(16+rows*cw/H*100+5)}%;font-size:${V?52:50}px;font-weight:900"><span class="red">${o.big}</span> <span style="font-size:.6em;color:var(--ink2);font-weight:500">${o.bigNote||''}</span></div>`);
+ return t=>{lab.style.opacity=seg(t,0,.1);const p=seg(t,.08,.5);bs.forEach((b,i)=>{if(b.hl){const k=seg(t,.55,.65);b.g.attr('opacity',k).attr('transform',b.g.attr('transform').replace(/ scale\([^)]*\)/,'')+` scale(${1+1.5*(1-eo(k))})`)}else b.g.attr('opacity',clamp(p*n/8-(i%cols)*0+0-(Math.floor(i/cols))*.6+0))});big.style.opacity=seg(t,.68,.8)}};
+// 18 一杯奶：液面按比例分层（饲料占多少）
+S.glass=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?48:44}px;padding:0 4%">${o.label}</div>`);
+ const gw=V?W*.5:W*.22,gh=V?H*.5:H*.66,gx=V?(W-gw)/2:W*.2,gy=V?H*.12:H*.16;
+ const svg=d3.select(st).append('svg').attr('width',W).attr('height',H).style('position','absolute');
+ const cl='gcl'+Math.random().toString(36).slice(2);svg.append('clipPath').attr('id',cl).append('path').attr('d',`M${gx},${gy} L${gx+gw},${gy} L${gx+gw*.9},${gy+gh} L${gx+gw*.1},${gy+gh} Z`);
+ const layers=[];let acc=0;o.parts.forEach((p,i)=>{const r=svg.append('rect').attr('clip-path',`url(#${cl})`).attr('x',gx).attr('width',gw).attr('fill',p.c).attr('y',gy+gh).attr('height',0);layers.push({r,p,from:acc});acc+=p.v});
+ svg.append('path').attr('d',`M${gx},${gy} L${gx+gw},${gy} L${gx+gw*.9},${gy+gh} L${gx+gw*.1},${gy+gh} Z`).attr('fill','none').attr('stroke','#1d1a16').attr('stroke-width',5);
+ const labs=o.parts.map((p,i)=>E(`<div class="abs" style="left:${V?gx+gw+20:gx+gw+40}px;width:${V?W-gx-gw-20:W*.45}px;font-size:${V?34:40}px;font-weight:900;opacity:0">${p.k}<span style="color:${p.tc||'var(--ink)'};margin-left:14px">${p.label}</span></div>`));
+ const total=acc,note=E(`<div class="cc" style="top:${V?66:88}%;font-size:${V?40:36}px;color:var(--ink2)">${o.note||''}</div>`);
+ return t=>{lab.style.opacity=seg(t,0,.1);layers.forEach((L,i)=>{const k=eo(seg(t,.12+i*.3,.4+i*.3));const h=gh*L.p.v/total*k,y=gy+gh-gh*L.from/total-h;L.r.attr('y',y).attr('height',h);
+  labs[i].style.top=(gy+gh-gh*(L.from+L.p.v/2)/total-(V?24:28))+'px';labs[i].style.opacity=seg(t,.3+i*.3,.4+i*.3)});note.style.opacity=seg(t,.75,.88)}};
+// ---------- 入口 ----------
+(async()=>{await document.fonts.ready;await Promise.all(['900 40px Serif','700 40px Serif','900 40px NS','400 40px NS','700 40px NS'].map(f=>document.fonts.load(f)));
+ const all=await (await fetch(`scenes/${EP}.json`)).json();const sc=all.scenes[I-1];
+ document.querySelector('.top b').textContent=all.brand||'商业档案 No.'+EP;document.getElementById('ch').textContent=sc.ch||'';document.getElementById('src').textContent=sc.src?('来源：'+sc.src):'';
+ const r=st.getBoundingClientRect();W=r.width;H=r.height;
+ if(sc.type==='route') WORLD=await (await fetch('countries-50m.json')).json();
+ const upd=S[sc.type](sc);const cam=document.getElementById('cam');
+ window.__animSec=sc.d||3.6;
+ window.setProgress=t=>{upd(t);cam.style.transform=`scale(${1+.025*t})`};
+ window.setProgress(1);window.__ready=true;})();
+</script></body></html>
