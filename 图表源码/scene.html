@@ -273,9 +273,9 @@ S.ledger=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?48:
 // 26 原文截图（官网 / 交易所原件截图）：胶带贴在纸上，荧光笔扫过关键句，再推近
 let PROOF=null;
 S.proof=(o)=>{const p=PROOF[o.key];const iw=p.W,ih=p.H;
- const r0=p.rects[0];const fw=V?W:W*.86,fh=V?H*.86:H*.92;
+ const r0=p.rects[0];const fw=V?W:W*.86,fh=V?(o.cap?H*.6:H*.86):(o.cap?H*.62:H*.86);
  // 只截原文的一段：以第一处高亮为中心，取一块区域
- const cw=Math.min(iw,o.cropW||(V?760:1160)),ch=Math.min(ih,cw*fh/fw),cx=Math.max(0,Math.min(iw-cw,r0.x+r0.w/2-cw/2)),cy=Math.max(0,Math.min(ih-ch,r0.y+r0.h/2-ch*.42));
+ const cw=Math.min(iw,o.cropWV&&V?o.cropWV:(o.cropW&&!V?o.cropW:(V?620:1160))),ch=Math.min(ih,cw*fh/fw,V?ih:cw*fh/fw),cx=Math.max(0,Math.min(iw-cw,r0.x+r0.w/2-cw/2)),cy=Math.max(0,Math.min(ih-ch,r0.y+r0.h/2-ch*.42));
  const sc=fw/cw;
  const card=E(`<div class="abs" style="left:${(W-fw)/2}px;top:${V?H*.06:0}px;width:${fw}px;height:${ch*sc}px;overflow:hidden;background:#fff;border:3px solid var(--ink);box-shadow:8px 8px 0 var(--ink)">
   <div class="pin" style="position:absolute;left:0;top:0;width:${iw*sc}px;height:${ih*sc}px;transform-origin:0 0">
@@ -285,7 +285,7 @@ S.proof=(o)=>{const p=PROOF[o.key];const iw=p.W,ih=p.H;
  const tape1=E(`<div class="abs" style="left:${(W-fw)/2-20}px;top:${(V?H*.06:0)-18}px;width:130px;height:38px;background:rgba(205,176,138,.75);transform:rotate(-8deg)"></div>`);
  const tape2=E(`<div class="abs" style="left:${(W+fw)/2-110}px;top:${(V?H*.06:0)-14}px;width:130px;height:38px;background:rgba(205,176,138,.75);transform:rotate(7deg)"></div>`);
  const tag=E(`<div class="abs" style="left:${(W-fw)/2}px;top:${(V?H*.06:0)+ch*sc+18}px;background:var(--ink);color:#fff;font-weight:900;font-size:${V?30:26}px;padding:8px 18px">${o.tag||'原文截图'} · ${p.src}</div>`);
- const cap=o.cap?E(`<div class="abs serif" style="left:${(W-fw)/2}px;right:${(W-fw)/2}px;top:${(V?H*.06:0)+ch*sc+(V?90:80)}px;font-size:${V?46:44}px;line-height:1.35">${o.cap}</div>`):null;
+ const cap=o.cap?E(`<div class="abs serif" style="left:${(W-fw)/2}px;right:${(W-fw)/2}px;top:${(V?H*.06:0)+ch*sc+(V?90:70)}px;font-size:${V?46:40}px;line-height:1.3">${o.cap}</div>`):null;
  const mks=[...card.querySelectorAll('.mk')],bxs=[...card.querySelectorAll('.bx')],pin=card.querySelector('.pin');
  const fr=p.rects[o.focus||0];const fx=(fr.x-cx+fr.w/2)*sc,fy=(fr.y-cy+fr.h/2)*sc;
  return t=>{card.style.opacity=seg(t,0,.08);tape1.style.opacity=tape2.style.opacity=seg(t,.05,.12);tag.style.opacity=seg(t,.1,.2);
