@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """一条命令出片（省 token、省时间的固定流程）。
 
-  python3 交接/试制段流程/make_video.py <chunks.json> <输出目录> <成片名> [--only v|h] [--force]
+  python3 交接/试制段流程/make_video.py <chunks.json> <输出目录> <成片名> [--hv] [--force]（默认只出竖版）
 
 做什么（每一步都有缓存，改一句只重做那一句）：
   1. 读音检查（check_pron.py）。有风险词就停下，除非加 --force。
@@ -19,8 +19,16 @@ import hashlib, json, os, subprocess, sys
 here = os.path.dirname(os.path.abspath(__file__))
 args = [a for a in sys.argv[1:] if not a.startswith('--')]
 chunks, out, title = args[0], args[1], args[2]
-ORI = 'v' if '--only' in sys.argv and sys.argv[sys.argv.index('--only') + 1] == 'v' else ('h' if '--only' in sys.argv else 'hv')
+# 只出竖版（2026-10-25 定）；要横版加 --hv
+ORI = 'hv' if '--hv' in sys.argv else 'v'
 os.makedirs(out, exist_ok=True)
+# 渲染要用的本地网页服务：没开就自动开（会话重启后常被关掉）
+import socket
+with socket.socket() as _s:
+    if _s.connect_ex(('127.0.0.1', 8765)):
+        subprocess.Popen([sys.executable, '-m', 'http.server', '8765'], cwd='图表源码', stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+        import time; time.sleep(1)
+if not os.path.exists('src'): os.symlink('图表源码', 'src')
 
 # 1. 读音检查
 r = subprocess.run([sys.executable, f'{here}/check_pron.py', chunks], capture_output=True, text=True)

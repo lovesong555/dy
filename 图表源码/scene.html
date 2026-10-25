@@ -41,7 +41,7 @@ svg text{font-family:NS}
 .syh{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;z-index:6}
 .h .syh{height:84px;padding:0 3.2%}.v .syh{height:132px;padding:0 5.5%}
 .syh b{font-family:NS;font-weight:900;color:#141210;letter-spacing:2px}.h .syh b{font-size:40px}.v .syh b{font-size:58px}
-.syh i{font-style:normal;font-family:NS;font-weight:700;background:#141210;color:#F3EEE4;border-radius:6px;margin-left:18px;letter-spacing:3px}.h .syh i{font-size:20px;padding:4px 12px}.v .syh i{font-size:28px;padding:6px 16px}
+.syh i{font-style:normal;font-family:NS;font-weight:700;background:#141210;color:#F3EEE4;border-radius:6px;margin-left:auto;letter-spacing:3px}.h .syh i{font-size:20px;padding:4px 12px}.v .syh i{font-size:28px;padding:6px 16px}
 .syh em{font-style:normal;margin-left:auto;color:#8A8073;letter-spacing:3px}.h .syh em{font-size:18px}.v .syh em{font-size:26px}
 .syb{position:absolute;display:flex;z-index:6}.h .syb{left:3.2%;right:3.2%;top:84px;height:52px;gap:8px}.v .syb{left:5.5%;right:5.5%;top:132px;height:86px;gap:10px}
 .syb>div{position:relative;flex-basis:0}
@@ -329,9 +329,9 @@ S.compose=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?50
 // 28 圆环占比图：一个或两个圆环，重点块（hl）向外弹出并标红；每块写名称和百分比
 S.pie=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?50:46}px;padding:0 4%;line-height:1.3">${o.label}</div>`);
  const P=o.pies,n=P.length,ns='http://www.w3.org/2000/svg';
- const R0=V?Math.min(W*(n>1?.30:.25),H*(n>1?.15:.24)):Math.min(H*.30,W/(n*2)*.62),RI=R0*.56;
+ const R0=V?Math.min(W*(n>1?.28:.25),H*(n>1?(o.orig?.125:.15):.24)):Math.min(H*.30,W/(n*2)*.62),RI=R0*.56;
  const C=['#C8372D','#8A8073','#cfc4b0','#5E8C83','#CDB08A'];
- const parts=P.map((pp,pi)=>{const cx=V?W/2:W*(pi+.5)/n,cy=V?H*(n>1?(.30+pi*.40):.48):H*.52;
+ const parts=P.map((pp,pi)=>{const cx=V?W/2:W*(pi+.5)/n,cy=V?H*(n>1?(o.orig?(.24+pi*.37):(.30+pi*.40)):.48):H*.52;
   const svg=document.createElementNS(ns,'svg');svg.setAttribute('width',W);svg.setAttribute('height',H);svg.style.cssText='position:absolute;left:0;top:0;overflow:visible';st.append(svg);
   const tot=pp.items.reduce((s,d)=>s+d.v,0);let a0=-Math.PI/2;
   let oi=0;const segs=pp.items.map((d,i)=>{const a=d.v/tot*Math.PI*2;const s={d,a0,a1:a0+a,col:d.hl?C[0]:C[1+(oi++%4)]};a0+=a;
@@ -341,11 +341,12 @@ S.pie=(o)=>{const lab=E(`<div class="cc serif" style="top:0;font-size:${V?50:46}
    {const wl=s.lab.offsetWidth,c=Math.cos(m);if(c<-.2&&lx-wl<4)s.lab.style.left=(wl+4)+'px';if(c>.2&&lx+wl>W-4)s.lab.style.left=(W-wl-4)+'px'}return s});
   const arc=(r0,r1,a,b)=>{const L=b-a>Math.PI?1:0,p=(r,x)=>[cx+Math.cos(x)*r,cy+Math.sin(x)*r];const [x0,y0]=p(r1,a),[x1,y1]=p(r1,b),[x2,y2]=p(r0,b),[x3,y3]=p(r0,a);
    return `M${x0} ${y0}A${r1} ${r1} 0 ${L} 1 ${x1} ${y1}L${x2} ${y2}A${r0} ${r0} 0 ${L} 0 ${x3} ${y3}Z`};
-  const ctr=E(`<div class="abs" style="left:${cx}px;top:${cy}px;transform:translate(-50%,-50%);text-align:center"><div style="font-weight:900;font-size:${V?64:68}px;color:var(--red);line-height:1">${pp.center||''}</div><div class="serif" style="font-size:${V?28:26}px;margin-top:6px">${pp.sub||''}</div></div>`);
+  const ctr=E(`<div class="abs" style="left:${cx}px;top:${cy}px;transform:translate(-50%,-50%);text-align:center"><div style="font-weight:900;font-size:${Math.min(V?64:68,RI*.58)}px;color:var(--red);line-height:1">${pp.center||''}</div><div class="serif" style="font-size:${V?28:26}px;margin-top:6px">${pp.sub||''}</div></div>`);
   const tt=E(`<div class="abs serif" style="left:${cx}px;top:${cy+R0+(V?28:34)}px;transform:translateX(-50%);white-space:nowrap;font-size:${V?34:34}px">${pp.title||''}</div>`);
   return {segs,arc,ctr,tt,cx,cy,pi}});
  const note=o.note?E(`<div class="cc" style="top:${V?94:93}%;font-size:${V?30:28}px;color:var(--ink2);padding:0 4%">${o.note}</div>`):null;
- return t=>{lab.style.opacity=seg(t,0,.08);parts.forEach(q=>{const d0=.06+q.pi*.22,sw=eio(seg(t,d0,d0+.3));const end=-Math.PI/2+sw*Math.PI*2;
+ const og=o.orig?E(`<div class="abs" style="left:0;right:0;top:${V?90:88}%;background:#fff;border:2px solid #141210;padding:10px 14px;font-family:Georgia,serif;font-size:${V?24:20}px;line-height:1.35;color:#222">${o.orig}<div style="font-family:NS;font-size:.8em;color:#8A8073;margin-top:4px">原文 · ${o.origSrc||''}</div></div>`):null;
+ return t=>{if(og)og.style.opacity=seg(t,.55,.65);lab.style.opacity=seg(t,0,.08);parts.forEach(q=>{const d0=.06+q.pi*.22,sw=eio(seg(t,d0,d0+.3));const end=-Math.PI/2+sw*Math.PI*2;
    q.segs.forEach(s=>{const b=Math.min(s.a1,end);const pop=s.d.hl?R0*.10*back(seg(t,d0+.3,d0+.42)):0;const m=(s.a0+s.a1)/2;
     s.path.setAttribute('transform',`translate(${Math.cos(m)*pop} ${Math.sin(m)*pop})`);
     s.path.setAttribute('d',b>s.a0+.001?q.arc(RI,R0,s.a0,b):'');s.lab.style.opacity=seg(t,d0+.3,d0+.4)});
@@ -391,7 +392,7 @@ S.page=(o)=>{const p=PROOF[o.key],c=o.crop;const fw=W,sc=fw/c.w,fh=c.h*sc;const 
  const all=await (await fetch(`scenes/${EP}.json`)).json();const sc=all.scenes[I-1];
  let bar=null;
  if(all.template==='songyu'){document.body.classList.add('sy');
-  E(`<div class="syh"><b>${all.brand||'宋玉'}</b><i>${all.cat||'人物'}</i><em>${all.tagline||''}</em></div>`,document.body);
+  E(`<div class="syh"><b>${all.brand||'宋玉'}</b><i>${all.cat||'人物'}</i></div>`,document.body);
   const tot=all.total||1,chs=all.chapters||[];
   const b=E(`<div class="syb">${chs.map(c=>`<div style="flex-grow:${c.d}"><div class="tr"><div class="fl"></div></div><div class="lb">${c.t}</div></div>`).join('')}</div>`,document.body);
   const cells=[...b.children];
