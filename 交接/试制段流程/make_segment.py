@@ -11,6 +11,9 @@ import json, os, re, subprocess, sys
 ep, chunks_path, out = sys.argv[1], sys.argv[2], sys.argv[3]
 os.makedirs(out, exist_ok=True)
 C = json.load(open(chunks_path))
+# 新格式：{"template":"songyu","brand":"宋玉","cat":"人物","chunks":[...]}，镜头的 scene.ch 就是顶部进度条的章节名
+META = {}
+if isinstance(C, dict): META, C = {k: v for k, v in C.items() if k != 'chunks'}, C['chunks']
 VOICE = os.environ.get('TTS_VOICE', 'zh-CN-YunyangNeural'); RATE = os.environ.get('TTS_RATE', '+6%'); GAP = 0.45
 def dur(f): return float(subprocess.run(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',f],capture_output=True,text=True).stdout)
 for i, c in enumerate(C, 1):
@@ -28,7 +31,16 @@ scenes = []
 for c in C:
     s = dict(c['scene']); s['d'] = round(c['dur'] + GAP, 2); scenes.append(s)
 name = f'{ep}seg'
-json.dump({"brand": f"商业档案 No.{ep}", "scenes": scenes}, open(f'src/scenes/{name}.json','w'), ensure_ascii=False, indent=0)
+spec = {"brand": f"商业档案 No.{ep}", "scenes": scenes}
+if META.get('template') == 'songyu':
+    # 章节进度条：按镜头的 ch 依次合并时长；每个镜头记下自己在整片里的起点 t0
+    chs, t = [], 0.0
+    for s in scenes:
+        s['t0'] = round(t, 3); t += s['d']
+        if chs and chs[-1]['t'] == s.get('ch'): chs[-1]['d'] += s['d']
+        else: chs.append({'t': s.get('ch', ''), 'd': s['d']})
+    spec = dict(META, scenes=scenes, chapters=chs, total=round(t, 3))
+json.dump(spec, open(f'src/scenes/{name}.json','w'), ensure_ascii=False, indent=0)
 if not os.environ.get('SKIP_RENDER'):  # 已经单独渲染过镜头时跳过（例如横竖并行渲染）
     subprocess.run(['node','图表源码/渲染脚本/render_scene.mjs',name,out,'hv'],check=True)
 # 音轨 + 字幕

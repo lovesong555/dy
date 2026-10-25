@@ -34,6 +34,23 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--paper);font-fa
 .tag.on{background:var(--red);color:#fff}.tag.on small{color:#fff}
 .stamp{position:absolute;border:6px solid var(--red);color:var(--red);font-family:Serif;font-weight:900;border-radius:10px;padding:6px 22px;transform:rotate(-8deg);letter-spacing:6px;background:rgba(239,233,221,.4)}
 svg text{font-family:NS}
+/* ---------- 宋玉 品牌模板：左上品牌 + 分类标签，顶部章节进度条，不出现期数 ---------- */
+.sy .top{display:none}
+.sy .paper{background:radial-gradient(ellipse at 50% 40%,rgba(255,255,255,.4) 0%,rgba(255,255,255,0) 65%,rgba(90,60,30,.10) 100%),#F3EEE4}
+.sy .grain{opacity:.08}.sy .fiber{opacity:.03}
+.syh{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;z-index:6}
+.h .syh{height:84px;padding:0 3.2%}.v .syh{height:132px;padding:0 5.5%}
+.syh b{font-family:NS;font-weight:900;color:#141210;letter-spacing:2px}.h .syh b{font-size:40px}.v .syh b{font-size:58px}
+.syh i{font-style:normal;font-family:NS;font-weight:700;background:#141210;color:#F3EEE4;border-radius:6px;margin-left:18px;letter-spacing:3px}.h .syh i{font-size:20px;padding:4px 12px}.v .syh i{font-size:28px;padding:6px 16px}
+.syh em{font-style:normal;margin-left:auto;color:#8A8073;letter-spacing:3px}.h .syh em{font-size:18px}.v .syh em{font-size:26px}
+.syb{position:absolute;display:flex;z-index:6}.h .syb{left:3.2%;right:3.2%;top:84px;height:52px;gap:8px}.v .syb{left:5.5%;right:5.5%;top:132px;height:86px;gap:10px}
+.syb>div{position:relative;flex-basis:0}
+.syb .tr{height:8px;background:#D9D1C2;border-radius:4px;overflow:hidden}.v .syb .tr{height:10px}
+.syb .fl{height:100%;width:0;background:#141210}
+.syb .on .fl{background:#C8372D}
+.syb .lb{margin-top:8px;color:#9A9083;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:clip}.h .syb .lb{font-size:17px}.v .syb .lb{font-size:22px}
+.syb .on .lb{color:#C8372D;font-weight:900}.syb .done .lb{color:#141210}
+.sy.h #st{top:160px}.sy.v #st{top:250px}
 </style></head><body>
 <div class="paper"></div><div class="grain"></div><div class="fiber"></div>
 <div class="top"><b>商业档案 No.08</b><span>CASE FILE</span><div class="ch" id="ch"></div></div>
@@ -348,16 +365,44 @@ S.photo=(o)=>{const ar=o.ar||1.5;let fw=V?W:W*.80,fh=fw/ar;const maxH=V?H*.62:H*
  const tag=E(`<div class="abs" style="left:${(W-fw)/2}px;top:${top+fh+16}px;background:var(--ink);color:#fff;font-weight:900;font-size:${V?26:22}px;padding:8px 18px;max-width:${Math.max(fw,W*.6)}px">${o.tag||'图'} · ${o.credit}</div>`);
  const cap=o.cap?E(`<div class="abs serif" style="left:${(W-fw)/2}px;width:${Math.max(fw,W*.6)}px;top:${top+fh+16+tag.offsetHeight+14}px;font-size:${V?46:40}px;line-height:1.3">${o.cap}</div>`):null;
  return t=>{card.style.opacity=seg(t,0,.06);tag.style.opacity=seg(t,.04,.12);if(cap)cap.style.opacity=seg(t,.1,.2)}};
+// 31 完整照片 + 人物悬念标记：照片不裁剪（contain），可用 mask 先盖住某个人，reveal:1 时揭开并出名字卡
+S.photofull=(o)=>{const ar=o.ar||1.5,pad=V?0:0;let fw=W,fh=fw/ar;const maxH=V?H*.70:H*.86;if(fh>maxH){fh=maxH;fw=fh*ar}const left=(W-fw)/2,top=V?H*.02:0;
+ const card=E(`<div class="abs" style="left:${left}px;top:${top}px;width:${fw}px;height:${fh}px;border:2px solid #141210;box-shadow:6px 6px 0 rgba(20,18,16,.85);background:#000 url('${o.img}') center/contain no-repeat"></div>`);
+ const tag=E(`<div class="abs" style="left:${left}px;top:${top+fh+14}px;background:#141210;color:#F3EEE4;font-weight:700;font-size:${V?24:20}px;padding:6px 14px;max-width:${W}px">${o.tag||'图'} · ${o.credit}</div>`);
+ let mk=null,nm=null;if(o.mask){const m=o.mask,r=m.r*fw;
+  mk=E(`<div class="abs" style="left:${left+m.x*fw-r}px;top:${top+m.y*fh-r}px;width:${2*r}px;height:${2*r}px;border-radius:50%;background:#C8372D;border:5px solid #F3EEE4;box-shadow:0 6px 18px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:${r*1.15}px;line-height:1">?</div>`);
+  if(o.maskNote) E(`<div class="abs serif" style="left:${left}px;width:${fw}px;top:${top+fh+(V?74:58)}px;font-size:${V?52:42}px;line-height:1.3">${o.maskNote}</div>`);}
+ if(o.reveal){nm=E(`<div class="abs" style="left:${left}px;width:${fw}px;top:${top+fh+(V?74:58)}px"><div class="serif" style="font-size:${V?96:76}px;line-height:1.1">${o.name}</div><div style="font-size:${V?34:28}px;color:#5a5249;margin-top:12px">${o.sub||''}</div></div>`);}
+ return t=>{card.style.opacity=seg(t,0,.05);tag.style.opacity=seg(t,.03,.1);
+  if(mk){if(o.reveal){const k=eio(seg(t,.12,.32));mk.style.opacity=1-k;mk.style.transform=`scale(${1+.6*k})`}else{const k=seg(t,.06,.16);mk.style.opacity=k;mk.style.transform=`scale(${k<1?.3+.7*back(k):1})`}}
+  if(nm){const k=seg(t,.3,.45);nm.style.opacity=k;nm.style.transform=`translateY(${24*(1-eo(k))}px)`}}};
+// 32 原文截图（整栏裁剪）：按指定范围裁，整行完整显示，不切字；静止，只用荧光笔标关键句
+S.page=(o)=>{const p=PROOF[o.key],c=o.crop;const fw=W,sc=fw/c.w,fh=c.h*sc;const top=V?H*.02:Math.max(0,(H*.80-fh)/2);
+ const card=E(`<div class="abs" style="left:0;top:${top}px;width:${fw}px;height:${fh}px;overflow:hidden;background:#fff;border:2px solid #141210;box-shadow:6px 6px 0 rgba(20,18,16,.85)">
+  <img src="${p.img}" style="position:absolute;left:${-c.x*sc}px;top:${-c.y*sc}px;width:${p.W*sc}px;height:${p.H*sc}px">
+  ${(o.rects||p.rects).map(r=>`<div class="mk" style="position:absolute;left:${(r.x-c.x)*sc-4}px;top:${(r.y-c.y)*sc-3}px;height:${r.h*sc+6}px;width:0;background:rgba(240,190,60,.45);mix-blend-mode:multiply"></div>`).join('')}</div>`);
+ S._ready=card.querySelector('img').decode().catch(()=>{});
+ const tag=E(`<div class="abs" style="left:0;top:${top+fh+14}px;background:#141210;color:#F3EEE4;font-weight:700;font-size:${V?24:20}px;padding:6px 14px">${o.tag||'原文截图'} · ${p.src}</div>`);
+ const cap=o.cap?E(`<div class="abs serif" style="left:0;right:0;top:${top+fh+(V?74:58)}px;font-size:${V?46:38}px;line-height:1.35">${o.cap}</div>`):null;
+ const mks=[...card.querySelectorAll('.mk')],rs=o.rects||p.rects;
+ return t=>{card.style.opacity=seg(t,0,.05);tag.style.opacity=seg(t,.03,.1);mks.forEach((m,i)=>{m.style.width=((rs[i].w*sc+8)*eo(seg(t,.12+i*.12,.3+i*.12)))+'px'});if(cap)cap.style.opacity=seg(t,.3,.42)}};
 // ---------- 入口 ----------
 (async()=>{await document.fonts.ready;await Promise.all(['900 40px Serif','700 40px Serif','900 40px NS','400 40px NS','700 40px NS'].map(f=>document.fonts.load(f)));
  const all=await (await fetch(`scenes/${EP}.json`)).json();const sc=all.scenes[I-1];
- document.querySelector('.top b').textContent=all.brand||'商业档案 No.'+EP;document.getElementById('ch').textContent=sc.ch||'';document.getElementById('src').textContent=sc.src?('来源：'+sc.src):'';
+ let bar=null;
+ if(all.template==='songyu'){document.body.classList.add('sy');
+  E(`<div class="syh"><b>${all.brand||'宋玉'}</b><i>${all.cat||'人物'}</i><em>${all.tagline||''}</em></div>`,document.body);
+  const tot=all.total||1,chs=all.chapters||[];
+  const b=E(`<div class="syb">${chs.map(c=>`<div style="flex-grow:${c.d}"><div class="tr"><div class="fl"></div></div><div class="lb">${c.t}</div></div>`).join('')}</div>`,document.body);
+  const cells=[...b.children];
+  bar=t=>{const now=(sc.t0||0)+t*(sc.d||0);let acc=0;chs.forEach((c,k)=>{const p=clamp((now-acc)/c.d);const el=cells[k];el.querySelector('.fl').style.width=p*100+'%';el.className=p>=1?'done':(p>0?'on':'');acc+=c.d})};}
+ else document.querySelector('.top b').textContent=all.brand||'商业档案 No.'+EP;document.getElementById('ch').textContent=sc.ch||'';document.getElementById('src').textContent=sc.src?('来源：'+sc.src):'';
  const r=st.getBoundingClientRect();W=r.width;H=r.height;
  if(sc.type==='route') WORLD=await (await fetch('countries-50m.json')).json();
- if(sc.type==='proof') PROOF=await (await fetch(`evidence/proof${EP.replace('seg','')}.json`)).json();
+ if(sc.type==='proof'||sc.type==='page') PROOF=await (await fetch(`evidence/proof${EP.replace('seg','')}.json`)).json();
  const upd=S[sc.type](sc);const cam=document.getElementById('cam');
  window.__animSec=sc.d||3.6;
- window.setProgress=async t=>{await upd(t);cam.style.transform=`scale(${1+(sc.still?0:.04)*t})`};
+ window.setProgress=async t=>{await upd(t);if(bar)bar(t);cam.style.transform=`scale(${1+(sc.still?0:.04)*t})`};
  if(S._ready) await S._ready;
  await window.setProgress(1);window.__ready=true;})();
 </script></body></html>
