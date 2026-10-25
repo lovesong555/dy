@@ -21,6 +21,7 @@ for(const [o,w,h,dir] of [['h',1920,1080,'横版'],['v',1080,1920,'竖版']]){ i
   execFileSync('ffmpeg',['-y','-loglevel','error','-framerate','30','-i',`${tmp}/f%04d.jpg`,'-c:v','libx264','-pix_fmt','yuv420p','-crf','18','-r','30',path.join(od,'镜头MP4',`${name}.mp4`)]);
   fs.rmSync(tmp,{recursive:true}); await p.close(); list.push(name); console.log('done',o,name,sec+'s');
  }
+ if(process.env.NOCONCAT) continue; // 并行渲染时由调用方统一拼接
  fs.writeFileSync(path.join(od,'concat.txt'),list.map(n=>`file '镜头MP4/${n}.mp4'`).join('\n'));
  execFileSync('ffmpeg',['-y','-loglevel','error','-f','concat','-safe','0','-i',path.join(od,'concat.txt'),'-c','copy',path.join(od,`${ep}_整期预览_${dir}.mp4`)]);
 }

@@ -43,6 +43,7 @@ if META.get('template') == 'songyu':
 json.dump(spec, open(f'src/scenes/{name}.json','w'), ensure_ascii=False, indent=0)
 if not os.environ.get('SKIP_RENDER'):  # 已经单独渲染过镜头时跳过（例如横竖并行渲染）
     subprocess.run(['node','图表源码/渲染脚本/render_scene.mjs',name,out,'hv'],check=True)
+if os.environ.get('SKIP_MUX'): sys.exit(0)  # make_video.py 先只要配音和分镜
 # 音轨 + 字幕
 def ts(x): return f"{int(x//3600)}:{int(x%3600//60):02d}:{x%60:05.2f}"
 parts, events, t0 = [], [], 0.0
@@ -71,6 +72,7 @@ for i, c in enumerate(C, 1):
 open(f'{out}/audio.txt','w').write('\n'.join(parts))
 subprocess.run(['ffmpeg','-y','-loglevel','error','-f','concat','-safe','0','-i',f'{out}/audio.txt','-c:a','pcm_s16le',f'{out}/vo_all.wav'],check=True)
 for k, (W, H, fs, mv, d) in {'h': (1920,1080,58,70,'横版'), 'v': (1080,1920,62,400,'竖版')}.items():
+    if k not in os.environ.get('ONLY', 'hv'): continue
     hdr = f"[Script Info]\nScriptType: v4.00+\nPlayResX: {W}\nPlayResY: {H}\n\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\nStyle: D,Noto Sans CJK SC,{fs},&H00FFFFFF,&H00FFFFFF,&H00221E1D,&H64000000,-1,0,0,0,100,100,1,0,1,5,0,2,60,60,{mv},1\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n"
     open(f'{out}/sub_{k}.ass','w').write(hdr + '\n'.join(f"Dialogue: 0,{ts(a)},{ts(b)},D,,0,0,0,,{t}" for a, b, t in events))
     subprocess.run(['ffmpeg','-y','-loglevel','error','-i',f'{out}/{d}/{name}_整期预览_{d}.mp4','-i',f'{out}/vo_all.wav','-vf',f"ass={out}/sub_{k}.ass:fontsdir=图表源码",'-c:v','libx264','-crf','20','-pix_fmt','yuv420p','-c:a','aac','-b:a','160k','-shortest',f'{out}/第{ep}期_试制段_{d}.mp4'],check=True)
