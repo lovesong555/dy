@@ -1,0 +1,36 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- 宋玉 头像 / 主页头图。avatar.html?k=a1|a2|a3|banner。字体：思源黑体 / 思源宋体（SIL OFL）。 -->
+<style>
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Black.otf);font-weight:900}
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Bold.otf);font-weight:700}
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Medium.otf);font-weight:500}
+@font-face{font-family:SR;src:url(NotoSerifCJKsc-Black.otf);font-weight:900}
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1080px;overflow:hidden;font-family:NS}
+.wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.a1{background:#141210;color:#F3EEE4}
+.a1 b{font-weight:900;font-size:330px;letter-spacing:10px}
+.a1 i{position:absolute;left:50%;bottom:250px;width:120px;height:16px;margin-left:-60px;background:#C8372D}
+.a2{background:#F3EEE4;color:#141210}
+.a2 b{font-weight:900;font-size:330px;letter-spacing:10px}
+.a2 i{position:absolute;left:50%;bottom:250px;width:120px;height:16px;margin-left:-60px;background:#C8372D}
+.a3{background:#F3EEE4}
+.a3 .seal{width:640px;height:640px;background:#C8372D;border-radius:36px;display:grid;grid-template-columns:1fr;align-content:center;justify-items:center;color:#F3EEE4;font-family:SR;font-weight:900;font-size:250px;line-height:1.02;box-shadow:inset 0 0 0 18px #C8372D,inset 0 0 0 26px #F3EEE4}
+.banner{width:1125px;height:633px;background:#F3EEE4;position:absolute;left:0;top:0}
+</style></head><body>
+<div id="c"></div>
+<script>
+const k=new URLSearchParams(location.search).get('k');const c=document.getElementById('c');
+if(k==='a1') c.innerHTML='<div class="wrap a1"><b>宋玉</b><i></i></div>';
+if(k==='a2') c.innerHTML='<div class="wrap a2"><b>宋玉</b><i></i></div>';
+if(k==='a3') c.innerHTML='<div class="wrap a3"><div class="seal">宋<br>玉</div></div>';
+if(k==='banner'){document.body.style.width='1125px';document.body.style.height='633px';
+ c.innerHTML=`<div class="banner">
+  <div style="position:absolute;left:0;right:0;text-align:center;top:110px;font-weight:900;font-size:96px;color:#141210;letter-spacing:4px">宋玉</div>
+  <div style="position:absolute;left:517px;top:250px;width:90px;height:10px;background:#C8372D"></div>
+  <div style="position:absolute;left:0;right:0;text-align:center;top:290px;font-weight:700;font-size:44px;color:#141210">从一条新闻，看清一门生意</div>
+  <div style="position:absolute;left:0;right:0;top:372px;display:flex;justify-content:center;gap:16px">
+   ${['人物','资讯','产业链'].map(t=>`<span style="background:#141210;color:#F3EEE4;font-weight:700;font-size:30px;padding:6px 18px;border-radius:6px;letter-spacing:4px">${t}</span>`).join('')}</div>
+ </div>`;}
+document.fonts.ready.then(()=>window.__ready=true);
+</script></body></html>

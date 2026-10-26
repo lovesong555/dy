@@ -1,0 +1,192 @@
+# 素材下载总表：央视、YouTube、企业官网、免版权空镜
+
+检索日期：2026-10-23。下面每一条都实际请求过，验证方式见每行末尾的代码：
+
+- **V1**：用 curl 打开央视网页面，返回 HTTP 200，页面标题与表中一致；再用页面里的 guid 查询央视点播接口 `vdn.apps.cntv.cn/api/getHttpVideoInfo.do`，返回 status=001 和 HLS 播放流，即可正常播放。时长、日期取自接口的 totalLength 和 f_pgmtime（节目时间）。
+- **V2**：YouTube oEmbed（`https://www.youtube.com/oembed?url=...&format=json`）返回 200，标题和频道与表中一致。时长和发布时间取自 YouTube 搜索结果，发布时间是相对时间，按 2026-10 推算。
+- **V3**：用 WebFetch 打开 Pexels/Pixabay 详情页，确认标题、作者、上传日期、时长、分辨率，页面有 "Free download" 按钮。
+- **V3s**：只在 Pexels 搜索结果页（WebFetch）里列出，没有单独打开详情页，时长和日期未核实。
+- **V4**：`curl -I` 返回 HTTP 200，`content-type: video/mp4`，并记录了 content-length。
+
+**授权说明（简写）**
+- 新闻引用：央视、CGTN、新华社、电视台等新闻素材有版权。只能**短片段引用**（建议每段不超过 10–15 秒），画面上要标“来源：央视新闻/CCTV-2 等”，配上自己的解说和分析。不能整段搬运，也不能拿来做商业广告。
+- 不可商用：企业宣传片和企业 YouTube 频道的视频，默认版权归企业所有，只能当参考或做评论性短引用，并标明来源。
+- 可商用：Pexels 授权允许免费商用，不要求署名，可以修改。但不能出售未经修改的原片，不能暗示画面里的人或品牌为你背书，不能转传到其他素材站。Pixabay Content License 的规则与此类似。
+
+**“是否可下载”的写法**：直链 = 浏览器打开就能存成 mp4；Free download = 素材站页面上的下载按钮；需 App = 用央视频 App 缓存或收藏；需插件 = 网页播放器是 HLS 流，需要浏览器插件才能下载；仅录屏 = 只能录屏引用。
+
+---
+
+## 选题1　韩国二手车经烟台港／中国铁路到中亚（滚装船、笼车、霍尔果斯）
+
+| 标题 | 平台 | URL | 时长 | 发布日期 | 是否可下载 | 版权/授权 | 验证 |
+|---|---|---|---|---|---|---|---|
+| [新闻直播间]新年伊始 山东烟台港迎商品车发运小高峰 | 央视网 CCTV-13 | <https://tv.cctv.com/2025/01/05/VIDEQ8jDFbxTs6xdzvi7i5Ue250105.shtml> | 2:21 | 2025-01-05 | 需插件/需App | 新闻引用 | V1 |
+| [新闻直播间]山东 新年伊始 烟台港汽车出口发运“开门红” | 央视网 CCTV-13 | <https://tv.cctv.com/2025/01/05/VIDEnvtWZMgmbGCdwmVrecI1250105.shtml> | 1:14 | 2025-01-05 | 需插件/需App | 新闻引用 | V1 |
+| [山东新闻联播]烟台开通至中亚海铁联运、至中南美全模式商品车物流通道 | 央视网 新闻频道 | <https://news.cctv.com/2023/07/07/VIDElmsE4TtB1ChkMg4PIW0k230707.shtml> | 0:25 | 2023-07-07 | 需插件/需App | 新闻引用 | V1 |
+| 二手车堆积如山，韩国最大二手车出口市场像“汽车坟场” | 央视网 新闻频道 | <https://news.cctv.com/2020/05/19/VIDE53U19sBFbGEOxKOQo0zG200519.shtml> | 0:47 | 2020-05-19 | 需插件/需App | 新闻引用 | V1 |
+| [河北新闻联播]京津冀首列整车出口笼车班列开行 261辆汽车坐着专列去中亚 | 央视网 新闻频道 | <https://news.cctv.com/2023/03/28/VIDECxI7uKD4wvfbUwGcDKs9230328.shtml> | 1:43 | 2023-03-28 | 需插件/需App | 新闻引用 | V1 |
+| [新疆新闻联播]霍尔果斯综保区首次以笼车形式出口商品车 | 央视网 新闻频道 | <https://news.cctv.com/2023/06/17/VIDEuK2PFlXLZYiDRUHOwrx9230617.shtml> | 0:22 | 2023-06-17 | 需插件/需App | 新闻引用 | V1 |
+| [奋进的中国 我们的“十四五”]霍尔果斯口岸：全国最大汽车出口陆路口岸 | 央视网 特别节目 | <https://tv.cctv.com/2025/10/15/VIDEzum77Ecw9JD3sYqk5zzw251015.shtml> | 0:28 | 2025-10-15 | 需插件/需App | 新闻引用 | V1 |
+| [朝闻天下]今年上半年 霍尔果斯口岸汽车出口同比增长25.7% | 央视网 CCTV-13 | <https://tv.cctv.com/2026/07/21/VIDEDgW8ALX81g8Jr4sadPWx260721.shtml> | 1:29 | 2026-07-21 | 需插件/需App | 新闻引用 | V1 |
+| [朝闻天下]走向国际市场的二手车 多种政策加持 二手车出口再提速 | 央视网 CCTV-13 | <https://tv.cctv.com/2024/11/25/VIDEtzqbAhPx1jvhh0OY6LuO241125.shtml> | 2:13 | 2024-11-25 | 需插件/需App | 新闻引用 | V1 |
+| [新闻直播间]加强二手车出口管理 严控新车以二手车名义出口 | 央视网 CCTV-13 | <https://tv.cctv.com/2025/11/18/VIDEngrf71vlNQ0lgIUUG1Vb251118.shtml> | 1:31 | 2025-11-18 | 需插件/需App | 新闻引用 | V1 |
+| [正点财经]汽车滚装船行业调查 | 央视网 CCTV-2 | <https://tv.cctv.com/2022/12/13/VIDEVMtbEhQLnPAdzupdZK8h221213.shtml> | 6:54 | 2022-12-13 | 需插件/需App | 新闻引用 | V1 |
+| Aerial China: How Port of Yantai handles loading of about 2,000 cars | YouTube @cgtn | <https://www.youtube.com/watch?v=XIhSAiqT54g> | 0:48 | 约2020 | 仅录屏 | 新闻引用 | V2 |
+| China's largest ro-ro automobile terminal sees export growth | YouTube @cgtn | <https://www.youtube.com/watch?v=XpCV15hcaPk> | 0:42 | 约2023 | 仅录屏 | 新闻引用 | V2 |
+| 10,000+ vehicles exported to Kazakhstan via new clearance model in Horgos, China | YouTube 新华社 New China TV | <https://www.youtube.com/watch?v=hx1ujK04nlI> | 1:06 | 约2021 | 仅录屏 | 新闻引用 | V2 |
+| Vehicle Transport Operations at Auckland Port（港口商品车滚装作业） | Pexels（作者 Kiwi and Camera） | <https://www.pexels.com/video/vehicle-transport-operations-at-auckland-port-39130071/> | 0:53 | 2026-08-21 | Free download（1080p） | **可商用** | V3 |
+| Roll On Roll Off Ship with tug boat（滚装船+拖轮） | Pexels（1Fred Films） | <https://www.pexels.com/video/roll-on-roll-off-ship-with-tug-boat-19073598/> | 0:13 | 2023-11-09 | Free download（4K） | **可商用** | V3 |
+| Freight trains at industrial railway yard（货运铁路编组站） | Pexels | <https://www.pexels.com/video/freight-trains-at-industrial-railway-yard-35461702/> | 未核实 | 未核实 | Free download | **可商用** | V3s |
+
+## 选题2　蓬莱港件杂货出口、工程机械出海、圭亚那/苏里南、紫金矿业金矿
+
+| 标题 | 平台 | URL | 时长 | 发布日期 | 是否可下载 | 版权/授权 | 验证 |
+|---|---|---|---|---|---|---|---|
+| [天下财经]风电出海加速“扬帆” 山东蓬莱港风电出口热 有企业订单已排产至2027年 | 央视网 CCTV-2 | <https://tv.cctv.com/2025/03/23/VIDEWlJ03sMGuUw482U6DwmV250323.shtml> | 2:22 | 2025-03-23 | 需插件/需App | 新闻引用 | V1 |
+| [经济信息联播]“绿色重器”破浪出海 “码头直装”新模式 助风电巨件高效出海 | 央视网 CCTV-2 | <https://tv.cctv.com/2025/11/21/VIDERUAUQTBqKwwZBq5umDHZ251121.shtml> | 1:21 | 2025-11-21 | 需插件/需App | 新闻引用 | V1（搜“蓬莱港”命中，是否拍的蓬莱需看画面确认） |
+| [山东新闻联播]长113米风电叶片在山东港口蓬莱港成功吊装出海 | 央视网 新闻频道 | <https://news.cctv.com/2022/11/06/VIDEBqjxQqY9ZHGizP48JH1d221106.shtml> | 0:19 | 2022-11-06 | 需插件/需App | 新闻引用 | V1 |
+| [山东新闻联播]山东港口烟台港东南亚件杂货精品航线一季度发运量同比增长77% | 央视网 新闻频道 | <https://news.cctv.com/2023/04/14/VIDE91etchJuZIfffJAxs56Q230414.shtml> | 0:18 | 2023-04-14 | 需插件/需App | 新闻引用 | V1 |
+| [朝闻天下]“十四五”以来 我国工程机械产品出口持续保持快速增长 | 央视网 CCTV-13 | <https://tv.cctv.com/2026/05/14/VIDE0J7rmtmySrtCNHCSDcmn260514.shtml> | 1:12 | 2026-05-14 | 需插件/需App | 新闻引用 | V1 |
+| [经济信息联播]工程机械出口观察 新兴市场订单增加 工程机械出口增长 | 央视网 CCTV-2 | <https://tv.cctv.com/2022/05/23/VIDE1o1cymoLV0r4ETEqgluK220523.shtml> | 1:22 | 2022-05-23 | 需插件/需App | 新闻引用 | V1 |
+| [朝闻天下]总台记者探访苏里南自然保护区 探寻雨林保护与经济发展的平衡之道 | 央视网 CCTV-13 | <https://tv.cctv.com/2026/06/03/VIDEzOAfbz2Q4vsSwNKuyK6c260603.shtml> | 3:21 | 2026-06-03 | 需插件/需App | 新闻引用 | V1 |
+| [视频]紫金矿业成功收购澳大利亚金矿 | 央视网 CCTV-1 | <https://tv.cctv.com/2012/08/06/VIDE1355757332277470.shtml> | 1:14 | 2012-08-06 | 需插件/需App | 新闻引用 | V1 |
+| Zijin Mining - Introduction video | YouTube @Rosebel Gold Mines N.V.（紫金控股的苏里南金矿官方频道） | <https://www.youtube.com/watch?v=X3_SQYAHizo> | 7:44 | 约2023 | 仅录屏 | 不可商用（企业宣传片） | V2 |
+| 2 MILLION OUNCES OF GOLD PROJECTED FROM AURORA GOLD MINES UNDERGROUND MINING（圭亚那奥罗拉金矿） | YouTube @News Room Guyana | <https://www.youtube.com/watch?v=qmc0sIpQQHg> | 4:15 | 约2018 | 仅录屏 | 新闻引用 | V2 |
+| GTUC Condemns Worker Exploitation at Zijin Mining Aurora Gold Field（负面劳资新闻，引用需注意平衡） | YouTube @Capitol News Guyana | <https://www.youtube.com/watch?v=vYXE2xUthpY> | 1:56 | 约2025-12 | 仅录屏 | 新闻引用 | V2 |
+| Aerial View of Expansive Open Pit Mine（露天矿航拍） | Pexels（celal keser） | <https://www.pexels.com/video/aerial-view-of-expansive-open-pit-mine-35362239/> | 0:34 | 2025-12-24 | Free download（4K） | **可商用** | V3 |
+| Excavator Loading Dump Truck at Construction Site（挖掘机装车） | Pexels（Val А） | <https://www.pexels.com/video/excavator-loading-dump-truck-at-construction-site-35650012/> | 0:23 | 2026-01-13 | Free download（1080p） | **可商用** | V3 |
+| Drone footage of trucks on a mining site（矿区卡车航拍） | Pexels | <https://www.pexels.com/video/drone-footage-of-trucks-on-a-mining-site-8382429/> | 未核实 | 未核实 | Free download | **可商用** | V3s |
+
+## 选题3　中东化工/甲醇厂、余热锅炉模块制造与大件运输（SPMT）、烟台蓬莱
+
+| 标题 | 平台 | URL | 时长 | 发布日期 | 是否可下载 | 版权/授权 | 验证 |
+|---|---|---|---|---|---|---|---|
+| **AAL Brisbane loading HRSG Modules in Penglai & destined for Sokhna**（蓬莱装船的余热锅炉模块，运往埃及苏赫纳） | YouTube @aalshipping（AAL 航运官方） | <https://www.youtube.com/watch?v=v2Ew7gZqA_0> | 1:13 | 约2017 | 仅录屏 | 不可商用（企业） | V2 |
+| [天下财经]中东冲突推高国际甲醇价格 全球化工供应链承压 | 央视网 CCTV-2 | <https://tv.cctv.com/2026/03/26/VIDE68G7YHrzJsaKhEqJ0uok260326.shtml> | 3:31 | 2026-03-26 | 需插件/需App | 新闻引用 | V1 |
+| [正点财经]燃气轮机市场“燃” 供应链企业积极扩产（含余热锅炉产业链） | 央视网 CCTV-2 | <https://tv.cctv.com/2026/04/10/VIDED2lVTKnt6Hqozzw4iu30260410.shtml> | 2:45 | 2026-04-10 | 需插件/需App | 新闻引用 | V1（搜“余热锅炉”命中） |
+| [新闻直播间]四川 大件运输分几步？看56米化工罐“大挪移” | 央视网 CCTV-13 | <https://tv.cctv.com/2024/05/02/VIDE8pORXr0VOAfwr3VgQFpR240502.shtml> | 3:00 | 2024-05-02 | 需插件/需App | 新闻引用 | V1 |
+| [海南新闻联播]全球首例一体化建造LNG模块化工厂在青岛完工交付 | 央视网 新闻频道 | <https://news.cctv.com/2023/03/16/VIDEJWrM3QVevp26J5boZ3CU230316.shtml> | 0:32 | 2023-03-16 | 需插件/需App | 新闻引用 | V1 |
+| [正点财经]模块化建筑海外“圈粉” 变身“巨型快递” | 央视网 CCTV-2 | <https://tv.cctv.com/2026/07/08/VIDEQnP3TdKt8cj5OaJHDd5l260708.shtml> | 2:08 | 2026-07-08 | 需插件/需App | 新闻引用 | V1 |
+| All you need to know about the Mammoet Self-Propelled Modular Transporter (SPMT) | YouTube @MammoetHeavyLifting | <https://www.youtube.com/watch?v=wL3YvOe0ZgE> | 2:17 | 约2014 | 仅录屏 | 不可商用（企业） | V2 |
+| Moving massive furnace modules using the power of 322 SPMT axle-lines | YouTube @MammoetHeavyLifting | <https://www.youtube.com/watch?v=v7eq07aGo2Y> | 6:00 | 约2022 | 仅录屏 | 不可商用（企业） | V2 |
+| Main Support Frame (MSF) transportation with 604 axle-lines of SPMTs | YouTube @MammoetHeavyLifting | <https://www.youtube.com/watch?v=MXn4s8dzvMY> | 1:44 | 约2021 | 仅录屏 | 不可商用（企业） | V2 |
+| HRSG Module, Szczecin - Rybnik 290t（余热锅炉模块公路运输） | YouTube @DB-PRO Project Logistics | <https://www.youtube.com/watch?v=zJvyqpMye_8> | 2:41 | 约2025 | 仅录屏 | 不可商用 | V2 |
+| Methanol plant in Damietta, Egypt（中东北非甲醇厂建设） | YouTube @techint | <https://www.youtube.com/watch?v=5acvYdujjT8> | 3:27 | 约2012 | 仅录屏 | 不可商用（企业） | V2 |
+| Aerial View of Industrial Chemical Plant（化工厂航拍） | Pexels（K @kelly） | <https://www.pexels.com/video/aerial-view-of-industrial-chemical-plant-31025169/> | 0:16 | 2025-03-05 | Free download（4K） | **可商用** | V3 |
+| Drone footage of an oil refinery at night（夜间炼化装置） | Pexels | <https://www.pexels.com/video/drone-footage-of-an-oil-refinery-at-night-10386895/> | 未核实 | 未核实 | Free download | **可商用** | V3s |
+| A crane is lifting a large piece of metal（重型吊装） | Pexels | <https://www.pexels.com/video/a-crane-is-lifting-a-large-piece-of-metal-27513363/> | 未核实 | 未核实 | Free download | **可商用** | V3s |
+
+## 选题4　巴西大豆收获与桑托斯港装船、中国奶牛牧场、豆粕饲料
+
+| 标题 | 平台 | URL | 时长 | 发布日期 | 是否可下载 | 版权/授权 | 验证 |
+|---|---|---|---|---|---|---|---|
+| [经济信息联播]巴西：农产品丰收 桑托斯港货物外运受限 | 央视网 CCTV-2 | <https://tv.cctv.com/2023/06/09/VIDEk3dsLF78w5GfwO3mR9Ml230609.shtml> | 1:58 | 2023-06-09 | 需插件/需App | 新闻引用 | V1 |
+| [朝闻天下]巴西今年大豆出口总量创新高 | 央视网 CCTV-13 | <https://tv.cctv.com/2025/10/09/VIDEacAnQ5wj1ekBQw44lDwj251009.shtml> | 0:37 | 2025-10-09 | 需插件/需App | 新闻引用 | V1 |
+| [中国三农报道]从全球农场到中国餐桌 巴西“大豆+玉米草类+牲畜”生态循环农业 | 央视网 CCTV-17 | <https://tv.cctv.com/2025/11/06/VIDEh9quFSAv6GM1vdW6pMi4251106.shtml> | 2:00 | 2025-11-06 | 需插件/需App | 新闻引用 | V1 |
+| [致富经]中国企业带动巴西大豆产业发展 | 央视网 CCTV-17 | <https://tv.cctv.com/2019/04/11/VIDEcrOGVhNQqLu05XwtxwyG190411.shtml> | 5:16 | 2019-04-11 | 需插件/需App | 新闻引用 | V1 |
+| [新闻直播间]探秘兵团牧场：“好奶牛”如何产出好牛奶 | 央视网 CCTV-13 | <https://tv.cctv.com/2024/10/04/VIDEmliPJWUS9QkapTfCA4nX241004.shtml> | 4:07 | 2024-10-04 | 需插件/需App | 新闻引用 | V1 |
+| [中国三农报道]甘肃白银 智慧养殖 每小时能给540头奶牛挤奶 | 央视网 CCTV-17 | <https://tv.cctv.com/2025/11/12/VIDEDtnRo2GOiR5Fqdj6W2TV251112.shtml> | 1:50 | 2025-11-12 | 需插件/需App | 新闻引用 | V1 |
+| [正点财经]肉牛奶牛市场调查 多举措助力奶牛养殖走出困境 | 央视网 CCTV-2 | <https://tv.cctv.com/2025/05/12/VIDEH85N2GmwfbhQuqhqvXyO250512.shtml> | 1:39 | 2025-05-12 | 需插件/需App | 新闻引用 | V1 |
+| [正点财经]豆粕价格上涨 饲料出厂价小幅提升 | 央视网 CCTV-2 | <https://tv.cctv.com/2025/02/24/VIDEc4T45sFg65f6pgutLDBI250224.shtml> | 2:01 | 2025-02-24 | 需插件/需App | 新闻引用 | V1 |
+| Feeding 1.4 Billion: Inside China's largest dairy farm | YouTube @cgtn | <https://www.youtube.com/watch?v=QnNVX7ViOZU> | 5:38 | 约2020 | 仅录屏 | 新闻引用 | V2 |
+| Brazil's soybean farmers see boom in Chinese business | YouTube @CGTNLatinAmerica | <https://www.youtube.com/watch?v=htGpFpwEeQs> | 4:34 | 约2026-05 | 仅录屏 | 新闻引用 | V2 |
+| Vessel loading 68,700 tons of soybeans at Tergrasa terminal, Rio Grande port（巴西港口大豆装船，不是桑托斯港） | YouTube @Williams Serviços Marítimos | <https://www.youtube.com/watch?v=5Z_0kyjzA6w> | 0:33 | 约2021 | 仅录屏 | 不可商用 | V2 |
+| Navio com containers entrando no porto de Santos 1（**桑托斯港**集装箱船进港） | Pexels（Fábio Reis de Abreu） | <https://www.pexels.com/video/navio-com-containers-entrando-no-porto-de-santos-1-16922514/> | 0:32 | 2023-05-21 | Free download（1080p） | **可商用** | V3 |
+| Aerial View of Soybean Harvesting in Brazil（**巴西**大豆收获航拍） | Pexels（Melquizedeque Almeida） | <https://www.pexels.com/video/aerial-view-of-soybean-harvesting-in-brazil-32089141/> | 0:36 | 2025-05-15 | Free download（1080p） | **可商用** | V3 |
+| Dairy Cattle Feeding at Sunny Farm（奶牛采食，竖屏9:16） | Pexels（Emilio Aguilar） | <https://www.pexels.com/video/dairy-cattle-feeding-at-sunny-farm-38926139/> | 0:09 | 2026-08-08 | Free download | **可商用** | V3 |
+| Cows in a barn eating from a trough（牛舍采食） | Pexels | <https://www.pexels.com/video/cows-in-a-barn-eating-from-a-trough-19220536/> | 未核实 | 未核实 | Free download | **可商用** | V3s |
+
+## 选题5　悉尼地铁、中车地铁列车、无人驾驶地铁
+
+| 标题 | 平台 | URL | 时长 | 发布日期 | 是否可下载 | 版权/授权 | 验证 |
+|---|---|---|---|---|---|---|---|
+| [北京您早]澳大利亚首条无人驾驶地铁线在悉尼开通 | 央视网 新闻频道 | <https://news.cctv.com/2019/05/29/VIDEako9izbGlt6XY1ZLchmd190529.shtml> | 0:44 | 2019-05-29 | 需插件/需App | 新闻引用 | V1 |
+| [新闻直播间]澳大利亚 悉尼地铁发生大面积延误 | 央视网 CCTV-13 | <https://tv.cctv.com/2019/08/24/VIDElLEQglDU4kiQKgLbwez7190824.shtml> | 0:43 | 2019-08-24 | 需插件/需App | 新闻引用 | V1 |
+| [中国新闻]中国中车签出口发达国家最大地铁订单 | 央视网 CCTV-4 | <https://tv.cctv.com/2016/03/10/VIDEbU5cmAnHs5qa8UdFhdjh160310.shtml> | 1:39 | 2016-03-10 | 需插件/需App | 新闻引用 | V1（订单是哪个城市需看画面确认） |
+| [新闻直播间]陕西西安 首条全自动无人驾驶地铁线路开通 | 央视网 CCTV-13 | <https://tv.cctv.com/2023/06/27/VIDEHQUOogGE1QmKREh3x6hU230627.shtml> | 0:58 | 2023-06-27 | 需插件/需App | 新闻引用 | V1 |
+| [朝闻天下]北京“无人驾驶”地铁来了 记者体验地铁燕房线 | 央视网 CCTV-13 | <https://tv.cctv.com/2017/12/17/VIDEUhVxIzLkzGQAJF4nQp9H171217.shtml> | 1:54 | 2017-12-17 | 需插件/需App | 新闻引用 | V1 |
+| [湖北新闻]首列“武汉造”全自动无人驾驶地铁列车下线 | 央视网 新闻频道 | <https://news.cctv.com/2020/06/02/VIDE59obJ4MJoQEZzo5m6HaN200602.shtml> | 1:52 | 2020-06-02 | 需插件/需App | 新闻引用 | V1 |
+| Sydney Metro: New-look Western Sydney Airport metro train unveiled | YouTube @TransportForNSW（新州交通局官方） | <https://www.youtube.com/watch?v=u-5l74gCe8o> | 1:27 | 约2025 | 仅录屏 | 政府官方，引用标来源 | V2 |
+| Driverless metro travels 66km track for the first time | YouTube @9NewsAUS | <https://www.youtube.com/watch?v=7bVXdLD84CM> | 1:54 | 约2026-01 | 仅录屏 | 新闻引用 | V2 |
+| Modern Melbourne Metro Station with Platform Screen Doors（屏蔽门地铁站，澳洲城市） | Pexels（Joolsmagools） | <https://www.pexels.com/video/modern-melbourne-metro-station-with-platform-screen-doors-35005534/> | 0:30 | 2025-12-01 | Free download（4K） | **可商用** | V3 |
+| A subway train is seen in a dark tunnel（隧道内列车） | Pexels | <https://www.pexels.com/video/a-subway-train-is-seen-in-a-dark-tunnel-16377188/> | 未核实 | 未核实 | Free download | **可商用** | V3s |
+| Modern train arriving at busy city station（搜 "sydney metro" 的第一条结果） | Pexels | <https://www.pexels.com/video/modern-train-arriving-at-busy-city-station-34735641/> | 未核实 | 未核实 | Free download | **可商用**（是否悉尼未核实） | V3s |
+
+> 注：悉尼地铁西北线、City 线的列车是阿尔斯通 Metropolis，不是中车造。中车的画面可以用上面央视那条订单新闻，或者武汉、西安的国产全自动列车。
+
+## 选题6　大型电力变压器工厂、AI 数据中心、美国电网
+
+| 标题 | 平台 | URL | 时长 | 发布日期 | 是否可下载 | 版权/授权 | 验证 |
+|---|---|---|---|---|---|---|---|
+| [天下财经]AI催热变压器市场 全球算力建设加速 中国变压器工厂爆单 | 央视网 CCTV-2 | <https://tv.cctv.com/2026/01/31/VIDETiv5YUZ9tTgUi7naMxpW260131.shtml> | 2:10 | 2026-01-31 | 需插件/需App | 新闻引用 | V1 |
+| [东方时空]全球AI投资提速 算力电力设备出口强劲 | 央视网 CCTV-13 | <https://tv.cctv.com/2026/10/14/VIDELK1PzUBjFPPIEjGRuOwn261014.shtml> | 2:04 | 2026-10-14 | 需插件/需App | 新闻引用 | V1 |
+| [朝闻天下]美国 电力供应瓶颈制约美国AI数据中心建设 | 央视网 CCTV-13 | <https://tv.cctv.com/2026/07/22/VIDEIckpfqTzNOU9ukeKPY9A260722.shtml> | 2:03 | 2026-07-22 | 需插件/需App | 新闻引用 | V1 |
+| [天下财经]极端高温叠加强风暴 美国电网负荷飙升电价看涨 | 央视网 CCTV-2 | <https://tv.cctv.com/2026/07/06/VIDEo1xH0oNimRRHYcjNcfl0260706.shtml> | 3:12 | 2026-07-06 | 需插件/需App | 新闻引用 | V1 |
+| [正点财经]算力需求爆发 广东韶关数据中心集群加快建设 | 央视网 CCTV-2 | <https://tv.cctv.com/2026/09/17/VIDEO9QbGyniKke6JDxf6Id8260917.shtml> | 2:26 | 2026-09-17 | 需插件/需App | 新闻引用 | V1 |
+| [河北新闻联播]新型1000千伏特高压变压器在保变电气问世 | 央视网 新闻频道 | <https://news.cctv.com/2022/11/22/VIDELXQusqtiuoor5z83jAeB221122.shtml> | 0:26 | 2022-11-22 | 需插件/需App | 新闻引用 | V1 |
+| Discover the Story that Powers the World. 100 Years of Transformer Production in Lodz, Poland | YouTube @HitachiEnergy | <https://www.youtube.com/watch?v=OWspsFFVelc> | 11:25 | 约2025 | 仅录屏 | 不可商用（企业） | V2 |
+| Record transport of the largest HVDC VSC transformer from Ludvika to China | YouTube @HitachiEnergy | <https://www.youtube.com/watch?v=LEsJfdp6YfQ> | 2:57 | 约2026-05 | 仅录屏 | 不可商用（企业） | V2 |
+| Siemens Transformer Factory Weiz - virtual tour - 360° video | YouTube @SiemensKnowledgeHub | <https://www.youtube.com/watch?v=3w2jTpRbm78> | 3:47 | 约2017 | 仅录屏 | 不可商用（企业） | V2 |
+| How The Massive Power Draw Of Generative AI Is Overtaxing Our Grid | YouTube @CNBC | <https://www.youtube.com/watch?v=MJQIQJYxey4> | 14:49 | 约2024 | 仅录屏 | 新闻引用 | V2 |
+| A large electrical substation with several power lines（变电站） | Pexels（Videas Cl） | <https://www.pexels.com/video/a-large-electrical-substation-with-several-power-lines-27844418/> | 0:08 | 2024-08-18 | Free download（4K） | **可商用** | V3 |
+| Modern Data Center with Sustainable Architecture（数据中心外景） | Pexels（Jakub Zerdzicki） | <https://www.pexels.com/video/modern-data-center-with-sustainable-architecture-38000679/> | 0:15 | 2026-06-07 | Free download（1080p） | **可商用** | V3 |
+| Database storage of a server（机房服务器） | Pexels | <https://www.pexels.com/video/database-storage-of-a-server-5028622/> | 未核实 | 未核实 | Free download | **可商用** | V3s |
+| High voltage power lines against blue sky（高压线） | Pexels | <https://www.pexels.com/video/high-voltage-power-lines-against-blue-sky-34312355/> | 未核实 | 未核实 | Free download | **可商用** | V3s |
+| transformer-device-electrical-device（变压器设备） | Pixabay | <https://pixabay.com/videos/transformer-device-electrical-device-100627/> | 未核实 | 未核实 | Free download | **可商用**（Pixabay Content License） | V3s（Pixabay 搜索结果页列出） |
+
+## 选题7　小牛电动（NIU）、电动摩托车、外卖/年轻人骑电摩街景、华为早期历史
+
+| 标题 | 平台 | URL | 时长 | 发布日期 | 是否可下载 | 版权/授权 | 验证 |
+|---|---|---|---|---|---|---|---|
+| 2026小牛电动科技新品发布会 | 央视网 财经频道 | <https://finance.cctv.com/2026/03/26/VIDEM0fOHdct4UCC1LbejnBx260326.shtml> | 7:12 | 2026-03-26 | 需插件/需App | 新闻/企业，引用标来源 | V1 |
+| **小牛官网首页代言人视频 niu_spokes.mp4** | 小牛官网 niu.com/cn（CDN s.niucache.com） | <https://s.niucache.com/static-shop/NiuHome/2026/spokesperson/niu_spokes.mp4> | 未测（455.5MB） | Last-Modified 2026-09-17 | **直链** | 不可商用（企业广告，含代言人肖像） | V4（200, video/mp4, 455,526,995 B） |
+| [正点财经]电动两轮车海外热销 国内企业加班加点赶订单 | 央视网 CCTV-2 | <https://tv.cctv.com/2026/04/06/VIDEZjWVASOjWfhBQb7HsNCz260406.shtml> | 2:01 | 2026-04-06 | 需插件/需App | 新闻引用 | V1 |
+| [天下财经]英国电动两轮车市场升温 中国制造产品优势凸显 | 央视网 CCTV-2 | <https://tv.cctv.com/2026/06/04/VIDEZWOglzjtYjLI3vLnx3qj260604.shtml> | 2:06 | 2026-06-04 | 需插件/需App | 新闻引用 | V1 |
+| [共同关注]外卖平台多地落地“红灯停表” 记者在北京跟随外卖骑手实测 | 央视网 CCTV-13 | <https://tv.cctv.com/2026/08/18/VIDEiSgfrg6XlXsaE8wyK0EZ260818.shtml> | 4:05 | 2026-08-18 | 需插件/需App | 新闻引用 | V1 |
+| [读书]华为创业初期 任正非放话要跳楼 | 央视网 CCTV-10 | <https://tv.cctv.com/2019/07/30/VIDEEFBHAqLecwQ2lf53i8px190730.shtml> | 0:41 | 2019-07-30 | 需插件/需App | 新闻引用 | V1 |
+| [面对面]任正非：时下的华为 | 央视网 CCTV-13 | <https://tv.cctv.com/2019/01/22/VIDEDClU910TjCBleL9DQXz6190122.shtml> | 24:59 | 2019-01-20（节目） | 需插件/需App | 新闻引用 | V1 |
+| **华为“公司简介”页宣传片（1080p mp4）** | 华为官网 huawei.com/cn/corporate-information | <https://www-file.huawei.com/dam/asset/view/b8b93d1a5e4d4a4990c0a87af9a7c7c6.mp4> | 未测（116.1MB） | 未标注 | **直链** | 不可商用（企业） | V4（200, video/mp4, 116,100,707 B）；内容是公司现状宣传，不是早期历史 |
+| Huawei: FT's Top 3 Questions For Founder Ren Zhengfei | YouTube @huawei（官方） | <https://www.youtube.com/watch?v=udvb8IfXRqk> | 4:59 | 约2019 | 仅录屏 | 不可商用（企业） | V2 |
+| Why should you buy a NIU Electric Scooter? | YouTube @niuuk（NIU 英国） | <https://www.youtube.com/watch?v=RK0ZLGirwNg> | 2:32 | 约2022 | 仅录屏 | 不可商用（企业） | V2 |
+| NQiX Series - Ultra Boost | YouTube @niumobility | <https://www.youtube.com/watch?v=fTUg7OHqoX4> | 1:11 | 约2025 | 仅录屏 | 不可商用（企业） | V2 |
+| Urban Delivery Scooter in Busy City Street（外卖电摩街景，竖屏4K） | Pexels（Evgenij Mikhailov） | <https://www.pexels.com/video/urban-delivery-scooter-in-busy-city-street-31983535/> | 0:16 | 2025-05-07 | Free download | **可商用** | V3 |
+| Traffic, Quitting Time, Scooter（台北下班高峰机车流，4K） | Pixabay（MagicTV） | <https://pixabay.com/videos/traffic-quitting-time-scooter-99704/> | 未标注 | 2021-12-08 | Free download | **可商用**（Pixabay Content License） | V3 |
+| Delivery man on motorcycle（骑摩托送餐） | Pexels | <https://www.pexels.com/video/delivery-man-on-motorcycle-6867868/> | 未核实 | 未核实 | Free download | **可商用** | V3s |
+
+---
+
+## 如何下载（合规说明）
+
+**1. 央视网（tv.cctv.com / news.cctv.com / finance.cctv.com）**
+- 网页上的播放器是 HLS 流（m3u8 分片），页面没有官方下载按钮。
+- **推荐用央视频 App 或 CCTV 官方客户端**：在 App 里搜标题，点“缓存/下载”离线保存。缓存文件只能在 App 内播放，用于个人观看和找画面参考。
+- 浏览器插件（如 Firefox/Chrome 的 Video DownloadHelper、猫抓 cat-catch）可以识别 m3u8 并合并成 mp4。**合规提醒**：这只适合个人学习和备份。剪进作品时只能按“适当引用”的标准截短片段，并在画面上标“来源：央视新闻/CCTV-x”。不能整段转载，不能用于商业广告，也不能去水印。
+- 退而求其次：用 OBS 录屏，引用要求同上。
+
+**2. YouTube**
+- 只有两种情况可以下载：一是视频标注了 **Creative Commons（CC BY）**，在视频描述的“许可”一栏查看；二是频道方明确允许下载。YouTube 服务条款禁止用第三方工具下载其他视频。
+- 上表的 YouTube 条目都没核实过 CC 授权，一律按“仅录屏、短片段评论性引用、标频道名”处理。需要更长的素材时，联系频道方（CGTN、新华社、Mammoet、Hitachi Energy 都有媒体联系方式）。
+
+**3. B 站**
+- 官方客户端或 App 的“缓存”只能在 B 站内离线播放，仅供个人观看，不能拿出来二次发布。引用时要征得 UP 主同意或注明出处，只用短片段。
+
+**4. Pexels / Pixabay（可商用，首选空镜）**
+- 打开素材页，点右上角 **Free download**，可选分辨率（4K/1080p/720p）。不需要登录，Pixabay 部分高清版本要登录。
+- Pexels 授权：免费商用、无需署名、可修改；不能原样转卖，不能暗示画面中的人或品牌为你背书，不能转传到其他素材站。Pixabay Content License 类似。
+- 画面里有可识别的人脸、品牌 logo 时，不要配负面解说。
+
+**5. 企业官网 mp4 直链（小牛、华为）**
+- 浏览器直接打开链接，右键“另存为”，或者 `curl -O <URL>` 下载。版权归企业，只能做评论性短引用并标“来源：小牛电动官网/华为官网”。
+
+**总原则**：新闻和企业素材只能**短片段引用**（建议单段 10–15 秒以内，总量占成片的小部分），画面角落标来源，并配上自己的解说和分析。能用 Pexels/Pixabay 空镜替代的画面，优先用这两个站。
+
+---
+
+### 未覆盖或未验证项
+- 没找到能确认是“韩国二手车经烟台港”专题的央视视频。用上面的烟台港商品车发运和韩国二手车出口市场两条拼接。
+- 没找到中车造悉尼地铁的视频：悉尼地铁列车是阿尔斯通造的。
+- 没找到紫金矿业在圭亚那的央视报道，用的是圭亚那本地新闻和紫金在苏里南 Rosebel 金矿的官方频道。
+- 华为早期历史：没找到官方的历史影像 mp4 直链，可用央视《读书》《面对面》两条。
+- 标 V3s 的 Pexels 条目只在搜索结果页确认存在，时长和日期没打开详情页核实。
+- 央视的“码头直装”那条和“燃气轮机”那条是关键词命中，具体画面是否对应蓬莱港、余热锅炉，需要播放确认。

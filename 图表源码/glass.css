@@ -1,0 +1,55 @@
+/* v4 毛玻璃主题（学苹果 visionOS / macOS 的玻璃材质）：深色极光底 + 半透明磨砂面板 + 细高光边 + 文字后面的玻璃气泡 */
+body{background:linear-gradient(160deg,#121722 0%,#0c0f16 55%,#0e0f13 100%)!important}
+body::before{opacity:.14}
+.aurora{position:fixed;inset:-10%;z-index:0;pointer-events:none;filter:blur(120px)}
+.aurora i{position:absolute;border-radius:50%}
+/* 只留两处克制的微光：左上冷蓝、右下暖琥珀，饱和度和透明度都压低 */
+.aurora i:nth-child(1){width:64vmax;height:64vmax;left:-22vmax;top:-26vmax;background:radial-gradient(circle,rgba(64,108,190,.42) 0%,rgba(64,108,190,0) 68%)}
+.aurora i:nth-child(2){width:48vmax;height:48vmax;right:-16vmax;bottom:-18vmax;background:radial-gradient(circle,rgba(176,122,74,.20) 0%,rgba(176,122,74,0) 68%)}
+.aurora i:nth-child(3){width:40vmax;height:40vmax;left:30vmax;top:30vmax;background:radial-gradient(circle,rgba(120,130,150,.12) 0%,rgba(120,130,150,0) 70%)}
+.aurora i:nth-child(4){display:none}
+.frame{z-index:1}
+/* 玻璃材质 */
+.glass,.ghead,.foot,.card,.node,.stage-glass{
+  background:linear-gradient(135deg,rgba(255,255,255,.13) 0%,rgba(255,255,255,.05) 45%,rgba(255,255,255,.08) 100%)!important;
+  -webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);
+  border:1px solid rgba(255,255,255,.20)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -1px 0 rgba(255,255,255,.06),0 24px 60px rgba(0,0,0,.35)}
+.ghead{position:relative;border-radius:36px;padding:34px 40px 36px;overflow:hidden}
+.h .ghead{padding:26px 36px 28px;border-radius:30px}
+.ghead::after{content:"";position:absolute;left:-10%;top:-60%;width:70%;height:120%;background:radial-gradient(ellipse,rgba(255,255,255,.16),rgba(255,255,255,0) 60%);transform:rotate(-12deg);pointer-events:none}
+.ghead h1{position:relative;z-index:1}
+.ghead .sub{position:relative;z-index:1;color:rgba(235,240,255,.78)}
+h1 em{color:#ffd166;text-shadow:0 0 28px rgba(255,209,102,.35)}
+.stage{z-index:1}
+.stage-glass{position:absolute;inset:-26px -28px;border-radius:36px;z-index:-1;pointer-events:none}
+.h .stage-glass{inset:-18px -24px}
+.foot{border-radius:22px;padding:16px 26px!important;margin-top:30px!important;border-top:1px solid rgba(255,255,255,.2)!important;color:rgba(220,228,250,.62)!important}
+.foot b{color:rgba(240,244,255,.85)!important}
+.card,.node{border-radius:26px!important}
+.node.blue{background:linear-gradient(135deg,rgba(61,139,255,.32),rgba(61,139,255,.08))!important;border-color:rgba(120,170,255,.55)!important}
+.node.orange{background:linear-gradient(135deg,rgba(255,122,61,.32),rgba(255,122,61,.08))!important;border-color:rgba(255,160,120,.55)!important}
+.node.aqua{background:linear-gradient(135deg,rgba(31,199,160,.30),rgba(31,199,160,.07))!important;border-color:rgba(100,230,200,.5)!important}
+.node.yellow{background:linear-gradient(135deg,rgba(255,194,51,.30),rgba(255,194,51,.07))!important;border-color:rgba(255,215,120,.55)!important}
+/* 玻璃气泡：文字区附近若隐若现 */
+.bub{position:absolute;border-radius:50%;pointer-events:none;z-index:0;
+  background:
+   radial-gradient(circle at 30% 26%,rgba(255,255,255,.75) 0 4%,rgba(255,255,255,0) 11%),
+   radial-gradient(circle at 70% 78%,rgba(255,255,255,.18) 0 6%,rgba(255,255,255,0) 16%),
+   radial-gradient(circle at 50% 50%,rgba(255,255,255,0) 58%,rgba(255,255,255,.07) 74%,rgba(220,228,240,.20) 94%,rgba(255,255,255,.35) 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),inset -6px -10px 22px rgba(200,210,230,.06);
+  -webkit-backdrop-filter:blur(3px) brightness(1.08);backdrop-filter:blur(3px) brightness(1.08);opacity:.85}
+.ghead .bub{z-index:0;opacity:.55}
+/* 地图页：舞台不加玻璃，保留夜景 */
+.has-map .stage-glass{display:none}
+/* 绿幕版不要玻璃 */
+html.gs .aurora,html.gs .bub,html.gs .stage-glass{display:none!important}
+
+/* 阴影：标题、图表文字、图例、数据条都带一点投影，像苹果的玻璃控件浮在背景上 */
+.ghead h1{text-shadow:0 2px 14px rgba(0,0,0,.45),0 1px 1px rgba(0,0,0,.35)}
+.ghead .sub{text-shadow:0 1px 8px rgba(0,0,0,.4)}
+h1 em{color:#f0c46a!important;text-shadow:0 0 22px rgba(240,196,106,.25),0 2px 12px rgba(0,0,0,.4)!important}
+.stage svg text{filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.55)) drop-shadow(0 3px 8px rgba(0,0,0,.25))}
+.stage svg .glass-mark{filter:drop-shadow(0 8px 16px rgba(0,0,0,.38)) drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+.legend,.chip,.card-note{box-shadow:0 6px 18px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.18)}
+.foot{box-shadow:0 10px 30px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.22)!important}

@@ -1,0 +1,20 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第01期 · 韩国二手车</div>
+<h1>中国品牌占39%，<em>但销冠是现代</em></h1>
+<div class="sub">2025年哈萨克斯坦新车销量结构（合计234,852辆，官方经销商口径）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>哈萨克斯坦汽车联盟（KAU）2026-01-19</b>｜韩系、雪佛兰按品牌销量自算份额</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  const T=234852; const parts=[{k:'中国品牌合计',v:.39*T,color:C.red},{k:'现代',v:50868,color:C.blue},{k:'起亚',v:23402,color:'#7fb2ff'},{k:'雪佛兰',v:38880,color:C.aqua},{k:'其他',v:T-.39*T-50868-23402-38880,color:C.muted}];
+  donut(svg,w,h,t,{parts,scale:V?.78:.8,cx:V?w/2:w*.3,cy:V?h*.34:h/2,center:['32%','韩系（现代+起亚）'],cfs:84,ccolor:'#7fb2ff'});
+  const lx=V?40:w*.6, ly0=V?h*.7:h*.15; parts.forEach((p,i)=>{if(t<.3+i*.1)return;const y=ly0+i*(V?72:96);
+    svg.append('rect').attr('x',lx).attr('y',y-26).attr('width',28).attr('height',28).attr('rx',6).attr('fill',p.color);
+    txt(svg,lx+46,y,p.k,{fs:32,fw:700});txt(svg,lx+(V?300:320),y,fmt(p.v/T*100,1)+'%',{fs:34,fw:900});
+    if(i===1) txt(svg,lx+(V?440:460),y,'当地组装 · 销冠',{fs:24,fill:C.t2});});
+  if(t>.95) txt(svg,V?40:w*.6,V?h-10:ly0+5*96+20,'中国品牌份额2024→2025持平，都是39%',{fs:28,fw:900,fill:C.yellow});
+});
+</script></body></html>

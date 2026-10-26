@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第03期 · 现代冰轮</div>
+<h1>蓬莱造的锅炉，<em>没有一台留在国内</em></h1>
+<div class="sub">现代冰轮近两年公开订单的目的地（官网新闻）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>现代冰轮官网新闻中心 2024–2026</b>｜底图：NASA Black Marble｜点位为国家示意，不代表项目精确位置</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>window.__animSec=5;
+let W;window.__init=async()=>{W=await loadWorld('110m');};
+chart(t=>{const {w,h}=stageBox();const svg=d3.select('#s').attr('width',w).attr('height',h);svg.selectAll('*').remove();
+  const proj=d3.geoEquirectangular().rotate([-60,0]).fitExtent([[V?20:0,20],[V?w-90:w-60,h]],{type:'MultiPoint',coordinates:V?[[5,-10],[128,55]]:[[-100,-10],[135,60]]});
+  nightMap(svg,W,proj,{'China':'#3d6bd6'});
+  const src=[120.8,37.8]; const g=svg.append('g');
+  const D=[['沙特',[46.7,24.7],'Qurayyah 36模块等'],['阿联酋',[52.7,24.1],'TA\'ZIZ 锅炉'],['卡塔尔',[51.5,25.3],'NFW LNG 6台HRSG'],['土耳其',[32.8,39.9],'浮动电站 50台OTSG'],['以色列',[34.8,32]],['捷克',[14.4,50.1]],['新加坡',[103.8,1.35]],['印尼',[106.8,-6.2]],['美国得州',[-97.7,30.3]]];
+  const fits=D.filter(d=>{const p=proj(d[1]);return p[0]>0&&p[0]<w&&p[1]>0&&p[1]<h;});
+  fits.forEach((d,i)=>{const p=ease(seg(t,i*.07,i*.07+.4)); const a=proj(src),b=proj(d[1]);
+    const mx=(a[0]+b[0])/2, my=(a[1]+b[1])/2-Math.hypot(b[0]-a[0],b[1]-a[1])*.25;
+    const path=g.append('path').attr('d',`M${a[0]},${a[1]} Q${mx},${my} ${b[0]},${b[1]}`).attr('fill','none').attr('stroke',i<3?C.orange:C.blue).attr('stroke-width',i<3?5:3).attr('opacity',.9);
+    const L=path.node().getTotalLength(); path.attr('stroke-dasharray',`${L*p} ${L}`);
+    const off=[{dx:-14,dy:-6,anchor:'end'},{dx:14,dy:30,anchor:'start'},{dx:16,dy:-14,anchor:'start'}][i]||{dy:-22}; if(p>.95) cityDot(g,b,d[0],{color:i<3?C.orange:C.blue,r:i<3?18:12,fs:i<3?28:22,...off});});
+  cityDot(g,proj(src),'蓬莱',{color:C.yellow,r:26,fs:34,dy:-34});
+  if(!fits.find(d=>d[0]==='美国得州')&&t>.9) txt(svg,w-10,h-20,'另有：美国得州',{anchor:'end',fs:26,fill:C.t2});
+});
+</script></body></html>

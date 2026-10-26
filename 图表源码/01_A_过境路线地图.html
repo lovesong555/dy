@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第01期 · 韩国二手车</div>
+<h1>韩国旧车，<em>借道中国</em>去中亚</h1>
+<div class="sub">2026年9月：韩国滚装海运 → 烟台港换装铁路笼车 → 乌鲁木齐三坪站 → 哈萨克斯坦阿腾科里</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>烟台市人民政府网转载烟台港（发布于2026-09-28）</b>｜底图：NASA Black Marble｜路线为示意，非实际轨迹</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>window.__animSec=5;
+let W;
+window.__init=async()=>{W=await loadWorld('50m');};
+chart(t=>{
+  const {w,h}=stageBox(); const svg=d3.select('#s').attr('width',w).attr('height',h); svg.selectAll('*').remove();
+  const proj=d3.geoEquirectangular().fitExtent([[V?0:0,V?60:0],[V?w-70:w,V?h-160:h]],{type:'MultiPoint',coordinates:V?[[76,33],[129,46]]:[[66,30],[132,50]]});
+  nightMap(svg,W,proj,{'China':'#3d6bd6','South Korea':'#8f7bff','Kazakhstan':'#1fc7a0'});
+  const g=svg.append('g');
+  const lab=(n,ll,c)=>svg.append('text').attr('class','cn-label').attr('x',proj(ll)[0]).attr('y',proj(ll)[1]).attr('text-anchor','middle').attr('fill',c).attr('font-size',V?44:40).attr('font-weight',900).attr('opacity',.55).text(n);
+  lab('中国',[103,35],'#7fa8ff');lab('哈萨克斯坦',[V?70:73,47.5],'#5fe0c0');if(!V) lab('韩国',[128,36.2],'#c7a8ff');
+  const sea=[[126.6,37.4],[124.5,37.8],[122.5,37.9],[121.4,37.55]];
+  const rail=[[121.4,37.55],[117,36.7],[113.6,34.7],[108.9,34.3],[103.8,36.1],[98.5,39.7],[94.7,40.1],[87.6,43.8],[80.4,44.2]];
+  drawRoute(g,proj,sea,seg(t,0,.25),{color:'#3d8bff',w:8,dash:'2 16'});
+  drawRoute(g,proj,rail,seg(t,.25,.9),{color:'#ff7a3d',w:8});
+  cityDot(g,proj([126.6,37.4]),'韩国港口',{color:'#c7a8ff',dy:52,anchor:V?'end':'middle',dx:V?30:0,sub:'滚装船发运'});
+  if(t>.22) cityDot(g,proj([121.4,37.55]),'烟台港',{color:'#3d8bff',dy:V?-40:-36,sub:'换装铁路笼车'});
+  if(t>.75) cityDot(g,proj([87.6,43.8]),'乌鲁木齐三坪',{color:'#ff7a3d',dy:-40});
+  if(t>.88) cityDot(g,proj([80.4,44.2]),'阿腾科里',{color:'#1fc7a0',dy:58,anchor:V?'start':'middle',dx:V?-20:0,sub:'霍尔果斯对面·哈萨克斯坦'});
+  // legend
+  const lg=svg.append('g').attr('class','legend').attr('transform',`translate(10,${h-90})`);
+  lg.append('line').attr('x1',0).attr('x2',60).attr('y1',0).attr('y2',0).attr('stroke','#3d8bff').attr('stroke-width',8).attr('stroke-dasharray','2 14').attr('stroke-linecap','round');
+  lg.append('text').attr('x',76).attr('y',10).attr('fill','#b9c2d8').attr('font-size',28).text('海运段');
+  lg.append('line').attr('x1',0).attr('x2',60).attr('y1',50).attr('y2',50).attr('stroke','#ff7a3d').attr('stroke-width',8);
+  lg.append('text').attr('x',76).attr('y',60).attr('fill','#b9c2d8').attr('font-size',28).text('铁路笼车段');
+});
+</script></body></html>

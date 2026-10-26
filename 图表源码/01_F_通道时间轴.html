@@ -1,0 +1,20 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第01期 · 韩国二手车</div>
+<h1>一条路的开通，<em>往往是因为另一条路被堵</em></h1>
+<div class="sub">韩国二手车与“韩国—烟台—中亚”通道的关键节点</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>KED 2024-02-16；新京报 2025-05-16；新华社 2026-07-21；KAU；Korea JoongAng Daily 2026-09-26；烟台政府网 2026-09-28</b></div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();const g=svg.append('g');
+  const E=[['2023-04','韩国禁止向俄罗斯出口5万美元以上车辆',C.muted],['2025-05','烟台港“一单制”铁海联运首发：韩国→中亚压到12–14天',C.blue],['2025全年','韩国二手车出口88.7亿美元，+75%',C.blue],['2026-01','中国：注册不满180天的车出口须补售后确认书',C.muted],['2026上半年','中东战事，韩国二手车海运主市场停摆',C.red],['2026-04','俄罗斯堵上欧亚经济联盟进口车报废费漏洞',C.red],['2026-08','“日韩—烟台—蒙古”笼车通道打通',C.orange],['2026-09','“韩国—烟台—中亚”笼车通道：二手车发往哈萨克斯坦',C.orange]];
+  const n=E.length; const x0=V?40:250; const gap=(h-40)/n;
+  g.append('line').attr('x1',x0).attr('x2',x0).attr('y1',20).attr('y2',20+(h-60)*ease(t)).attr('stroke','#33406a').attr('stroke-width',4);
+  E.forEach((e,i)=>{const p=seg(t,i/n*.8,i/n*.8+.2); if(p<=0)return; const y=30+i*gap; const gg=g.append('g').attr('opacity',p).attr('transform',`translate(${(1-p)*30},0)`);
+    gg.append('circle').attr('cx',x0).attr('cy',y).attr('r',14).attr('fill',e[2]).attr('stroke','#0a0f1e').attr('stroke-width',4);
+    if(V){txt(gg,x0+36,y-4,e[0],{fs:30,fw:900,fill:e[2]==C.muted?C.t2:e[2],base:'middle'});txt(gg,x0+36,y+40,e[1],{fs:26,fill:C.t1,base:'middle'});}
+    else{txt(gg,x0-30,y,e[0],{anchor:'end',fs:28,fw:900,fill:e[2]==C.muted?C.t2:e[2],base:'middle'});txt(gg,x0+36,y,e[1],{fs:30,fill:C.t1,base:'middle'});}});
+});
+</script></body></html>

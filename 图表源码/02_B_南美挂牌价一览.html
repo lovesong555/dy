@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i></div>
+<h1>南美18条挂牌价：<em>最贵的过百万</em></h1>
+<div class="sub">20–22吨级挖掘机，南美各国网站挂牌价（万元人民币）；黄点=中国品牌</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>Mercado Libre（阿根廷/智利）、Patiotuerca（厄瓜多尔）、Machineryline（秘鲁）</b>，2026-10-23抓取｜挂牌价，多数未注明是否含税</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();const g=svg.append('g');
+  const D=[['厄瓜多尔',127.1,'John Deere 210G 库存新机',0],['阿根廷',109.0,'徐工XE215DA 新机',1],['厄瓜多尔',108.5,'徐工XE215C 新机',1],['厄瓜多尔',102.9,'CAT 320 二手',0],['厄瓜多尔',100.0,'CAT 320 二手',0],['阿根廷',97.0,'三一SY215C-LR 二手',1],['阿根廷',97.0,'徐工XE215DA 期货',1],['阿根廷',93.6,'CAT 320D2 二手',0],['阿根廷',93.0,'徐工XE215L 新机',1],['阿根廷',92.3,'徐工XE215G 新机',1],['阿根廷',86.9,'徐工XE215C 二手',1],['阿根廷',83.6,'CAT 320 二手',0],['智利',68.2,'CAT 320 二手',0],['秘鲁',76.9,'CAT 320D2 二手',0],['阿根廷',59.5,'三一SY215C 二手',1],['阿根廷',48.8,'柳工922D 二手',1],['智利',39.9,'徐工XE215C 二手',1],['智利',31.4,'临工LG622 二手',1]];
+  const cs=['厄瓜多尔','阿根廷','秘鲁','智利','中国（对照）']; const lw=V?230:240;
+  const x=d3.scaleLinear().domain([0,135]).range([lw,w-30]); const y=d3.scalePoint().domain(cs).range([60,h-90]).padding(.4);
+  [0,25,50,75,100,125].forEach(v=>{g.append('line').attr('x1',x(v)).attr('x2',x(v)).attr('y1',20).attr('y2',h-70).attr('stroke',C.grid).attr('stroke-width',1.5);txt(g,x(v),h-36,v+'万',{anchor:'middle',fs:24,fill:C.t3});});
+  cs.forEach(c=>txt(g,lw-20,y(c),c,{anchor:'end',base:'middle',fs:V?30:32,fw:700,fill:c.includes('中国')?C.blue:C.t1}));
+  const all=D.concat([['中国（对照）',24.9,'徐工XE215DA 二手2022',2],['中国（对照）',22.8,'XE215DA 二手2020',2],['中国（对照）',20.9,'三一SY215C 二手2018',2]]);
+  all.forEach((d,i)=>{const p=easeOut(seg(t,i/all.length*.75,i/all.length*.75+.2)); if(p<=0) return; const jy=((i*37)%5-2)*9;
+    const col=d[3]===2?C.blue:(d[3]?C.yellow:'#8a95b3');
+    g.append('circle').attr('cx',x(d[1])).attr('cy',y(d[0])+jy).attr('r',(i===1?20:12)*p).attr('fill',col).attr('opacity',.9).attr('stroke',i===1?'#fff':'none').attr('stroke-width',3);});
+  if(t>.85){const p=seg(t,.85,1);const gg=g.append('g').attr('opacity',p);
+    txt(gg,x(109),y('阿根廷')-40,'徐工XE215DA新机 109万',{anchor:'middle',fs:V?28:30,fw:900,fill:C.yellow});
+    txt(gg,x(127.1),y('厄瓜多尔')-36,'最高：127万',{anchor:'end',fs:V?24:26,fw:700,fill:C.t2});
+    txt(gg,x(24.9)+30,y('中国（对照）')+6,'国内同款二手 21–25万',{base:'middle',fs:V?26:28,fw:900,fill:C.blue});}
+});
+</script></body></html>

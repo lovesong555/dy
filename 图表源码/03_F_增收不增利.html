@@ -1,0 +1,19 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第03期 · 现代冰轮</div>
+<h1>订单多了，<em>利润反而薄了</em></h1>
+<div class="sub">烟台现代冰轮重工（YHHI）2024 vs 2025</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>冰轮环境（000811）2025年年度报告</b>｜冰轮环境按权益法持股45%</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();const half=V?h/2:w/2;
+  const mk=(gx,gy,gw,gh,title,a,b,unit,col,chg)=>{const g=svg.append('g').attr('transform',`translate(${gx},${gy})`);const s=svg.append('g');
+    txt(g,0,40,title,{fs:V?36:36,fw:900});txt(g,gw,40,chg,{anchor:'end',fs:V?40:40,fw:900,fill:col});
+    const sub=d3.select(g.node()).append('svg').attr('y',60).attr('width',gw).attr('height',gh-60);
+    columns(sub,gw,gh-60,t,{max:Math.max(a,b)*1.25,dec:2,unit,vfs:V?36:40,kfs:28,top:60,bottom:60,data:[{k:'2024',v:a,color:C.muted,fmt:v=>v.toFixed(2)},{k:'2025',v:b,color:col,fmt:v=>v.toFixed(2)}]});};
+  if(V){mk(0,0,w,half-30,'营业收入（亿元）',7.37,9.73,'',C.aqua,'+32%');mk(0,half+10,w,half-30,'净利润（亿元）',0.6117,0.3401,'',C.red,'−44%');}
+  else{mk(0,0,half-40,h,'营业收入（亿元）',7.37,9.73,'',C.aqua,'+32%');mk(half+40,0,half-40,h,'净利润（亿元）',0.6117,0.3401,'',C.red,'−44%');}
+});
+</script></body></html>

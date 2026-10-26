@@ -1,0 +1,11 @@
+{
+ "A_悬念款": {"cat":"人物","title":"电摩小子<br>× <span class='red'>华为副总裁？</span>","tTop":380,"tSize":120,"bar":700,
+   "img":"photos/liyinan_2015launch.jpg","imgTop":760,"imgH":541,"fit":"contain","mask":{"x":445,"y":922,"r":74},
+   "credit":"图：界面新闻 2015-06-02（原注：图片来源 网络）","crTop":1318,"foot":"台上这个人，后来怎样了？","footTop":1370},
+ "B_揭晓款": {"cat":"人物","kick":"27 岁华为副总裁 · 小牛电动创始人","title":"钱在，<br><span class='red'>人不在</span>","tTop":400,"tSize":150,"bar":760,
+   "img":"photos/liyinan_tmtpost2017.jpg","imgTop":820,"imgH":587,"fit":"contain",
+   "credit":"图：钛媒体 2017-01-24 报道配图","crTop":1424,"foot":"他和小牛，今天是什么关系？","footTop":1476},
+ "C_版权安全款": {"cat":"人物","title":"小牛背后<br>站着一位<br><span class='red'>前华为副总裁</span>","tTop":330,"tSize":110,"bar":760,
+   "img":"photos/niu_n1_vienna.jpg","imgTop":820,"imgH":620,"fit":"cover","pos":"center 60%",
+   "credit":"图：Ivan Radic · CC BY 2.0 · Wikimedia Commons（小牛 N1）","crTop":1456,"foot":"他不在董事名单里，却是最大受益人","footTop":1500}
+}

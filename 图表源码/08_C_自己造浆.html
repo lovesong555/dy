@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i></div>
+<h1>废纸进不来，<em>那就自己造浆</em></h1>
+<div class="sub">玖龙纸业木浆设计年产能（万吨）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>玖龙纸业 2024/25 年报（2025-10-23）、FY2026 全年业绩公告（2026-09-23）</b>｜重庆70万吨化学浆 2026年9月投产</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  columns(svg,w,h*.8,t,{max:950,dec:0,vfs:V?44:46,kfs:V?26:28,top:70,bottom:100,pad:.38,
+   data:[{k:'2025年6月',v:470,color:C.muted},{k:'2026年6月',v:540,color:C.blue},{k:'全部建成后',v:850,color:C.orange,note:'规划，超过'}]});
+  if(t>.85){const p=seg(t,.85,1);const g=svg.append('g').attr('opacity',p);
+    txt(g,0,h*.88,'2006年：重庆项目“只生产纸，不生产纸浆”（当地媒体援引官员）',{fs:V?23:28,fw:700,fill:C.t2});
+    txt(g,0,h*.88+(V?44:48),'2026年9月：重庆 70 万吨化学浆投产',{fs:V?28:32,fw:900,fill:C.yellow});}
+});
+</script></body></html>

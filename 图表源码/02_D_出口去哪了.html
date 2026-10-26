@@ -1,0 +1,15 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第02期 · 挖掘机去南美</div>
+<h1>中国工程机械卖向全球，<em>拉美一年66亿美元</em></h1>
+<div class="sub">2025年中国工程机械出口额（亿美元，合计602.3，+13.9%）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>中国机电产品进出口商会《2025年中国工程机械出口情况分析》2026-06-08</b></div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  hbars(svg,w,h,t,{labelW:V?170:220,valueW:V?150:180,max:260,kfs:V?32:34,vfs:V?34:38,dec:1,
+   data:[{k:'亚洲',v:251.6,color:C.muted,tag:'+16.5%'},{k:'欧洲',v:129.6,color:C.muted,tag:'−1.4%'},{k:'非洲',v:88.9,color:C.blue,tag:'+50.5% 增速第一'},{k:'拉丁美洲',v:66.2,color:C.orange,hl:1,tag:'+17.1%；2026年8月单月 +121%（券商转引）'},{k:'北美',v:44.2,color:C.muted,tag:'−7.7%'}]});
+});
+</script></body></html>

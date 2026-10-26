@@ -1,0 +1,33 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第05期 · 悉尼地铁西线</div>
+<h1>39.6亿澳元，<em>只是一层套娃</em></h1>
+<div class="sub">面积按金额等比例绘制：项目总投资 → 四大合同 → TSMO → 交控信号分包</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>NSW政府 2026-01-05 / 2026-03-02 新闻稿；交控科技公告 2026-02-10</b>｜总投资取270–290亿澳元中值</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  const L=[{v:280,k:'西线项目总投资',s:'270–290亿澳元（官方口径）',c:'#22305a'},
+           {v:115,k:'四大交付合同合计',s:'115亿澳元',c:'#2d4f9a'},
+           {v:39.6,k:'TSMO 列车+系统+运维',s:'39.6亿澳元 · 港铁牵头/中车参与',c:'#3d8bff'},
+           {v:0.9353,k:'交控科技 FAO信号分包',s:'0.9353亿澳元 ≈ 人民币4.56亿',c:'#ffc233'}];
+  const side=V?Math.min(w,h*.56):Math.min(h,w*.5); const k=side/Math.sqrt(280);
+  const x0=V?0:30, y0=V?side:h; const g=svg.append('g');
+  L.forEach((d,i)=>{const p=easeOut(seg(t,i*.22,i*.22+.3)); const s=Math.sqrt(d.v)*k*p; if(s<=0) return;
+    g.append('rect').attr('x',x0).attr('y',y0-s).attr('width',Math.max(s,i==3?10:0)).attr('height',Math.max(s,i==3?10:0)).attr('rx',i==3?3:10).attr('fill',d.c).attr('stroke','#0a0f1e').attr('stroke-width',4);});
+  // labels
+  const lx=V?0:x0+side+60; L.forEach((d,i)=>{const p=seg(t,i*.22+.15,i*.22+.35); if(p<=0) return;
+    const ly=V?side+60+i*110:110+i*(h-160)/4; const s=Math.sqrt(d.v)*k;
+    const ax=x0+Math.max(s,10)-(i==3?0:s*.5), ay=y0-Math.max(s,10)+(i==3?0:s*.18);
+    const lab=g.append('g').attr('opacity',p);
+    if(!V){lab.append('path').attr('d',`M${ax},${ay} L${lx-24},${ly-12}`).attr('stroke','#5a6790').attr('stroke-width',2).attr('fill','none');}
+    lab.append('rect').attr('x',lx).attr('y',ly-40).attr('width',14).attr('height',56).attr('rx',4).attr('fill',d.c==='#22305a'?'#4a5f9e':d.c);
+    txt(lab,lx+34,ly-6,d.k,{fs:V?38:36,fw:900});
+    txt(lab,lx+34,ly+34,d.s,{fs:V?28:26,fill:C.t2});
+  });
+  if(t>.9){const pct=svg.append('g').attr('opacity',seg(t,.9,1));
+    txt(pct,V?0:w-10,V?h-10:h-20,'TSMO ≈ 总投资的14% ｜ 交控分包 ≈ TSMO的2.4%',{anchor:V?'start':'end',fs:V?30:28,fw:700,fill:C.yellow});}
+});
+</script></body></html>

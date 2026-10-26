@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第05期 · 悉尼地铁西线</div>
+<h1>一份合同，<em>签到2047年</em></h1>
+<div class="sub">TSMO合同期22年：先制造调试约6年，2032年目标开通后再运营维护15年</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>Sydney Metro官网；NSW政府 2026-01-05；港铁项目页（2025-12-19授予）</b>｜2047为按22年推算</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();const g=svg.append('g');
+  const x=d3.scaleLinear().domain([2025,2048]).range([V?30:60,w-(V?30:60)]);
+  const rows=[{a:2025.97,b:2032,k:'车辆制造·系统集成·测试调试',c:C.blue,lab:'约6年'},
+              {a:2032,b:2047,k:'开通后运营 + 维护',c:C.orange,lab:'15年'},
+              {a:2026.1,b:2032,k:'交控FAO系统交付',c:C.yellow,lab:'至2032'},
+              {a:2032,b:2034,k:'交控质保期',c:'#ffd97a',lab:'2年'}];
+  const top=V?120:96, rh=V?190:84;
+  [2026,2030,2032,2035,2040,2045,2047].forEach(yv=>{g.append('line').attr('x1',x(yv)).attr('x2',x(yv)).attr('y1',top-40).attr('y2',top+rh*rows.length+10).attr('stroke',yv===2032?'#ff7a3d55':C.grid).attr('stroke-width',yv===2032?3:1.5);
+    txt(g,x(yv),top-56,String(yv),{anchor:'middle',fs:V?24:24,fill:yv===2032?C.orange:C.t3,fw:yv===2032?900:500});});
+  rows.forEach((r,i)=>{const p=ease(seg(t,i*.18,i*.18+.4)); const y=top+i*rh;
+    txt(g,x(r.a),y+18,r.k,{fs:V?30:28,fw:700,fill:C.t2});
+    g.append('rect').attr('x',x(r.a)).attr('y',y+36).attr('width',Math.max(0,(x(r.b)-x(r.a))*p)).attr('height',V?54:46).attr('rx',12).attr('fill',r.c);
+    if(p>.9) txt(g,x(r.a)+(x(r.b)-x(r.a))/2,y+36+(V?27:23),r.lab,{anchor:'middle',base:'middle',fs:V?30:26,fw:900,fill:'#0a0f1e'});});
+  const ms=[[2025.97,'2025-12 授予TSMO'],[2026.17,'2026-03 西线隧道全线贯通'],[2032,'2032 目标开通']];
+  const my=top+rh*rows.length+(V?70:30);
+  ms.forEach((m,i)=>{if(t<.5+i*.15) return; const xx=x(m[0]); g.append('circle').attr('cx',xx).attr('cy',my).attr('r',12).attr('fill',C.aqua);
+    if(V){txt(g,x(2025),my+70+i*56,'● '+m[1],{fs:32,fw:700,fill:C.t1});}else{txt(g,xx+(i==1?30:0),my+44+(i==1?34:0),m[1],{fs:24,fw:700,anchor:i==2?'middle':'start',fill:C.t1});}});
+  if(t>.95) txt(g,V?w/2:w-10,V?h-10:my+6,'买车只是第一笔账，后面15年才是长期现金流',{anchor:V?'middle':'end',fs:V?34:30,fw:900,fill:C.yellow});
+});
+</script></body></html>

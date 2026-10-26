@@ -1,0 +1,16 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i></div>
+<h1>Rosebel扩建，<em>一张14.7亿美元的账单</em></h1>
+<div class="sub">苏里南Rosebel金矿三项扩建投资（亿美元）｜处理能力：800万吨/年 → 2300万吨/年</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>紫金黄金国际2026年中期公告（表3）、2025年报</b>｜合计为自算</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  waterfall(svg,w,h,t,{max:16.5,dec:1,vfs:V?38:40,kfs:V?24:26,bottom:V?140:120,
+   steps:[{k:'选厂扩建|至1800万吨/年',v:7,color:C.orange,label:'7.0'},{k:'Saramacca|新采选项目',v:5.7,color:C.orange,label:'5.7'},{k:'100MW|重油电厂',v:2,color:C.orange,label:'2.0'},{k:'合计',v:14.7,total:1,color:C.yellow,label:'14.7'}]});
+  if(t>.92) txt(svg,w/2,40,'目标：年产金约13吨，2028年陆续完工',{anchor:'middle',fs:V?30:32,fw:900,fill:C.yellow});
+});
+</script></body></html>

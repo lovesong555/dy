@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第05期 · 悉尼地铁西线</div>
+<h1>30年维护费，<em>约等于再买一遍车</em></h1>
+<div class="sub">列车全生命周期：维护成本按每年约为购车价3.3%计</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>Raczyński, MATEC Web of Conferences 180, 02010 (2018)</b>｜行业经验值，不代表TSMO实际成本</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  const buy=[[0,100],[30,100]]; const mt=d3.range(0,31).map(y=>[y,3.33*y]);
+  lines(svg,w,h,t,{left:90,right:V?40:60,top:80,bottom:80,ydom:[0,120],xdom:[0,30],xticks:[0,5,10,15,20,25,30],xfmt:v=>v+'年',yfmt:v=>v,
+    series:[{color:C.blue,pts:buy,dots:false,w:5,dash:'14 10'},
+            {color:C.orange,pts:mt,area:true,dots:false,w:7}]});
+  const x=d3.scaleLinear().domain([0,30]).range([90,w-(V?40:60)]); const y=d3.scaleLinear().domain([0,120]).range([h-80,80]);
+  if(t>.4){const p=seg(t,.4,.6); const gx=svg.append('g').attr('opacity',p);
+    gx.append('rect').attr('x',x(0)).attr('y',y(3.33*15)).attr('width',x(15)-x(0)).attr('height',y(0)-y(3.33*15)).attr('fill','#ffc23318');
+    txt(gx,x(7.5),y(3.33*15)-60,'TSMO覆盖的15年运维',{anchor:'middle',fs:28,fw:700,fill:C.yellow});
+    txt(gx,x(7.5),y(3.33*15)-24,'≈ 半辆车的钱',{anchor:'middle',fs:26,fill:C.yellow});}
+  if(t>.95){txt(svg,x(30)-10,y(100)-26,'第30年：两条线相交',{anchor:'end',fs:28,fw:900});
+    txt(svg,x(1),y(100)-20,'购车价 = 100',{fs:28,fill:C.blue,fw:700});txt(svg,x(21),y(70)+40,'累计维护费',{fs:28,fill:C.orange,fw:700});}
+});
+</script></body></html>

@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i></div>
+<h1>一纸禁令，<em>废纸进口归零</em></h1>
+<div class="sub">中国废纸进口量（万吨）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>智研咨询 2020-03-11、2021-06-02；前瞻 2018-09-28；生态环境部等四部委公告 2020-11-24</b>｜2020年为净进口口径；2021年起依公告禁止进口</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();
+  columns(svg,w,h*.8,t,{max:2800,dec:0,vfs:V?36:40,kfs:V?26:28,top:70,bottom:100,pad:.32,
+   data:[{k:'2017',v:2572,color:C.blue},{k:'2018',v:1703,color:C.blue},{k:'2019',v:1036,color:C.blue},{k:'2020',v:689,color:C.muted,note:'净进口'},{k:'2021起',v:0,color:C.orange,note:'禁止进口'}]});
+  if(t>.85){const p=seg(t,.85,1);const g=svg.append('g').attr('opacity',p);
+    txt(g,0,h*.88,'2017：国办方案，年底前禁止进口未分拣废纸',{fs:V?26:30,fw:700,fill:C.t1});
+    txt(g,0,h*.88+(V?44:48),'2021-01-01：禁止以任何方式进口固体废物',{fs:V?26:30,fw:900,fill:C.yellow});}
+});
+</script></body></html>

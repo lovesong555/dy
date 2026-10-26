@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- 宋玉 封面模板（竖版 1080×1920）。cover.html?k=<封面名>，读取 covers.json。
+     安全区：抖音主页网格只显示中间 3:4（y 240–1680），关键字都放在 y 300–1500；底部 25% 会被标题和按钮挡住，只放氛围。 -->
+<style>
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Black.otf);font-weight:900}
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Bold.otf);font-weight:700}
+@font-face{font-family:NS;src:url(NotoSansCJKsc-Medium.otf);font-weight:500}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#F3EEE4;font-family:NS;color:#141210}
+.brand{position:absolute;left:64px;top:64px;font-weight:900;font-size:64px;letter-spacing:2px}
+.cat{position:absolute;right:64px;top:74px;background:#141210;color:#F3EEE4;font-weight:700;font-size:34px;padding:8px 20px;border-radius:8px;letter-spacing:4px}
+.kick{position:absolute;left:64px;right:64px;top:330px;font-weight:700;font-size:44px;color:#5a5249}
+.t1{position:absolute;left:64px;right:64px;top:400px;font-weight:900;font-size:128px;line-height:1.12}
+.red{color:#C8372D}
+.ph{position:absolute;left:64px;right:64px;border:3px solid #141210;box-shadow:10px 10px 0 #141210;background:#000 center/cover no-repeat}
+.q{position:absolute;border-radius:50%;background:#C8372D;border:7px solid #F3EEE4;box-shadow:0 8px 22px rgba(0,0,0,.45);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;line-height:1}
+.foot{position:absolute;left:64px;right:64px;font-weight:700;font-size:40px;color:#5a5249}
+.bar{position:absolute;left:64px;width:120px;height:12px;background:#C8372D}
+.cr{position:absolute;left:64px;right:64px;font-weight:500;font-size:22px;color:#8A8073}
+</style></head><body>
+<div class="brand">宋玉</div><div class="cat" id="cat">人物</div>
+<div id="c"></div>
+<script>
+(async()=>{const k=new URLSearchParams(location.search).get('k');const all=await (await fetch('covers.json')).json();const o=all[k];
+ document.getElementById('cat').textContent=o.cat||'人物';const c=document.getElementById('c');
+ let h='';
+ if(o.kick) h+=`<div class="kick">${o.kick}</div>`;
+ h+=`<div class="t1" style="top:${o.tTop||400}px;font-size:${o.tSize||128}px">${o.title}</div>`;
+ if(o.bar) h+=`<div class="bar" style="top:${o.bar}px"></div>`;
+ if(o.img) h+=`<div class="ph" style="top:${o.imgTop}px;height:${o.imgH}px;background-image:url('${o.img}');background-size:${o.fit||'cover'};background-position:${o.pos||'center'}"></div>`;
+ if(o.mask){const m=o.mask;h+=`<div class="q" style="left:${m.x-m.r}px;top:${m.y-m.r}px;width:${2*m.r}px;height:${2*m.r}px;font-size:${m.r*1.2}px">?</div>`}
+ if(o.foot) h+=`<div class="foot" style="top:${o.footTop}px">${o.foot}</div>`;
+ if(o.credit) h+=`<div class="cr" style="top:${o.crTop}px">${o.credit}</div>`;
+ c.innerHTML=h;await document.fonts.ready;await Promise.all([...document.querySelectorAll('.ph')].map(e=>new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=getComputedStyle(e).backgroundImage.slice(5,-2)})));window.__ready=true})();
+</script></body></html>

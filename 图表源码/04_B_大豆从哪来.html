@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<script src="d3.min.js"></script><script src="topojson.min.js"></script><script src="lib.js"></script><script src="mapkit.js"></script><script src="chartkit.js"></script><script src="treekit.js"></script></head>
+<body><div class="frame">
+<div class="tag"><i></i>第04期 · 牛奶与巴西大豆</div>
+<h1>中国每10斤大豆，<em>7斤多来自巴西</em></h1>
+<div class="sub">中国大豆进口来源（万吨）</div>
+<div class="stage"><svg id="s"></svg></div>
+<div class="foot"><div>来源：<b>国家统计局2024/2025统计公报；路透/海关；S&amp;P Global</b>｜“其他”= 总量减巴西、美国</div><div class="brand">DATA / 产业链</div></div>
+</div>
+<script>
+chart(t=>{const {svg,w,h}=S();const g=svg.append('g');
+  const D=[{y:'2024',tot:10503,br:7465,us:2213},{y:'2025',tot:11183,br:8233,us:1680}];
+  const x=d3.scaleLinear().domain([0,11500]).range([0,w-(V?20:40)]); const bh=V?110:120;
+  D.forEach((d,i)=>{const y0=(V?120:50)+i*(V?400:240); const p=ease(seg(t,i*.3,i*.3+.5));
+    txt(g,0,y0-24,d.y+'年  合计 '+fmt(d.tot)+' 万吨',{fs:V?36:34,fw:900});
+    const segs=[[d.br,C.aqua,'巴西'],[d.us,C.orange,'美国'],[d.tot-d.br-d.us,C.muted,'其他']]; let acc=0;
+    segs.forEach(([v,c,k])=>{const ww=Math.max(0,x(v)*p-4);g.append('rect').attr('x',x(acc)*p).attr('y',y0).attr('width',ww).attr('height',bh).attr('rx',10).attr('fill',c);
+      if(p>.95&&v>1000){txt(g,x(acc)+16,y0+bh/2-8,k,{base:'middle',fs:V?28:30,fw:700,fill:'#0a0f1e'});txt(g,x(acc)+16,y0+bh/2+28,fmt(v)+' · '+Math.round(v/d.tot*100)+'%',{base:'middle',fs:V?26:28,fw:900,fill:'#0a0f1e'});}
+      if(p>.95&&v<=1000) txt(g,x(acc)+8,y0+bh+34,k+' '+fmt(v),{fs:24,fill:C.t2}); acc+=v;});
+  });
+  if(t>.9){const yy=V?h-200:h-100;txt(g,0,yy,'对外依存度 ≈ 84%（进口÷(进口+国产2091万吨)，自算）',{fs:V?28:30,fw:900,fill:C.yellow});
+    txt(g,0,yy+(V?50:46),'2025年6月–10月下旬中国暂停采购美豆；美豆关税13% vs 巴西3%',{fs:V?24:26,fill:C.t2});}
+});
+</script></body></html>

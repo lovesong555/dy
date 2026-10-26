@@ -1,0 +1,265 @@
+{
+ "01_证据1_烟台港二手车": {
+  "url": "https://www.yantai.gov.cn/col/col34864/art/2026/art_0c0289973a9e4fc7aab13ca2c9637fe0.html",
+  "src": "烟台市人民政府网 2026-09-28",
+  "needle": "一批韩国过境二手车",
+  "rects": [
+   {
+    "x": 238.59375,
+    "y": 429,
+    "w": 687.53125,
+    "h": 15
+   }
+  ],
+  "found": true
+ },
+ "01_证据2_KAU39%": {
+  "url": "https://kao.kz/en/novosti/78/",
+  "src": "Kazakhstan Automobile Union 2026-01-19",
+  "needle": "remained at last year",
+  "rects": [
+   {
+    "x": 471.0625,
+    "y": 463.390625,
+    "w": 250.484375,
+    "h": 23
+   }
+  ],
+  "found": true
+ },
+ "02_证据1_蓬莱首航圭亚那": {
+  "url": "http://news.bandao.cn/a/1722504752562720.html",
+  "src": "半岛网 2024-08-01",
+  "needle": "218台",
+  "rects": [
+   {
+    "x": 208,
+    "y": 303,
+    "w": 616,
+    "h": 17
+   }
+  ],
+  "found": true
+ },
+ "02_证据2_圭亚那和苏里南": {
+  "url": "https://finance.sina.com.cn/jjxw/2024-12-06/doc-incynvut2160961.shtml",
+  "src": "中国水运网（新浪财经转载）2024-12-06",
+  "needle": "圭亚那和苏里南",
+  "rects": [
+   {
+    "x": 1177.328125,
+    "y": 427.875,
+    "w": 90.015625,
+    "h": 20
+   },
+   {
+    "x": 8,
+    "y": 451.875,
+    "w": 715.96875,
+    "h": 20
+   }
+  ],
+  "found": true
+ },
+ "02_证据3_南美挂牌109万": {
+  "url": "https://vehiculo.mercadolibre.com.ar/MLA-3443699446-excavadora-xe215da-xcmg-nueva-_JM",
+  "src": "Mercado Libre 阿根廷 2026-10-23抓取",
+  "needle": "163.000",
+  "rects": [
+   {
+    "x": 909.71875,
+    "y": 310.984375,
+    "w": 102.15625,
+    "h": 41
+   }
+  ],
+  "found": true
+ },
+ "03_证据1_TAZIZ锅炉订单": {
+  "url": "https://www.yhhi.com.cn/index/newscenter/89.html",
+  "src": "现代冰轮官网 2025-09-30",
+  "needle": "165t/h",
+  "rects": null,
+  "found": false
+ },
+ "03_证据2_三星EA17亿美元": {
+  "url": "https://www.samsungena.com/en/newsroom/news/view?idx=15676",
+  "src": "Samsung E&A 2025-02-03",
+  "needle": "1.7 billion",
+  "rects": [
+   {
+    "x": 710.765625,
+    "y": 357,
+    "w": 461.453125,
+    "h": 41
+   },
+   {
+    "x": 33.3125,
+    "y": 399,
+    "w": 296.1875,
+    "h": 41
+   }
+  ],
+  "found": true
+ },
+ "04_证据1_中粮首船": {
+  "url": "https://www.cofco.com/cn/News/Allnews/Latest/2025/0529/55917.html",
+  "src": "中粮集团官网 2025-05-29",
+  "needle": "6.9万吨",
+  "rects": [
+   {
+    "x": 409.390625,
+    "y": 437.3125,
+    "w": 269.5,
+    "h": 25
+   }
+  ],
+  "found": true
+ },
+ "05_证据1_TSMO39.6亿": {
+  "url": "https://www.nsw.gov.au/ministerial-releases/metro-west-contracts-open-next-phase-of-major-works",
+  "src": "NSW Government 2026-01-05",
+  "needle": "3.96 billion",
+  "rects": [
+   {
+    "x": 775.3125,
+    "y": 464,
+    "w": 33.53125,
+    "h": 19
+   },
+   {
+    "x": 96,
+    "y": 488,
+    "w": 45.234375,
+    "h": 19
+   }
+  ],
+  "found": true
+ },
+ "05_证据2_交控分包": {
+  "url": "https://finance.sina.com.cn/roll/2026-02-10/doc-inhmfysy1876430.shtml",
+  "src": "交控科技公告（新浪转载）2026-02-10",
+  "needle": "93,530,364.97",
+  "rects": [
+   {
+    "x": 558,
+    "y": 456,
+    "w": 210.125,
+    "h": 20
+   },
+   {
+    "x": 140,
+    "y": 488,
+    "w": 593.0625,
+    "h": 20
+   }
+  ],
+  "found": true
+ },
+ "06_证据1_央视127周": {
+  "url": "https://news.cctv.com/2026/01/31/ARTItXero5oWaZC1SXLVnmPh260131.shtml",
+  "src": "央视网 2026-01-31",
+  "needle": "127周",
+  "rects": [
+   {
+    "x": 915.015625,
+    "y": 424,
+    "w": 210.046875,
+    "h": 20
+   },
+   {
+    "x": 140,
+    "y": 456,
+    "w": 558,
+    "h": 20
+   }
+  ],
+  "found": true
+ },
+ "06_证据2_WoodMac缺口30%": {
+  "url": "https://www.woodmac.com/press-releases/power-transformers-and-distribution-transformers-will-face-supply-deficits-of-30-and-10-in-2025/",
+  "src": "Wood Mackenzie 2025-08-14",
+  "needle": "30% and 10%, respectively",
+  "rects": [
+   {
+    "x": 740.296875,
+    "y": 436.09375,
+    "w": 39.140625,
+    "h": 26
+   },
+   {
+    "x": 203.65625,
+    "y": 462.96875,
+    "w": 512.1875,
+    "h": 26
+   }
+  ],
+  "found": true
+ },
+ "07_证据1_中国企业家2006": {
+  "url": "https://m.huxiu.com/article/329451.html",
+  "src": "《中国企业家》2006-07-21（虎嗅转载）",
+  "needle": "27岁上就做到了副总裁",
+  "rects": [
+   {
+    "x": 638.078125,
+    "y": 321.59375,
+    "w": 294.625,
+    "h": 37
+   },
+   {
+    "x": 347.296875,
+    "y": 376.203125,
+    "w": 585.40625,
+    "h": 37
+   },
+   {
+    "x": 347.296875,
+    "y": 430.8125,
+    "w": 585.40625,
+    "h": 37
+   },
+   {
+    "x": 347.296875,
+    "y": 485.421875,
+    "w": 104.796875,
+    "h": 37
+   }
+  ],
+  "found": true
+ },
+ "07_证据2_SEC持股41.9%": {
+  "url": "https://www.sec.gov/Archives/edgar/data/1744781/000110465926086437/xslSCHEDULE_13D_X01/primary_doc.xml",
+  "src": "小牛电动 SEC 13D/A 2026-07-24",
+  "needle": "41.9",
+  "rects": [
+   {
+    "x": 117.15625,
+    "y": 441.9375,
+    "w": 40.78125,
+    "h": 16
+   }
+  ],
+  "found": true
+ },
+ "07_证据3_自游家退款": {
+  "url": "https://www.ithome.com/0/659/499.htm",
+  "src": "IT之家 2022-12-07",
+  "needle": "24376",
+  "rects": [
+   {
+    "x": 433.171875,
+    "y": 441,
+    "w": 371.84375,
+    "h": 17
+   },
+   {
+    "x": 155,
+    "y": 471,
+    "w": 266.6875,
+    "h": 17
+   }
+  ],
+  "found": true
+ }
+}
