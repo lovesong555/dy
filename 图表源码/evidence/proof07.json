@@ -418,5 +418,137 @@
   ],
   "src": "36氪（引奥维云网 2026 年 5 月数据）",
   "url": "https://www.36kr.com/p/3893400322161284"
+ },
+ "amm_原文2_新华社海峡封锁": {
+  "img": "evidence/amm_原文2_新华社海峡封锁.png",
+  "W": 440,
+  "H": 900,
+  "rects": [
+   {
+    "x": 14,
+    "y": 138,
+    "w": 412,
+    "h": 62
+   }
+  ],
+  "src": "新华社 2026-04-19",
+  "url": "https://www.news.cn/world/20260419/f31866b88b984014ac6536545c81dddc/c.html"
+ },
+ "amm_原文3_印度79": {
+  "img": "evidence/amm_原文3_印度79.png",
+  "W": 440,
+  "H": 900,
+  "rects": [
+   {
+    "x": 271.140625,
+    "y": 384.640625,
+    "w": 95.453125,
+    "h": 20
+   }
+  ],
+  "src": "Outlook Business 2026-06-16（引行业数据）",
+  "url": "https://www.outlookbusiness.com/markets/fertiliser-stocks-jump-up-to-14-on-hopes-of-strait-of-hormuz-reopening"
+ },
+ "amm_原文4_印度16船": {
+  "img": "evidence/amm_原文4_印度16船.png",
+  "W": 440,
+  "H": 900,
+  "rects": [
+   {
+    "x": 259.078125,
+    "y": 385.5,
+    "w": 162.65625,
+    "h": 27
+   },
+   {
+    "x": 8,
+    "y": 419.15625,
+    "w": 82.859375,
+    "h": 27
+   },
+   {
+    "x": 292.1875,
+    "y": 686.75,
+    "w": 79.8125,
+    "h": 27
+   },
+   {
+    "x": 8,
+    "y": 720.40625,
+    "w": 172.3125,
+    "h": 27
+   }
+  ],
+  "src": "Marine Insight 2026-06-16（引印度化肥部）",
+  "url": "https://www.marineinsight.com/16-india-bound-fertiliser-ships-stranded-in-strait-of-hormuz-government-says/"
+ },
+ "amm_原文5_生意社出口": {
+  "img": "evidence/amm_原文5_生意社出口.png",
+  "W": 440,
+  "H": 900,
+  "rects": [
+   {
+    "x": 327.75,
+    "y": 339,
+    "w": 76.484375,
+    "h": 20
+   },
+   {
+    "x": 354.890625,
+    "y": 700,
+    "w": 62.546875,
+    "h": 20
+   },
+   {
+    "x": 20,
+    "y": 724,
+    "w": 32.578125,
+    "h": 20
+   }
+  ],
+  "src": "生意社 SunSirs 2026-08-13",
+  "url": "https://www.sunsirs.com/commodity-news/petail-35237.html"
+ },
+ "amm_原文6_恒逸半年报": {
+  "img": "evidence/amm_原文6_恒逸半年报.png",
+  "W": 440,
+  "H": 900,
+  "rects": [
+   {
+    "x": 323.609375,
+    "y": 259,
+    "w": 72.3125,
+    "h": 17
+   },
+   {
+    "x": 132.109375,
+    "y": 530,
+    "w": 68.640625,
+    "h": 17
+   }
+  ],
+  "src": "新华财经 2026-08-10",
+  "url": "https://www.cnfin.com/gs-lb/detail/20260810/4453431_1.html"
+ },
+ "amm_原文1_中新社钦州液氨": {
+  "img": "evidence/amm_原文1_中新社钦州液氨.png",
+  "W": 1100,
+  "H": 1400,
+  "rects": [
+   {
+    "x": 38,
+    "y": 208,
+    "w": 429,
+    "h": 36
+   },
+   {
+    "x": 720.484375,
+    "y": 357,
+    "w": 58.515625,
+    "h": 20
+   }
+  ],
+  "src": "中新社（人民政协网转载）2026-04-25",
+  "url": "https://www.rmzxw.com.cn/c/2026-04-25/3906663.shtml"
  }
 }
